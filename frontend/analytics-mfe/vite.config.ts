@@ -1,11 +1,45 @@
-import { defineConfig } from 'vite'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
-import babel from '@rolldown/plugin-babel'
+/** frontend/analytics-mfe/vite.config.ts
+ * @file vite.config.ts
+ * @description Vite configuration for the Analytics & AI microfrontend.
+ * Exposes the chatbot and staff dashboard components via Module Federation.
+ * @author Your Name
+ * @since 2026-04-20
+ * @updated 2026-04-20 - Initial implementation.
+ * @version 0.1.0
+ */
 
-// https://vite.dev/config/
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import federation from '@originjs/vite-plugin-federation';
+
 export default defineConfig({
   plugins: [
     react(),
-    babel({ presets: [reactCompilerPreset()] })
+    federation({
+      name: 'analytics',
+      filename: 'remoteEntry.js',
+      remotes: {
+        host: 'http://localhost:3000/assets/remoteEntry.js',
+      },
+      exposes: {
+        './IssueDashboard':    './src/components/IssueDashboard.tsx',
+        './Chatbot':           './src/components/Chatbot.tsx',
+        './ThemeToggle':       './src/components/ThemeToggle.tsx',
+        './Heatmap':           './src/components/Heatmap.tsx',
+        './TrendChart':        './src/components/TrendChart.tsx',
+        './InsightsDashboard': './src/components/InsightsDashboard.tsx',
+        './BacklogTracker':    './src/components/BacklogTracker.tsx',
+      },
+      shared: ['react', 'react-dom', '@apollo/client'],
+    }),
   ],
-})
+  server: {
+    port: 3003,
+  },
+  build: {
+    modulePreload: false,
+    target: 'esnext',
+    minify: false,
+    cssCodeSplit: false,
+  },
+});

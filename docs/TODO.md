@@ -72,36 +72,36 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ## Phase 6 — Frontend: Auth MFE (Port 3001)
 
-- [ ] `frontend/auth-mfe/src/components/LoginForm.tsx`
-- [ ] `frontend/auth-mfe/src/components/RegisterForm.tsx`
-- [ ] `frontend/auth-mfe/src/components/OAuthButtons.tsx`
-- [ ] `frontend/auth-mfe/vite.config.ts` — Expose LoginForm, RegisterForm
+- [x] `frontend/auth-mfe/src/components/LoginForm.tsx`
+- [x] `frontend/auth-mfe/src/components/RegisterForm.tsx`
+- [x] `frontend/auth-mfe/src/components/OAuthButtons.tsx`
+- [x] `frontend/auth-mfe/vite.config.ts` — Expose LoginForm, RegisterForm
 
 ---
 
 ## Phase 7 — Frontend: Issue MFE (Port 3002)
 
-- [ ] `frontend/issue-mfe/src/components/IssueForm.tsx`
-- [ ] `frontend/issue-mfe/src/components/IssueList.tsx`
-- [ ] `frontend/issue-mfe/src/components/IssueDetail.tsx`
-- [ ] `frontend/issue-mfe/src/components/IssueStatusBadge.tsx`
-- [ ] `frontend/issue-mfe/src/components/IssueMap.tsx`
-- [ ] `frontend/issue-mfe/src/components/PhotoUpload.tsx`
-- [ ] `frontend/issue-mfe/src/components/NotificationFeed.tsx`
-- [ ] `frontend/issue-mfe/vite.config.ts` — Expose components
+- [x] `frontend/issue-mfe/src/components/IssueForm.tsx`
+- [x] `frontend/issue-mfe/src/components/IssueList.tsx`
+- [x] `frontend/issue-mfe/src/components/IssueDetail.tsx`
+- [x] `frontend/issue-mfe/src/components/IssueStatusBadge.tsx`
+- [x] `frontend/issue-mfe/src/components/IssueMap.tsx`
+- [x] `frontend/issue-mfe/src/components/PhotoUpload.tsx`
+- [x] `frontend/issue-mfe/src/components/NotificationFeed.tsx`
+- [x] `frontend/issue-mfe/vite.config.ts` — Expose components
 
 ---
 
 ## Phase 8 — Frontend: Analytics MFE (Port 3003)
 
-- [ ] `frontend/analytics-mfe/src/components/IssueDashboard.tsx`
-- [ ] `frontend/analytics-mfe/src/components/Heatmap.tsx`
-- [ ] `frontend/analytics-mfe/src/components/Chatbot.tsx`
-- [ ] `frontend/analytics-mfe/src/components/InsightsDashboard.tsx`
-- [ ] `frontend/analytics-mfe/src/components/BacklogTracker.tsx`
-- [ ] `frontend/analytics-mfe/src/components/TrendChart.tsx`
-- [ ] `frontend/analytics-mfe/src/components/ThemeToggle.tsx`
-- [ ] `frontend/analytics-mfe/vite.config.ts` — Expose components
+- [x] `frontend/analytics-mfe/src/components/IssueDashboard.tsx`
+- [x] `frontend/analytics-mfe/src/components/Heatmap.tsx`
+- [x] `frontend/analytics-mfe/src/components/Chatbot.tsx`
+- [x] `frontend/analytics-mfe/src/components/InsightsDashboard.tsx`
+- [x] `frontend/analytics-mfe/src/components/BacklogTracker.tsx`
+- [x] `frontend/analytics-mfe/src/components/TrendChart.tsx`
+- [x] `frontend/analytics-mfe/src/components/ThemeToggle.tsx`
+- [x] `frontend/analytics-mfe/vite.config.ts` — Expose components
 
 ---
 
