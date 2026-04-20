@@ -1,0 +1,22 @@
+{
+    "name": "cityai-project",
+    "version": "0.1.0",
+    "private": true,
+    "description": "city-ai -AI-Powered Local Issue Tracker",
+    "scripts": {
+      "dev:auth":      "pnpm --filter auth-service dev",
+      "dev:issues":    "pnpm --filter issue-service dev",
+      "dev:analytics": "pnpm --filter analytics-service dev",
+      "dev:host":      "pnpm --filter host dev",
+      "dev:auth-mfe":  "pnpm --filter auth-mfe dev",
+      "dev:issue-mfe": "pnpm --filter issue-mfe dev",
+      "dev:analytics-mfe": "pnpm --filter analytics-mfe dev",
+      "dev": "pnpm run dev:auth & pnpm run dev:issues & pnpm run dev:analytics & pnpm run dev:auth-mfe & pnpm run dev:issue-mfe & pnpm run dev:analytics-mfe & pnpm run dev:host",
+      "build": "pnpm -r build",
+      "lint":  "pnpm -r lint"
+    },
+    "engines": {
+      "node": ">=20.0.0",
+      "pnpm": ">=9.0.0"
+    }
+  }

@@ -1,0 +1,183 @@
+/** frontend/shared/design-tokens.css
+ * @file design-tokens.css
+ * @description Single source of truth for all CSS custom property tokens.
+ * Defines color, typography, spacing, radius, shadow, and transition values
+ * for both light and dark themes. Applied via the data-theme attribute on <html>.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-01-20
+ * @updated 2026-04-20 - Initial token set.
+ * @version 0.1.0
+ */
+
+/**
+ * Table of Contents
+ * - Light Theme  [data-theme="light"]
+ *   - Backgrounds
+ *   - Text
+ *   - Brand / Action
+ *   - Input
+ *   - Dividers & Nav
+ *   - Issue Status Badges
+ * - Dark Theme   [data-theme="dark"]
+ *   - Backgrounds
+ *   - Text
+ *   - Brand / Action
+ *   - Input
+ *   - Dividers & Nav
+ *   - Issue Status Badges
+ * - Theme-Independent Tokens  :root
+ *   - Typography
+ *   - Spacing
+ *   - Border Radius
+ *   - Shadows
+ *   - Transitions
+ */
+
+/* ─────────────────────────────────────────────
+   LIGHT THEME
+   ───────────────────────────────────────────── */
+   :root[data-theme="light"] {
+
+    /* Backgrounds */
+    --color-bg:           #F5F7FA;
+    --color-surface:      #FFFFFF;
+    --color-surface-alt:  #EEF2F7;
+  
+    /* Text */
+    --color-text-primary:   #1A202C;
+    --color-text-secondary: #4A5568;
+    --color-text-disabled:  #A0AEC0;
+  
+    /* Brand / Action */
+    --color-primary:       #2B6CB0;
+    --color-primary-text:  #FFFFFF;
+    --color-danger:        #C53030;
+    --color-success:       #276749;
+    --color-warning:       #B7791F;
+  
+    /* Input */
+    --color-input-fill:   #EDF2F7;
+    --color-input-border: #CBD5E0;
+  
+    /* Dividers & Nav */
+    --color-divider:          #E2E8F0;
+    --color-nav-bg:           #FFFFFF;
+    --color-nav-icon-active:  #2B6CB0;
+    --color-nav-icon-inactive:#A0AEC0;
+  
+    /* Issue Status Badges */
+    --color-badge-open:     #3182CE;
+    --color-badge-progress: #D69E2E;
+    --color-badge-resolved: #38A169;
+    --color-badge-closed:   #718096;
+  
+    /* Chatbot */
+    --color-chatbot-bubble-user: #BEE3F8;
+    --color-chatbot-bubble-ai:   #EBF8FF;
+  }
+  
+  /* ─────────────────────────────────────────────
+     DARK THEME
+     ───────────────────────────────────────────── */
+  :root[data-theme="dark"] {
+  
+    /* Backgrounds */
+    --color-bg:           #0D1117;
+    --color-surface:      #161B22;
+    --color-surface-alt:  #1C2128;
+  
+    /* Text */
+    --color-text-primary:   #E6EDF3;
+    --color-text-secondary: #8B949E;
+    --color-text-disabled:  #484F58;
+  
+    /* Brand / Action */
+    --color-primary:       #58A6FF;
+    --color-primary-text:  #0D1117;
+    --color-danger:        #FF7B72;
+    --color-success:       #3FB950;
+    --color-warning:       #D29922;
+  
+    /* Input */
+    --color-input-fill:   #1C2128;
+    --color-input-border: #30363D;
+  
+    /* Dividers & Nav */
+    --color-divider:          #21262D;
+    --color-nav-bg:           #161B22;
+    --color-nav-icon-active:  #58A6FF;
+    --color-nav-icon-inactive:#484F58;
+  
+    /* Issue Status Badges */
+    --color-badge-open:     #1F6FEB;
+    --color-badge-progress: #9E6A03;
+    --color-badge-resolved: #238636;
+    --color-badge-closed:   #30363D;
+  
+    /* Chatbot */
+    --color-chatbot-bubble-user: #1A365D;
+    --color-chatbot-bubble-ai:   #1C2128;
+  }
+  
+  /* ─────────────────────────────────────────────
+     THEME-INDEPENDENT TOKENS
+     These values do not change between light and dark.
+     ───────────────────────────────────────────── */
+  :root {
+  
+    /* Typography */
+    --font-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  
+    --text-xs:   0.75rem;   /* 12px */
+    --text-sm:   0.875rem;  /* 14px */
+    --text-base: 1rem;      /* 16px */
+    --text-lg:   1.125rem;  /* 18px */
+    --text-xl:   1.25rem;   /* 20px */
+    --text-2xl:  1.5rem;    /* 24px */
+    --text-3xl:  1.875rem;  /* 30px */
+  
+    --font-normal:   400;
+    --font-medium:   500;
+    --font-semibold: 600;
+    --font-bold:     700;
+  
+    --leading-tight:  1.25;
+    --leading-normal: 1.5;
+    --leading-relaxed:1.625;
+  
+    /* Spacing scale (multiples of 4px) */
+    --space-1:  0.25rem;  /* 4px  */
+    --space-2:  0.5rem;   /* 8px  */
+    --space-3:  0.75rem;  /* 12px */
+    --space-4:  1rem;     /* 16px */
+    --space-5:  1.25rem;  /* 20px */
+    --space-6:  1.5rem;   /* 24px */
+    --space-8:  2rem;     /* 32px */
+    --space-10: 2.5rem;   /* 40px */
+    --space-12: 3rem;     /* 48px */
+    --space-16: 4rem;     /* 64px */
+  
+    /* Border Radius */
+    --radius-sm:   0.25rem;  /* 4px  */
+    --radius-md:   0.5rem;   /* 8px  */
+    --radius-lg:   0.75rem;  /* 12px */
+    --radius-xl:   1rem;     /* 16px */
+    --radius-full: 9999px;
+  
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  
+    /* Transitions */
+    --transition-fast:   150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow:   400ms ease;
+  
+    /* Z-index scale */
+    --z-base:    0;
+    --z-dropdown:10;
+    --z-modal:   50;
+    --z-toast:   100;
+  }

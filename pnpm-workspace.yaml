@@ -1,0 +1,9 @@
+packages:
+  - 'backend/auth-service'
+  - 'backend/issue-service'
+  - 'backend/analytics-service'
+  - 'frontend/host'
+  - 'frontend/auth-mfe'
+  - 'frontend/issue-mfe'
+  - 'frontend/analytics-mfe'
+  - 'frontend/shared'
