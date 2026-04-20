@@ -1,121 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+/** frontend/host/src/App.tsx
+ * @file App.tsx
+ * @description The shell application for CityAI. Orchestrates lazy-loaded
+ * microfrontends and provides the global Apollo and Theme contexts.
+ * @author Your Name
+ * @since 2026-04-20
+ * @updated 2026-04-20 - Initial implementation.
+ * @version 0.1.0
+ */
 
+/**
+ * Table of Contents
+ * - Imports
+ * - Components
+ *   - App
+ * - Exports
+ */
+
+import React, { Suspense, lazy } from 'react';
+import { ApolloProvider } from '@apollo/client';
+import { client } from './apollo/client';
+import { ThemeProvider } from './context/ThemeContext';
+import './App.css';
+
+/**
+ * Lazy-loaded Microfrontends
+ */
+// @ts-ignore
+const LoginForm = lazy(() => import('auth/LoginForm'));
+// @ts-ignore
+const IssueForm = lazy(() => import('issue/IssueForm'));
+// @ts-ignore
+const Chatbot  = lazy(() => import('analytics/Chatbot'));
+
+/**
+ * App
+ * @description The root shell component.
+ */
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <ApolloProvider client={client}>
+      <ThemeProvider>
+        <div className="app-shell">
+          <header className="app-header">
+            <h1>CityAI (CivicCase)</h1>
+            <nav>
+              <a href="/">Home</a>
+              <a href="/report">Report Issue</a>
+              <a href="/dashboard">Staff Dashboard</a>
+            </nav>
+          </header>
 
-      <div className="ticks"></div>
+          <main className="app-content">
+            <Suspense fallback={<div className="loading">Loading module...</div>}>
+              {/* This is a placeholder for routing logic — for now we show components based on state or simple hash */}
+              <div className="view-container">
+                <section>
+                  <h2>Report an Issue</h2>
+                  <IssueForm />
+                </section>
+                
+                <aside className="chat-sidebar">
+                  <Chatbot />
+                </aside>
+              </div>
+            </Suspense>
+          </main>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <footer className="app-footer">
+            <p>&copy; 2026 Canadian Municipality CivicCase Project</p>
+          </footer>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </ThemeProvider>
+    </ApolloProvider>
+  );
 }
 
-export default App
+export default App;

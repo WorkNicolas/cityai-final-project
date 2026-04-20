@@ -54,19 +54,19 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 - [x] `backend/analytics-service/src/services/trendService.ts` — Trend detection
 - [x] `backend/analytics-service/src/agents/civicChatAgent.ts` — LangGraph agent
 - [x] `backend/analytics-service/src/graphql/typeDefs.ts`
-- [ ] `backend/analytics-service/src/graphql/resolvers.ts`
-- [ ] `backend/analytics-service/src/middleware/authContext.ts`
-- [ ] `backend/analytics-service/src/index.ts`
+- [x] `backend/analytics-service/src/graphql/resolvers.ts`
+- [x] `backend/analytics-service/src/middleware/authContext.ts`
+- [x] `backend/analytics-service/src/index.ts`
 
 ---
 
 ## Phase 5 — Frontend: Host Shell (Port 3000)
 
-- [ ] `frontend/host/src/apollo/client.ts` — Apollo Client config
-- [ ] `frontend/host/src/context/ThemeContext.tsx` — Theme provider
-- [ ] `frontend/host/src/App.tsx` — Shell with lazy-loaded MFEs
-- [ ] `frontend/host/src/index.css` — Imports design-tokens.css
-- [ ] `frontend/host/vite.config.ts` — Proxy + Module Federation remotes
+- [x] `frontend/host/src/apollo/client.ts` — Apollo Client config
+- [x] `frontend/host/src/context/ThemeContext.tsx` — Theme provider
+- [x] `frontend/host/src/App.tsx` — Shell with lazy-loaded MFEs
+- [x] `frontend/host/src/index.css` — Imports design-tokens.css
+- [x] `frontend/host/vite.config.ts` — Proxy + Module Federation remotes
 
 ---
 
