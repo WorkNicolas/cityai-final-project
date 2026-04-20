@@ -107,13 +107,13 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ## Phase 9 — Presentation Checklist
 
-- [ ] User registration / login demo
-- [ ] Issue submission with photo and geotag
-- [ ] AI category shown on submitted issue
-- [ ] Staff dashboard — assign and update issue status
-- [ ] Resident notification on status change
-- [ ] Chatbot Q&A demo (open issues, trends, safety alerts)
-- [ ] Analytics heatmap visible
-- [ ] Dark mode toggle working
-- [ ] Responsive layout verified on mobile viewport
-- [ ] All source files follow comment standards (`comment_standards.md`)
+- [x] User registration / login demo
+- [x] Issue submission with photo and geotag
+- [x] AI category shown on submitted issue
+- [x] Staff dashboard — assign and update issue status
+- [x] Resident notification on status change
+- [x] Chatbot Q&A demo (open issues, trends, safety alerts)
+- [x] Analytics heatmap visible
+- [x] Dark mode toggle working
+- [x] Responsive layout verified on mobile viewport
+- [x] All source files follow comment standards (`comment_standards.md`)
