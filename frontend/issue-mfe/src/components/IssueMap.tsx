@@ -2,7 +2,7 @@
  * @file IssueMap.tsx
  * @description Provides an interactive map for selecting or displaying civic issue locations.
  * Uses a simplified UI for the project demonstration.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -37,9 +37,9 @@ interface IssueMapProps {
  * IssueMap
  * @description Renders a placeholder map interface for the civic issue tracker.
  * @param {IssueMapProps} props - Component props.
- * @returns {JSX.Element} The rendered map component.
+ * @returns The rendered map component.
  */
-export function IssueMap({ initialCoords, readOnly, onLocationSelect }: IssueMapProps): JSX.Element {
+export function IssueMap({ initialCoords, readOnly, onLocationSelect }: IssueMapProps) {
   const [coords, setCoords] = useState<[number, number] | null>(initialCoords || null);
 
   const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {

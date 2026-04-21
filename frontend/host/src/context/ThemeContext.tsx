@@ -2,7 +2,7 @@
  * @file ThemeContext.tsx
  * @description React context that manages the active theme mode and applies
  * the data-theme attribute to the root HTML element.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -45,7 +45,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
  * ThemeProvider
  * @description Wraps the application and manages the active data-theme attribute.
  */
-export function ThemeProvider({ children }: React.PropsWithChildren): JSX.Element {
+export function ThemeProvider({ children }: React.PropsWithChildren) {
   const [mode, setMode] = useState<ThemeMode>(() => {
     return (localStorage.getItem('theme-mode') as ThemeMode) || 'system';
   });

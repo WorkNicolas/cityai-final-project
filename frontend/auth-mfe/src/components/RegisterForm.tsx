@@ -2,7 +2,7 @@
  * @file RegisterForm.tsx
  * @description Registration form for new CivicCase accounts.
  * Allows users to choose their role (Resident, Staff, or Advocate).
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -42,9 +42,9 @@ const REGISTER_MUTATION = gql`
 /**
  * RegisterForm
  * @description Renders the registration form and handles submission logic.
- * @returns {JSX.Element} The rendered registration component.
+ * @returns The rendered registration component.
  */
-export function RegisterForm(): JSX.Element {
+export function RegisterForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',

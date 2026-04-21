@@ -2,7 +2,7 @@
  * @file BacklogTracker.tsx
  * @description Admin-facing table for municipal staff to track and manage the issue backlog.
  * Includes filters for status and category.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -57,9 +57,9 @@ const UPDATE_STATUS = gql`
 /**
  * BacklogTracker
  * @description Renders the staff issue management table.
- * @returns {JSX.Element} The rendered backlog component.
+ * @returns The rendered backlog component.
  */
-export function BacklogTracker(): JSX.Element {
+export function BacklogTracker() {
   const [filter, setFilter] = useState({ status: undefined, category: undefined });
   const { loading, error, data, refetch } = useQuery(GET_ALL_ISSUES, { variables: filter });
   const [updateStatus] = useMutation(UPDATE_STATUS, { onCompleted: () => refetch() });

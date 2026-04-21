@@ -22,13 +22,7 @@
  * - Exports
  */
 
-import { gql } from 'graphql-tag';
-
-/**
- * typeDefs
- * @description Apollo Server GraphQL schema for the analytics-service.
- */
-export const typeDefs = gql`
+export const typeDefs = `
 
   """
   TrendInsight — an AI-detected cluster of related civic issues.

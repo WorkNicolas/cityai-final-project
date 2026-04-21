@@ -2,7 +2,7 @@
  * @file LoginForm.tsx
  * @description Authentication form for CivicCase residents and staff.
  * Uses Apollo useMutation to call the auth-service login resolver.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -43,9 +43,9 @@ const LOGIN_MUTATION = gql`
 /**
  * LoginForm
  * @description Renders the login form and handles submission logic.
- * @returns {JSX.Element} The rendered login component.
+ * @returns The rendered login component.
  */
-export function LoginForm(): JSX.Element {
+export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);

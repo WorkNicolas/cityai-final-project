@@ -2,7 +2,7 @@
  * @file IssueDetail.tsx
  * @description Provides a detailed view of a single civic issue.
  * Displays title, AI summary, full description, photo, and status.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -58,9 +58,9 @@ interface IssueDetailProps {
  * IssueDetail
  * @description Renders a full detail view of an issue report.
  * @param {IssueDetailProps} props - Component props.
- * @returns {JSX.Element} The rendered detail component.
+ * @returns The rendered detail component.
  */
-export function IssueDetail({ id }: IssueDetailProps): JSX.Element {
+export function IssueDetail({ id }: IssueDetailProps) {
   const { loading, error, data } = useQuery(GET_ISSUE_DETAIL, {
     variables: { id },
   });

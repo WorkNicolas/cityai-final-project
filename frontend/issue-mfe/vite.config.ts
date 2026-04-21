@@ -2,7 +2,7 @@
  * @file vite.config.ts
  * @description Vite configuration for the Issue Management microfrontend.
  * Exposes reporting, listing, and tracking components via Module Federation.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0

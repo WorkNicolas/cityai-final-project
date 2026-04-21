@@ -2,7 +2,7 @@
  * @file TrendChart.tsx
  * @description Visualizes AI-detected civic issue trends using the analytics-service.
  * Displays a bar chart of issue volume by category.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -38,9 +38,9 @@ const GET_TRENDS = gql`
 /**
  * TrendChart
  * @description Renders a CSS/SVG bar chart showing issue volume by category.
- * @returns {JSX.Element} The rendered trend chart.
+ * @returns The rendered trend chart.
  */
-export function TrendChart(): JSX.Element {
+export function TrendChart() {
   const { loading, error, data } = useQuery(GET_TRENDS);
 
   if (loading) return <div className="loading-trends">Analyzing trends...</div>;

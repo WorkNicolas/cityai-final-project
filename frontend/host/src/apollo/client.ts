@@ -2,7 +2,7 @@
  * @file client.ts
  * @description Apollo Client configuration for the CityAI host shell.
  * Connects to multiple microservices via the host's Vite proxy.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0

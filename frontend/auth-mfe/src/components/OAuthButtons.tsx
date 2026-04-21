@@ -1,7 +1,7 @@
 /** frontend/auth-mfe/src/components/OAuthButtons.tsx
  * @file OAuthButtons.tsx
  * @description Provides Google and GitHub OAuth sign-in buttons for the CivicCase platform.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -20,9 +20,9 @@ import React from 'react';
 /**
  * OAuthButtons
  * @description Renders a set of social login buttons.
- * @returns {JSX.Element} The rendered OAuth button group.
+ * @returns The rendered OAuth button group.
  */
-export function OAuthButtons(): JSX.Element {
+export function OAuthButtons() {
   const handleOAuth = (provider: 'google' | 'github') => {
     // In a real implementation, this would redirect to the backend OAuth route.
     console.log(`Redirecting to ${provider} OAuth...`);

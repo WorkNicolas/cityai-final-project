@@ -2,7 +2,7 @@
  * @file authContext.ts
  * @description Apollo Server context function for the analytics-service.
  * Reads and verifies the JWT from the HTTP-only cookie set by auth-service.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0

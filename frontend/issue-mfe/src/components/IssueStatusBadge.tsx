@@ -2,7 +2,7 @@
  * @file IssueStatusBadge.tsx
  * @description Reusable badge component that displays the lifecycle status of a civic issue.
  * Maps status strings to theme-aware color tokens.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -40,9 +40,9 @@ interface IssueStatusBadgeProps {
  * IssueStatusBadge
  * @description Renders a themed badge for an issue status.
  * @param {IssueStatusBadgeProps} props - Component props.
- * @returns {JSX.Element} The rendered status badge.
+ * @returns The rendered status badge.
  */
-export function IssueStatusBadge({ status }: IssueStatusBadgeProps): JSX.Element {
+export function IssueStatusBadge({ status }: IssueStatusBadgeProps) {
   const labelMap: Record<IssueStatus, string> = {
     'open':        'Open',
     'in-progress': 'In Progress',

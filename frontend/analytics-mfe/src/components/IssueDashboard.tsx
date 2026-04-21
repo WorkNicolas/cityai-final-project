@@ -2,7 +2,7 @@
  * @file IssueDashboard.tsx
  * @description The primary command center for municipal staff.
  * Combines heatmap, trend charts, AI insights, and the backlog tracker.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -26,9 +26,9 @@ import ThemeToggle from './ThemeToggle';
 /**
  * IssueDashboard
  * @description Renders the comprehensive municipal staff dashboard.
- * @returns {JSX.Element} The rendered dashboard shell.
+ * @returns The rendered dashboard shell.
  */
-export function IssueDashboard(): JSX.Element {
+export function IssueDashboard() {
   return (
     <div className="dashboard-shell">
       <header className="dashboard-header">

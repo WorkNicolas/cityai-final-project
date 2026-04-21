@@ -2,7 +2,7 @@
  * @file ThemeToggle.tsx
  * @description Segmented control for switching between Light, Dark, and System theme modes.
  * Consumes the useTheme hook from the host shell.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -23,9 +23,9 @@ import { useTheme } from 'host/ThemeContext';
 /**
  * ThemeToggle
  * @description Renders a themed segmented control to toggle theme modes.
- * @returns {JSX.Element} The rendered theme selector.
+ * @returns The rendered theme selector.
  */
-export function ThemeToggle(): JSX.Element {
+export function ThemeToggle() {
   const { mode, setMode } = useTheme();
 
   const options = [

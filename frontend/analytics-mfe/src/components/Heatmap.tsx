@@ -2,7 +2,7 @@
  * @file Heatmap.tsx
  * @description Geographic visualization of civic issue density.
  * Renders an abstract heatmap view for the municipal staff dashboard.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -21,9 +21,9 @@ import React from 'react';
 /**
  * Heatmap
  * @description Renders a geographic heatmap visualization using CSS/SVG patterns.
- * @returns {JSX.Element} The rendered heatmap component.
+ * @returns The rendered heatmap component.
  */
-export function Heatmap(): JSX.Element {
+export function Heatmap() {
   // Abstract "hotspots" to simulate geographic data
   const hotspots = [
     { top: '30%', left: '40%', size: '60px', intensity: 0.8 },

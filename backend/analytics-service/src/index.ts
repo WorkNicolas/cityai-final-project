@@ -1,7 +1,7 @@
 /** backend/analytics-service/src/index.ts
  * @file index.ts
  * @description Apollo Server entry point for the Analytics & AI microservice.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -17,6 +17,7 @@
  * - Exports
  */
 
+import 'dotenv/config';
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';

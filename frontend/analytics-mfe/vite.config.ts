@@ -2,7 +2,7 @@
  * @file vite.config.ts
  * @description Vite configuration for the Analytics & AI microfrontend.
  * Exposes the chatbot and staff dashboard components via Module Federation.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -35,6 +35,13 @@ export default defineConfig({
   ],
   server: {
     port: 3003,
+    proxy: {
+      '/api/analytics': {
+        target: 'http://localhost:4003',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/analytics/, '/graphql'),
+      },
+    },
   },
   build: {
     modulePreload: false,

@@ -24,15 +24,7 @@
  * - Exports
  */
 
-import { gql } from 'graphql-tag';
-
-/**
- * typeDefs
- * @description Apollo Server GraphQL schema for the auth-service.
- * The JWT is set as an HTTP-only cookie by the login/register resolvers
- * and is never returned in the GraphQL response body.
- */
-export const typeDefs = gql`
+export const typeDefs = `
 
   """
   UserRole — the three supported access levels in CivicCase.

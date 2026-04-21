@@ -2,7 +2,7 @@
  * @file seed.ts
  * @description Utility script to populate MongoDB with demo data for CityAI.
  * Creates users, issues, and analytics snapshots for presentation testing.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0

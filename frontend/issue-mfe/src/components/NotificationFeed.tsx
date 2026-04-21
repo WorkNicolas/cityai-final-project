@@ -2,7 +2,7 @@
  * @file NotificationFeed.tsx
  * @description Renders a live feed of neighborhood alerts and issue status updates.
  * Provides real-time engagement for residents.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -32,9 +32,9 @@ interface Notification {
 /**
  * NotificationFeed
  * @description Displays a scrollable feed of recent notifications.
- * @returns {JSX.Element} The rendered notification component.
+ * @returns The rendered notification component.
  */
-export function NotificationFeed(): JSX.Element {
+export function NotificationFeed() {
   // Mock data for demonstration - in production, this would use GraphQL Subscriptions
   const [notifications, setNotifications] = useState<Notification[]>([
     {

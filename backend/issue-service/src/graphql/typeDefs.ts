@@ -29,13 +29,7 @@
  * - Exports
  */
 
-import { gql } from 'graphql-tag';
-
-/**
- * typeDefs
- * @description Apollo Server GraphQL schema for the issue-service.
- */
-export const typeDefs = gql`
+export const typeDefs = `
 
   """
   IssueStatus — lifecycle states of a civic issue report.

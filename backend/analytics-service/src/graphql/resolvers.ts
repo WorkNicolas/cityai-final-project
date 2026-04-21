@@ -2,7 +2,7 @@
  * @file resolvers.ts
  * @description GraphQL resolvers for the Analytics & AI microservice.
  * Handles AI chatbot interactions, trend detection, and issue classification.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0

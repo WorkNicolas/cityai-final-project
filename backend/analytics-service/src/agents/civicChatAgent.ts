@@ -32,7 +32,7 @@ import mongoose from 'mongoose';
 
 const llm = new ChatGoogleGenerativeAI({
   model:       'gemini-1.5-flash',
-  apiKey:      process.env.GEMINI_API_KEY ?? '',
+  apiKey:      process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
   temperature: 0.3,
 });
 

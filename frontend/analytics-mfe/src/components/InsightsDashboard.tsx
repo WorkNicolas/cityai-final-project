@@ -1,7 +1,7 @@
 /** frontend/analytics-mfe/src/components/InsightsDashboard.tsx
  * @file InsightsDashboard.tsx
  * @description Provides a high-level summary of AI-generated civic insights.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -20,9 +20,9 @@ import React from 'react';
 /**
  * InsightsDashboard
  * @description Renders a collection of AI-driven metric cards.
- * @returns {JSX.Element} The rendered insights panel.
+ * @returns The rendered insights panel.
  */
-export function InsightsDashboard(): JSX.Element {
+export function InsightsDashboard() {
   const insights = [
     { title: 'Resolution Efficiency', value: '+14%', detail: 'AI triage reduced response time by 4 hours on average.', trend: 'up' },
     { title: 'Public Sentiment', value: 'Positive', detail: 'Residents appreciate real-time updates on flooding reports.', trend: 'up' },

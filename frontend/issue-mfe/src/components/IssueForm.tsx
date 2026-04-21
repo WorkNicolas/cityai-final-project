@@ -2,7 +2,7 @@
  * @file IssueForm.tsx
  * @description Multi-step form for reporting new civic issues.
  * Integrates map location selection, photo upload, and Apollo mutations.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -41,9 +41,9 @@ const CREATE_ISSUE_MUTATION = gql`
 /**
  * IssueForm
  * @description Renders the issue submission form and handles the creation lifecycle.
- * @returns {JSX.Element} The rendered issue form.
+ * @returns The rendered issue form.
  */
-export function IssueForm(): JSX.Element {
+export function IssueForm() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',

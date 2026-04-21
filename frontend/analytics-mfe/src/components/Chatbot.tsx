@@ -2,7 +2,7 @@
  * @file Chatbot.tsx
  * @description Provides a rich interactive interface for the AI-powered CivicChat assistant.
  * Connects to the LangGraph + Gemini agent via the analytics-service.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -44,9 +44,9 @@ interface ChatMessage {
 /**
  * Chatbot
  * @description Renders the chatbot window and handles the AI conversation.
- * @returns {JSX.Element} The rendered chatbot component.
+ * @returns The rendered chatbot component.
  */
-export function Chatbot(): JSX.Element {
+export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<ChatMessage[]>([
@@ -56,7 +56,7 @@ export function Chatbot(): JSX.Element {
   const historyEndRef = useRef<HTMLDivElement>(null);
 
   const [chat, { loading }] = useMutation(CHAT_MUTATION, {
-    onCompleted: (data) => {
+    onCompleted: (data: { chat: string }) => {
       const assistantMsg: ChatMessage = {
         id:      Date.now().toString(),
         role:    'assistant',

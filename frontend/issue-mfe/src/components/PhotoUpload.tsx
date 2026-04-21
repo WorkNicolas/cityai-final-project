@@ -2,7 +2,7 @@
  * @file PhotoUpload.tsx
  * @description Provides a photo upload widget for civic issue reports.
  * Includes image preview and file size validation.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -33,9 +33,9 @@ interface PhotoUploadProps {
  * PhotoUpload
  * @description Renders a photo selection and preview area.
  * @param {PhotoUploadProps} props - Component props.
- * @returns {JSX.Element} The rendered photo upload widget.
+ * @returns The rendered photo upload widget.
  */
-export function PhotoUpload({ onFileSelect }: PhotoUploadProps): JSX.Element {
+export function PhotoUpload({ onFileSelect }: PhotoUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

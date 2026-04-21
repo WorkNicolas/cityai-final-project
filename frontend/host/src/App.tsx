@@ -2,7 +2,7 @@
  * @file App.tsx
  * @description The shell application for CityAI. Orchestrates lazy-loaded
  * microfrontends and provides the global Apollo and Theme contexts.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0

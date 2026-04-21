@@ -2,7 +2,7 @@
  * @file IssueList.tsx
  * @description Renders a list of civic issues for the current user.
  * Includes status badges and community upvoting interaction.
- * @author Your Name
+ * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
  * @version 0.1.0
@@ -58,9 +58,9 @@ const UPVOTE_ISSUE = gql`
 /**
  * IssueList
  * @description Displays a list of issues in a card-based layout.
- * @returns {JSX.Element} The rendered issue list.
+ * @returns The rendered issue list.
  */
-export function IssueList(): JSX.Element {
+export function IssueList() {
   const { loading, error, data } = useQuery(GET_MY_ISSUES);
   const [upvote] = useMutation(UPVOTE_ISSUE);
 

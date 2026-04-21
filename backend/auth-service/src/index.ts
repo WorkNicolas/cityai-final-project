@@ -1,96 +1,70 @@
-/** backend/auth-service/src/middleware/authContext.ts
- * @file authContext.ts
- * @description Apollo Server context function for the auth-service.
- * Reads the JWT from the HTTP-only cookie, verifies it, and attaches the
- * decoded payload to the GraphQL context. Unauthenticated requests are
- * allowed — resolvers decide individually whether auth is required.
- * @author Carl Nicolas Mendoza
+/** backend/auth-service/src/index.ts
+ * @file index.ts
+ * @description Apollo Server entry point for the User Authentication microservice.
+ * Handles user identity, JWT issuance, and registration.
+ * @author Your Name
  * @since 2026-04-20
- * @updated 2026-04-20 - Initial implementation.
+ * @updated 2026-04-20 - Restored proper server setup.
  * @version 0.1.0
  */
 
 /**
  * Table of Contents
  * - Imports
- * - Interfaces
- *   - JwtPayload
- *   - AuthContext
- * - Functions
- *   - buildAuthContext
+ * - Server Setup
+ * - MongoDB Connection
  * - Exports
  */
 
-import jwt from 'jsonwebtoken';
-import { Request, Response } from 'express';
+import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import http from 'http';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import mongoose from 'mongoose';
+import { typeDefs } from './graphql/typeDefs';
+import { resolvers } from './graphql/resolvers';
+import { buildAuthContext } from './middleware/authContext';
 
-const JWT_SECRET = process.env.JWT_SECRET ?? '';
+const PORT      = process.env.PORT      ?? 4001;
+const MONGO_URI = process.env.MONGO_URI ?? 'mongodb://localhost:27017/cityai-auth';
 
-/**
- * JwtPayload
- * @description Shape of the decoded JWT issued by auth-service.
- */
-interface JwtPayload {
-  /**
-   * sub
-   * @description MongoDB user ID embedded in the token subject claim.
-   */
-  sub: string;
+async function startServer() {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-  /**
-   * role
-   * @description User role embedded at token issuance time.
-   */
-  role: 'resident' | 'staff' | 'advocate';
-}
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
 
-/**
- * AuthContext
- * @description The object attached to every Apollo resolver's context argument.
- */
-export interface AuthContext {
-  /**
-   * req
-   * @description The raw Express request object.
-   */
-  req: Request;
+  await server.start();
 
-  /**
-   * res
-   * @description The raw Express response object. Used by resolvers to set/clear cookies.
-   */
-  res: Response;
+  app.use(helmet({ contentSecurityPolicy: false }));
+  app.use(cookieParser());
+  app.use(express.json());
 
-  /**
-   * user
-   * @description Decoded JWT payload if a valid token cookie was present; null otherwise.
-   */
-  user: JwtPayload | null;
-}
+  app.use(
+    '/graphql',
+    cors<cors.CorsRequest>({ origin: true, credentials: true }),
+    expressMiddleware(server, {
+      context: async ({ req, res }) => buildAuthContext({ req, res }),
+    })
+  );
 
-/**
- * buildAuthContext
- * @description Apollo Server context function. Attempts to verify the 'token' cookie
- * and attach the decoded payload as context.user. Does not throw on failure —
- * unauthenticated context is valid for public queries (e.g., me returns null).
- * @param {object} params - Apollo context params containing the Express request and response.
- * @param {Request}  params.req - Express request, populated by cookie-parser middleware.
- * @param {Response} params.res - Express response used by mutation resolvers for cookies.
- * @returns {AuthContext} The populated context object for this request.
- */
-export function buildAuthContext({ req, res }: { req: Request; res: Response }): AuthContext {
-  let user: JwtPayload | null = null;
-
-  const token: string | undefined = req.cookies?.token;
-
-  if (token) {
-    try {
-      user = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    } catch {
-      // Token is expired or tampered — treat request as unauthenticated.
-      user = null;
-    }
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log('✅ Auth Service: Connected to MongoDB');
+  } catch (err) {
+    console.error('❌ Auth Service: MongoDB connection error:', err);
   }
 
-  return { req, res, user };
+  await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
+  console.log(`🚀 Auth Service ready at http://localhost:${PORT}/graphql`);
 }
+
+startServer();
