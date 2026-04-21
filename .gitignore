@@ -48,3 +48,4 @@ stats.json
 tmp/
 temp/
 .gemini/
+.turbo

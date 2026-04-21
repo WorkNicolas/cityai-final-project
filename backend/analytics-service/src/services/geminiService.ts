@@ -52,7 +52,7 @@ export async function classifyIssue(
   title: string,
   description: string
 ): Promise<IssueCategory> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
   const prompt = `
 You are a civic issue classification assistant for a Canadian municipality.
@@ -90,7 +90,7 @@ export async function summarizeIssue(
   description: string,
   location: string
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
   const prompt = `
 You are a municipal issue tracking assistant. Write a concise 1–2 sentence summary

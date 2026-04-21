@@ -41,7 +41,9 @@ const GET_TRENDS = gql`
  * @returns The rendered trend chart.
  */
 export function TrendChart() {
-  const { loading, error, data } = useQuery(GET_TRENDS);
+  const { loading, error, data } = useQuery(GET_TRENDS, {
+    context: { service: 'analytics' }
+  });
 
   if (loading) return <div className="loading-trends">Analyzing trends...</div>;
   if (error) return <div className="error-trends">Failed to load trends.</div>;

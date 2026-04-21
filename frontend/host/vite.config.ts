@@ -31,7 +31,12 @@ export default defineConfig({
       '/api/auth': {
         target: 'http://localhost:4001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/auth/, '/graphql'),
+        rewrite: (path) => {
+          if (path.startsWith('/api/auth/oauth')) {
+            return path;
+          }
+          return path.replace(/^\/api\/auth/, '/graphql');
+        },
       },
       '/api/issues': {
         target: 'http://localhost:4002',

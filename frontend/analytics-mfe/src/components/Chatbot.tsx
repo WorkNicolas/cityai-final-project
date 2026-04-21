@@ -56,6 +56,7 @@ export function Chatbot() {
   const historyEndRef = useRef<HTMLDivElement>(null);
 
   const [chat, { loading }] = useMutation(CHAT_MUTATION, {
+    context: { service: 'analytics' },
     onCompleted: (data: { chat: string }) => {
       const assistantMsg: ChatMessage = {
         id:      Date.now().toString(),

@@ -45,9 +45,21 @@ export interface IUser extends Document {
 
   /**
    * passwordHash
-   * @description Bcrypt hash of the user's password. Never store or return plaintext.
+   * @description Bcrypt hash of the user's password. Optional for OAuth users.
    */
-  passwordHash: string;
+  passwordHash?: string;
+
+  /**
+   * provider
+   * @description The identity provider used (local, google, github).
+   */
+  provider?: string;
+
+  /**
+   * providerId
+   * @description Unique identifier from the identity provider.
+   */
+  providerId?: string;
 
   /**
    * role
@@ -108,11 +120,28 @@ const UserSchema = new Schema<IUser>(
 
     /**
      * passwordHash
-     * @description Bcrypt hash stored in place of the plaintext password.
+     * @description Bcrypt hash stored in place of the plaintext password. Optional for OAuth.
      */
     passwordHash: {
       type:     String,
-      required: [true, 'Password is required'],
+      required: false,
+    },
+
+    /**
+     * provider
+     * @description Identity provider used for login (e.g. 'local', 'google', 'github').
+     */
+    provider: {
+      type:    String,
+      default: 'local',
+    },
+
+    /**
+     * providerId
+     * @description Unique ID returned by the identity provider for OAuth users.
+     */
+    providerId: {
+      type: String,
     },
 
     /**
@@ -137,8 +166,8 @@ const UserSchema = new Schema<IUser>(
  * This ensures the raw password is never persisted to the database.
  */
 UserSchema.pre('save', async function (next) {
-  // Only re-hash if the passwordHash field was modified (e.g., on registration or password change).
-  if (!this.isModified('passwordHash')) return next();
+  // Only re-hash if the passwordHash field was modified and exists.
+  if (!this.isModified('passwordHash') || !this.passwordHash) return next();
 
   const salt = await bcrypt.genSalt(12);
   this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
@@ -152,6 +181,7 @@ UserSchema.pre('save', async function (next) {
  * @returns {Promise<boolean>} True if the password is correct.
  */
 UserSchema.methods.comparePassword = function (candidate: string): Promise<boolean> {
+  if (!this.passwordHash) return Promise.resolve(false);
   return bcrypt.compare(candidate, this.passwordHash);
 };
 

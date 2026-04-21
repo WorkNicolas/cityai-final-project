@@ -54,6 +54,7 @@ export function RegisterForm() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [register, { loading }] = useMutation(REGISTER_MUTATION, {
+    context: { service: 'auth' },
     onCompleted: (data) => {
       console.log('Registration successful:', data.register.user);
       window.location.href = '/';

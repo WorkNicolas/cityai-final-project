@@ -41,7 +41,7 @@ const COOKIE_SECURE  = process.env.COOKIE_SECURE  === 'true';
  * @param {string} role   - The user's assigned role.
  * @returns {string} A signed JWT string.
  */
-function signToken(userId: string, role: string): string {
+export function signToken(userId: string, role: string): string {
   return jwt.sign({ sub: userId, role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN } as jwt.SignOptions);
 }
 
@@ -53,7 +53,7 @@ function signToken(userId: string, role: string): string {
  * @param {string} token - The signed JWT to store.
  * @returns {void}
  */
-function setCookieOnResponse(res: any, token: string): void {
+export function setCookieOnResponse(res: any, token: string): void {
   res.cookie('token', token, {
     httpOnly: true,
     secure:   COOKIE_SECURE,

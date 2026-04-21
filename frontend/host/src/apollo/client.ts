@@ -22,6 +22,7 @@ import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from '@apollo
  */
 const httpLinkAuth = createHttpLink({
   uri: '/api/auth',
+  credentials: 'include',
 });
 
 /**
@@ -29,6 +30,7 @@ const httpLinkAuth = createHttpLink({
  */
 const httpLinkIssues = createHttpLink({
   uri: '/api/issues',
+  credentials: 'include',
 });
 
 /**
@@ -36,7 +38,24 @@ const httpLinkIssues = createHttpLink({
  */
 const httpLinkAnalytics = createHttpLink({
   uri: '/api/analytics',
+  credentials: 'include',
 });
+
+/**
+ * directionalLink
+ * @description Routes requests to the correct microservice based on context.
+ */
+const analyticsSplit = ApolloLink.split(
+  (operation) => operation.getContext().service === 'analytics',
+  httpLinkAnalytics,
+  httpLinkIssues
+);
+
+const directionalLink = ApolloLink.split(
+  (operation) => operation.getContext().service === 'auth',
+  httpLinkAuth,
+  analyticsSplit
+);
 
 /**
  * client
@@ -46,9 +65,7 @@ const httpLinkAnalytics = createHttpLink({
  * Here we'll export the primary client and helper for specific services.
  */
 export const client = new ApolloClient({
-  // Note: For multi-service, a directional link or separate hooks are often used.
-  // Here we'll default the primary client to the issues service.
-  link: httpLinkIssues,
+  link: directionalLink,
   cache: new InMemoryCache(),
 });
 

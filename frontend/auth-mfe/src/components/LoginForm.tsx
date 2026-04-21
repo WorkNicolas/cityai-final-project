@@ -51,6 +51,7 @@ export function LoginForm() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    context: { service: 'auth' },
     onCompleted: (data) => {
       console.log('Login successful:', data.login.user);
       // Redirect or update global state as needed.

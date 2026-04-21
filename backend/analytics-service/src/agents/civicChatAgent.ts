@@ -31,7 +31,7 @@ import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import mongoose from 'mongoose';
 
 const llm = new ChatGoogleGenerativeAI({
-  model:       'gemini-1.5-flash',
+  model:       'gemini-3-flash-preview',
   apiKey:      process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
   temperature: 0.3,
 });
