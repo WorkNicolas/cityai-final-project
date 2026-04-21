@@ -20,6 +20,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import ReactMarkdown from 'react-markdown';
 
 /**
  * CHAT_MUTATION
@@ -113,8 +114,8 @@ export function Chatbot() {
           <div className="chatbot-history">
             {history.map((msg) => (
               <div key={msg.id} className={`message-bubble ${msg.role}`}>
-                <div className="bubble-inner">
-                  {msg.content}
+                <div className="bubble-inner markdown-body">
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
               </div>
             ))}
@@ -211,8 +212,12 @@ export function Chatbot() {
           border-radius: 1rem;
           font-size: 0.875rem;
           line-height: 1.4;
-          white-space: pre-wrap;
         }
+        .markdown-body p { margin: 0 0 0.5rem 0; }
+        .markdown-body p:last-child { margin: 0; }
+        .markdown-body ul, .markdown-body ol { margin: 0 0 0.5rem 1.5rem; padding: 0; }
+        .markdown-body li { margin-bottom: 0.25rem; }
+        .markdown-body strong { font-weight: 700; }
         .assistant .bubble-inner { background: var(--color-surface); color: var(--color-text-primary); border: 1px solid var(--color-divider); border-bottom-left-radius: 0.25rem; }
         .user .bubble-inner { background: var(--color-primary); color: white; border-bottom-right-radius: 0.25rem; }
         .chatbot-input { padding: 1rem; border-top: 1px solid var(--color-divider); background: var(--color-surface); display: flex; gap: 0.75rem; }

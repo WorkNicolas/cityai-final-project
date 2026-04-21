@@ -1,11 +1,11 @@
 /** frontend/issue-mfe/src/components/IssueMap.tsx
  * @file IssueMap.tsx
  * @description Provides an interactive map for selecting or displaying civic issue locations.
- * Uses a simplified UI for the project demonstration.
+ * Uses react-leaflet and OpenStreetMap.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
- * @updated 2026-04-20 - Initial implementation.
- * @version 0.1.0
+ * @updated 2026-04-20 - Upgraded to real interactive map.
+ * @version 0.2.0
  */
 
 /**
@@ -14,11 +14,23 @@
  * - Types
  *   - IssueMapProps
  * - Components
+ *   - LocationMarker
  *   - IssueMap
  * - Exports
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default marker icons in Leaflet with React
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 /**
  * IssueMapProps
@@ -34,92 +46,121 @@ interface IssueMapProps {
 }
 
 /**
+ * LocationMarker
+ * @description Inner component to handle map clicks and marker placement.
+ */
+function LocationMarker({ 
+  position, 
+  setPosition, 
+  readOnly,
+  onLocationSelect 
+}: { 
+  position: L.LatLng | null, 
+  setPosition: (pos: L.LatLng) => void,
+  readOnly?: boolean,
+  onLocationSelect?: (coords: [number, number], address: string) => void
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (position) {
+      map.flyTo(position, map.getZoom());
+    }
+  }, [position, map]);
+
+  useMapEvents({
+    click(e) {
+      if (readOnly) return;
+      setPosition(e.latlng);
+      
+      // Basic reverse geocoding placeholder (in a real app, use an API like Nominatim)
+      const fakeAddress = `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;
+      if (onLocationSelect) {
+        onLocationSelect([e.latlng.lng, e.latlng.lat], fakeAddress);
+      }
+    },
+  });
+
+  return position === null ? null : (
+    <Marker position={position}></Marker>
+  );
+}
+
+/**
  * IssueMap
- * @description Renders a placeholder map interface for the civic issue tracker.
+ * @description Renders an interactive map using react-leaflet.
  * @param {IssueMapProps} props - Component props.
  * @returns The rendered map component.
  */
 export function IssueMap({ initialCoords, readOnly, onLocationSelect }: IssueMapProps) {
-  const [coords, setCoords] = useState<[number, number] | null>(initialCoords || null);
+  // Convert [lng, lat] to Leaflet's [lat, lng]
+  const defaultCenter = initialCoords 
+    ? new L.LatLng(initialCoords[1], initialCoords[0]) 
+    : new L.LatLng(43.6532, -79.3832); // Default to Toronto
 
-  const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (readOnly) return;
-
-    // Simulate getting coordinates from a click
-    const newCoords: [number, number] = [-79.3832, 43.6532]; // Example: Toronto
-    setCoords(newCoords);
-    
-    if (onLocationSelect) {
-      onLocationSelect(newCoords, "100 Queen St W, Toronto, ON");
-    }
-  };
+  const [position, setPosition] = useState<L.LatLng | null>(
+    initialCoords ? new L.LatLng(initialCoords[1], initialCoords[0]) : null
+  );
 
   return (
-    <div className={`issue-map-container ${readOnly ? 'readonly' : ''}`} onClick={handleMapClick}>
-      <div className="map-placeholder">
-        <div className="map-grid"></div>
-        
-        {coords && (
-          <div className="map-marker">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="var(--color-danger)">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-              <circle cx="12" cy="9" r="2.5" fill="white"/>
-            </svg>
-          </div>
-        )}
+    <div className={`issue-map-container ${readOnly ? 'readonly' : ''}`}>
+      <MapContainer 
+        center={defaultCenter} 
+        zoom={13} 
+        scrollWheelZoom={!readOnly}
+        style={{ height: '100%', width: '100%', zIndex: 1 }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <LocationMarker 
+          position={position} 
+          setPosition={setPosition} 
+          readOnly={readOnly}
+          onLocationSelect={onLocationSelect} 
+        />
+      </MapContainer>
 
-        <div className="map-overlay">
-          {readOnly ? (
-            <span>Location: {coords ? `${coords[1].toFixed(4)}, ${coords[0].toFixed(4)}` : 'Not set'}</span>
-          ) : (
-            <span>Click on the map to set issue location</span>
-          )}
-        </div>
+      <div className="map-overlay">
+        {readOnly ? (
+          <span>Location: {position ? `${position.lat.toFixed(4)}, ${position.lng.toFixed(4)}` : 'Not set'}</span>
+        ) : (
+          <span>Click on the map to set issue location</span>
+        )}
       </div>
 
       <style>{`
         .issue-map-container {
           width: 100%;
-          height: 250px;
+          height: 300px;
           border-radius: 0.5rem;
           background-color: var(--color-surface-alt);
           position: relative;
-          cursor: crosshair;
           border: 1px solid var(--color-divider);
           overflow: hidden;
         }
         .issue-map-container.readonly {
+          pointer-events: none; /* Disable all interactions if readonly */
+        }
+        .issue-map-container.readonly .leaflet-container {
           cursor: default;
-        }
-        .map-placeholder {
-          width: 100%;
-          height: 100%;
-          position: relative;
-          background-image: 
-            linear-gradient(var(--color-divider) 1px, transparent 1px),
-            linear-gradient(90deg, var(--color-divider) 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
-        .map-marker {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -100%);
-          filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
         .map-overlay {
           position: absolute;
           bottom: 1rem;
           left: 1rem;
           right: 1rem;
-          background: rgba(var(--color-surface), 0.9);
+          background: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(4px);
           padding: 0.5rem 1rem;
           border-radius: 0.25rem;
           font-size: 0.75rem;
-          color: var(--color-text-primary);
+          color: #333;
           text-align: center;
           border: 1px solid var(--color-divider);
+          z-index: 1000; /* Above the leaflet map */
+          pointer-events: none; /* Let clicks pass through to map */
         }
       `}</style>
     </div>
