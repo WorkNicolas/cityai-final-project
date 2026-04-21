@@ -13,7 +13,6 @@
  * - Imports
  * - Helpers
  *   - requireAuth
- *   - requireRole
  * - Resolvers
  *   - Query
  *     - trends
@@ -36,19 +35,6 @@ function requireAuth(context: any): void {
   if (!context.user) {
     throw new GraphQLError('You must be logged in.', {
       extensions: { code: 'UNAUTHENTICATED' },
-    });
-  }
-}
-
-/**
- * requireRole
- * @description Throws a GraphQL FORBIDDEN error if the user does not hold the required role.
- */
-function requireRole(context: any, role: string): void {
-  requireAuth(context);
-  if (context.user.role !== role) {
-    throw new GraphQLError(`This action requires the '${role}' role.`, {
-      extensions: { code: 'FORBIDDEN' },
     });
   }
 }
