@@ -1,6 +1,6 @@
 /** frontend/analytics-mfe/src/components/Heatmap.tsx
  * @file Heatmap.tsx
- * @description Geographic visualization of civic issue density.
+ * @description Geographic visualization of municipal issue density.
  * Renders an abstract heatmap view for the municipal staff dashboard.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

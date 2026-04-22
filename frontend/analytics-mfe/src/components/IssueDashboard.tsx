@@ -34,7 +34,7 @@ export function IssueDashboard() {
       <header className="dashboard-header">
         <div className="header-text">
           <h2>Municipal Operations</h2>
-          <p>Real-time civic issue analytics and management</p>
+          <p>Real-time municipal issue analytics and management</p>
         </div>
         <ThemeToggle />
       </header>

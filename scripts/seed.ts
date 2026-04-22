@@ -13,7 +13,7 @@ import bcrypt from 'bcryptjs';
 
 const MONGO_AUTH      = 'mongodb://localhost:27017/cityai-auth';
 const MONGO_ISSUES    = 'mongodb://localhost:27017/cityai-issues';
-const MONGO_ANALYTICS = 'mongodb://localhost:27017/civicase-analytics';
+const MONGO_ANALYTICS = 'mongodb://localhost:27017/cityai_analytics';
 
 /**
  * seedUsers
@@ -61,7 +61,7 @@ async function seedIssues(residentId: string) {
     { title: 'Broken Lamp',   category: 'streetlight', status: 'in-progress', location: '45 King St', coords: [-79.3732, 43.6432] },
     { title: 'Blocked Drain', category: 'flooding', status: 'resolved', location: '88 Bay St', coords: [-79.3802, 43.6502] },
     { title: 'Graffiti Tag',  category: 'graffiti', status: 'open', location: '200 Spadina Ave', coords: [-79.3982, 43.6482] },
-    { title: 'Missing Sign',  category: 'safety_hazard', status: 'open', location: '50 Front St', coords: [-79.3782, 43.6452] },
+    { title: 'Missing Sign',  category: 'safety-hazard', status: 'open', location: '50 Front St', coords: [-79.3782, 43.6452] },
     { title: 'Street Flood',  category: 'flooding', status: 'open', location: '10 Main St', coords: [-79.3852, 43.6552] },
     { title: 'Pothole Alert', category: 'pothole', status: 'open', location: '99 York St', coords: [-79.3812, 43.6512] },
   ];
@@ -77,11 +77,13 @@ async function seedIssues(residentId: string) {
 
     // Create snapshot for analytics
     await Snapshot.insertOne({
-      issueId: issue._id,
-      category: issue.category,
-      status: issue.status,
-      location: issue.location,
-      createdAt: new Date(),
+      issueId:     issue._id,
+      title:       data.title,
+      description: issue.description,
+      category:    issue.category,
+      status:      issue.status,
+      location:    issue.location,
+      createdAt:   new Date(),
     });
   }
 

@@ -1,5 +1,5 @@
 # DARK_MODE.md
-# CivicCase — Dark Mode Implementation
+# CityAI — Dark Mode Implementation
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.
 > Use `helmet` for HTTP security headers on all Express servers. Cross-origin
@@ -7,7 +7,7 @@
 
 ## Overview
 
-CivicCase implements dark mode using CSS custom properties (design tokens) defined in
+CityAI implements dark mode using CSS custom properties (design tokens) defined in
 `frontend/shared/design-tokens.css` and toggled via a React context. The app supports
 three modes: **System**, **Light**, and **Dark**, applied at the root `<html>` element
 using a `data-theme` attribute.
@@ -344,7 +344,7 @@ Tokens are named by **purpose**, not by appearance:
 - Contrast ratios meet WCAG 2.1 AA standards across both modes.
 - Status badge tokens are distinct and never rely on color alone (pair with text labels).
 
-### 4. Civic Status Colors
+### 4. Issue status colors
 
 Issue status badges use dedicated tokens to remain clearly distinguishable in both modes:
 

@@ -1,5 +1,5 @@
 # base_template.md
-# CivicCase — Project Base Template
+# CityAI — Project Base Template
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.
 > Use `helmet` for HTTP security headers on all Express servers. Cross-origin
@@ -8,7 +8,7 @@
 > If any endpoint requires direct external access, restrict allowed origins
 > manually in `helmet` configuration — never apply a wildcard `cors()` call.
 
-This document serves as the architectural and stylistic blueprint for the CivicCase project.
+This document serves as the architectural and stylistic blueprint for the CityAI project.
 Use this as a guide to understand how the project is structured, how to add new features,
 and how to maintain established coding standards.
 

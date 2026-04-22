@@ -24,7 +24,10 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-const JWT_SECRET = process.env.JWT_SECRET ?? '';
+const JWT_SECRET =
+  process.env.JWT_SECRET && process.env.JWT_SECRET.length > 0
+    ? process.env.JWT_SECRET
+    : 'dev-jwt-secret-change-me';
 
 /**
  * JwtPayload

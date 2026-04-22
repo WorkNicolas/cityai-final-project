@@ -1,8 +1,8 @@
-/** backend/analytics-service/src/agents/civicChatAgent.ts
- * @file civicChatAgent.ts
- * @description LangGraph agentic chatbot for CivicCase. Supports natural language
+/** backend/analytics-service/src/agents/cityAiChatAgent.ts
+ * @file cityAiChatAgent.ts
+ * @description LangGraph agentic chatbot for CityAI. Supports natural language
  * queries about open issues, resolved issues, trends, safety alerts, and
- * general civic Q&A. Built with LangGraph StateGraph and Gemini as the LLM.
+ * general municipal Q&A. Built with LangGraph StateGraph and Gemini as the LLM.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.
@@ -19,9 +19,9 @@
  *   - fetchIssueContext
  *   - generateResponse
  * - Graph Definition
- *   - civicChatGraph
+ *   - cityAiChatGraph
  * - Exported Functions
- *   - runCivicChat
+ *   - runCityAiChat
  * - Exports
  */
 
@@ -76,7 +76,7 @@ interface AgentState {
  */
 async function classifyIntent(state: AgentState): Promise<Partial<AgentState>> {
   const prompt = `
-Classify this civic issue query into exactly one intent:
+Classify this municipal issue query into exactly one intent:
 open_issues, resolved_issues, trends, safety_alert, general
 
 Query: "${state.userMessage}"
@@ -109,7 +109,12 @@ async function fetchIssueContext(state: AgentState): Promise<Partial<AgentState>
       .toArray();
 
     context = issues.length > 0
-      ? issues.map((i) => `• ${i.title} (${i.category}) — ${i.location}`).join('\n')
+      ? issues
+        .map((i) => {
+          const title = (i as { title?: string }).title ?? (i as { location?: string }).location ?? 'Issue';
+          return `• ${title} (${(i as { category?: string }).category ?? 'other'}) — ${(i as { location?: string }).location ?? ''}`;
+        })
+        .join('\n')
       : 'No open issues found.';
 
   } else if (state.intent === 'resolved_issues') {
@@ -120,7 +125,12 @@ async function fetchIssueContext(state: AgentState): Promise<Partial<AgentState>
       .toArray();
 
     context = issues.length > 0
-      ? issues.map((i) => `• ${i.title} (${i.category}) — resolved`).join('\n')
+      ? issues
+        .map((i) => {
+          const title = (i as { title?: string }).title ?? (i as { location?: string }).location ?? 'Issue';
+          return `• ${title} (${(i as { category?: string }).category ?? 'other'}) — resolved`;
+        })
+        .join('\n')
       : 'No recently resolved issues found.';
 
   } else if (state.intent === 'trends' || state.intent === 'safety_alert') {
@@ -154,8 +164,8 @@ async function fetchIssueContext(state: AgentState): Promise<Partial<AgentState>
  */
 async function generateResponse(state: AgentState): Promise<Partial<AgentState>> {
   const systemPrompt = `
-You are CivicBot, a helpful assistant for the CivicCase municipal issue tracking system
-serving a Canadian city. You help residents and staff understand reported civic issues,
+You are the CityAI assistant for the CityAI municipal issue tracking system
+serving a Canadian city. You help residents and staff understand reported issues,
 trends, and safety concerns. Be concise, factual, and friendly.
   `.trim();
 
@@ -177,11 +187,11 @@ Provide a helpful, concise response based on this data.
 }
 
 /**
- * civicChatGraph
- * @description The compiled LangGraph StateGraph for the CivicCase chatbot.
+ * cityAiChatGraph
+ * @description The compiled LangGraph StateGraph for the CityAI chatbot.
  * Flow: classifyIntent → fetchIssueContext → generateResponse → END
  */
-const civicChatGraph = new StateGraph<AgentState>({
+const cityAiChatGraph = new StateGraph<AgentState>({
   channels: {
     userMessage: { value: (a: string, b: string) => b ?? a, default: () => '' },
     intent:      { value: (a: string, b: string) => b ?? a, default: () => '' },
@@ -199,13 +209,13 @@ const civicChatGraph = new StateGraph<AgentState>({
   .compile();
 
 /**
- * runCivicChat
+ * runCityAiChat
  * @description Public entry point for the chatbot. Invokes the LangGraph agent
  * with the user's message and returns the final response string.
  * @param {string} userMessage - The message sent by the resident or staff member.
  * @returns {Promise<string>} The agent's response text.
  */
-export async function runCivicChat(userMessage: string): Promise<string> {
-  const result = await civicChatGraph.invoke({ userMessage });
+export async function runCityAiChat(userMessage: string): Promise<string> {
+  const result = await cityAiChatGraph.invoke({ userMessage });
   return result.response;
 }

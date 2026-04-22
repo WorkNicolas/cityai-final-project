@@ -1,5 +1,5 @@
 # UI.md
-# CivicCase — UI Components Index
+# CityAI — UI Components Index
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.
 > Use `helmet` for HTTP security headers on all Express servers. Cross-origin
@@ -42,7 +42,7 @@ JWT is set as an HTTP-only cookie by `auth-service` on successful login.
 
 ## 3. Issue Reporting & Tracking MFE (`frontend/issue-mfe/`)
 
-Allows residents to submit civic issues with geotag and photo,
+Allows residents to submit municipal issues with geotag and photo,
 and track the status of their reports in real time.
 
 | Component              | Path                                                        |

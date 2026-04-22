@@ -63,9 +63,42 @@ function requireRole(context: any, role: string): void {
   }
 }
 
+/**
+ * requireStaffOrInternal
+ * @description Staff role, or a valid analytics-service internal token (see authContext).
+ */
+function requireStaffOrInternal(context: any): void {
+  if (context.internal) return;
+  requireRole(context, 'staff');
+}
+
+function idString(parent: { _id?: unknown; id?: unknown }): string {
+  const v = parent._id ?? parent.id;
+  if (v && typeof (v as { toString?: () => string }).toString === 'function') {
+    return String((v as { toString: () => string }).toString());
+  }
+  return String(v ?? '');
+}
+
 const DEFAULT_LIMIT = 20;
 
 export const resolvers = {
+  Issue: {
+    id:          (parent: { _id?: unknown; id?: unknown }) => idString(parent),
+    createdAt:   (parent: { createdAt?: Date | string }) =>
+      typeof parent.createdAt === 'string'
+        ? parent.createdAt
+        : parent.createdAt?.toISOString?.() ?? '',
+    updatedAt:   (parent: { updatedAt?: Date | string }) =>
+      typeof parent.updatedAt === 'string'
+        ? parent.updatedAt
+        : parent.updatedAt?.toISOString?.() ?? '',
+    status:      (parent: { status?: string }) =>
+      (parent.status ?? '').replace(/-/g, '_'),
+    category:    (parent: { category?: string }) =>
+      (parent.category ?? '').replace(/-/g, '_'),
+  },
+
   Query: {
     /**
      * QUERY issue
@@ -100,8 +133,8 @@ export const resolvers = {
       const { status, category, limit = DEFAULT_LIMIT, offset = 0 } = args;
 
       const filter: Record<string, unknown> = {};
-      if (status)   filter.status   = status.replace('_', '-');
-      if (category) filter.category = category.replace('_', '-');
+      if (status)   filter.status   = status.replace(/_/g, '-');
+      if (category) filter.category = category.replace(/_/g, '-');
 
       const [items, total] = await Promise.all([
         Issue.find(filter).sort({ createdAt: -1 }).skip(offset).limit(limit).lean(),
@@ -132,7 +165,7 @@ export const resolvers = {
   Mutation: {
     /**
      * MUTATION createIssue
-     * @description Submits a new civic issue. Requires resident authentication.
+     * @description Submits a new municipal issue. Requires resident authentication.
      * Category defaults to 'other' until the analytics-service classifies it.
      * @param {unknown} _ - Unused parent resolver value.
      * @param {object} args - Issue fields from the resident submission form.
@@ -168,7 +201,7 @@ export const resolvers = {
     updateIssueStatus: async (_: unknown, { id, status }: any, context: any) => {
       requireRole(context, 'staff');
 
-      const normalizedStatus = status.replace('_', '-');
+      const normalizedStatus = status.replace(/_/g, '-');
       const issue = await Issue.findByIdAndUpdate(
         id,
         { status: normalizedStatus },
@@ -256,9 +289,9 @@ export const resolvers = {
      * @throws {GraphQLError} If the issue is not found.
      */
     setAiFields: async (_: unknown, { id, category, aiSummary }: any, context: any) => {
-      requireRole(context, 'staff');
+      requireStaffOrInternal(context);
 
-      const normalizedCategory = category.replace('_', '-');
+      const normalizedCategory = category.replace(/_/g, '-');
       const issue = await Issue.findByIdAndUpdate(
         id,
         { category: normalizedCategory, aiSummary },

@@ -27,6 +27,17 @@ const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID ?? 'mock-github-client-id'
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET ?? 'mock-github-client-secret';
 
 /**
+ * PUBLIC_BASE_URL
+ * @description Public origin where the user accesses the host (Vite) app.
+ * Used to build absolute OAuth callback URLs so cookies are set on the host origin.
+ *
+ * Important: With Vite proxy `changeOrigin: true`, auth-service sees Host=localhost:4001.
+ * If Passport callbackURL is relative, the provider will redirect to :4001, and the JWT
+ * cookie will be set for the wrong origin (breaking calls to other services via the host).
+ */
+const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL ?? process.env.FRONTEND_URL ?? 'http://localhost:3000';
+
+/**
  * handleOAuthCallback
  * @description Common handler for finding or creating a user from an OAuth provider.
  * @param {string} provider - The identity provider (e.g., 'google', 'github').
@@ -89,7 +100,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: '/api/auth/oauth/google/callback',
+      callbackURL: `${PUBLIC_BASE_URL}/api/auth/oauth/google/callback`,
       // In production, use true if behind a proxy
       passReqToCallback: false,
     },
@@ -109,7 +120,7 @@ passport.use(
     {
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL: '/api/auth/oauth/github/callback',
+      callbackURL: `${PUBLIC_BASE_URL}/api/auth/oauth/github/callback`,
     },
     async (accessToken: string, refreshToken: string, profile: GitHubProfile, done: any) => {
       try {

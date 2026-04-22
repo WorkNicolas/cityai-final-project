@@ -1,6 +1,6 @@
 /** frontend/auth-mfe/src/components/OAuthButtons.tsx
  * @file OAuthButtons.tsx
- * @description Provides Google and GitHub OAuth sign-in buttons for the CivicCase platform.
+ * @description Provides Google and GitHub OAuth sign-in buttons for the CityAI platform.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.

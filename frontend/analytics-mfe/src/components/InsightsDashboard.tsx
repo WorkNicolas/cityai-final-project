@@ -1,6 +1,6 @@
 /** frontend/analytics-mfe/src/components/InsightsDashboard.tsx
  * @file InsightsDashboard.tsx
- * @description Provides a high-level summary of AI-generated civic insights.
+ * @description Provides a high-level summary of AI-generated CityAI insights.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.

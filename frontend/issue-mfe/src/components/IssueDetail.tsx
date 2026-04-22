@@ -1,6 +1,6 @@
 /** frontend/issue-mfe/src/components/IssueDetail.tsx
  * @file IssueDetail.tsx
- * @description Provides a detailed view of a single civic issue.
+ * @description Provides a detailed view of a single municipal issue.
  * Displays title, AI summary, full description, photo, and status.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

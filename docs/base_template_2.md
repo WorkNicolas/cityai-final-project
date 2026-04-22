@@ -1,5 +1,5 @@
 # base_template_2.md
-# CivicCase — Microfrontend & Microservices Wiring Guide
+# CityAI — Microfrontend & Microservices Wiring Guide
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.
 > Use `helmet` for HTTP security headers on all Express servers. Cross-origin
@@ -10,7 +10,7 @@
 > (e.g., for cloud deployment), restrict allowed origins manually inside
 > `helmet` — never use a wildcard `cors()` call.
 
-This document explains how the CivicCase monorepo is wired together as a
+This document explains how the CityAI monorepo is wired together as a
 Microfrontend (MFE) and Microservice (MS) architecture using React, Node.js,
 GraphQL (Apollo), and Vite Module Federation.
 
@@ -62,7 +62,7 @@ root/
 │       │   │   ├── typeDefs.ts
 │       │   │   └── resolvers.ts
 │       │   ├── agents/
-│       │   │   └── civicChatAgent.ts  # LangGraph agent graph
+│       │   │   └── cityAiChatAgent.ts  # LangGraph agent graph
 │       │   ├── services/
 │       │   │   ├── geminiService.ts   # Gemini API calls
 │       │   │   └── trendService.ts    # Trend detection logic
@@ -204,7 +204,7 @@ const authLink = new ApolloClient({
 ### Phase 4 — AI Integration
 
 1. In `analytics-service`, implement `geminiService.ts` for classification and summarization calls.
-2. Define the LangGraph agent graph in `agents/civicChatAgent.ts` with nodes for Q&A, safety alerts, and trend lookup.
+2. Define the LangGraph agent graph in `agents/cityAiChatAgent.ts` with nodes for Q&A, safety alerts, and trend lookup.
 3. Expose agent interactions through GraphQL mutations in `analytics-service`.
 4. Connect `analytics-mfe` `Chatbot.tsx` to the `analytics` Apollo client endpoint.
 

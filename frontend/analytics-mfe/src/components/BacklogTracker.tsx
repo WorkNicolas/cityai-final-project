@@ -72,7 +72,7 @@ export function BacklogTracker() {
   return (
     <div className="backlog-container">
       <div className="backlog-header">
-        <h3>Civic Issue Backlog</h3>
+        <h3>CityAI Issue Backlog</h3>
         <div className="filter-row">
           <select onChange={(e) => setFilter({ ...filter, status: e.target.value as any })}>
             <option value="">All Statuses</option>

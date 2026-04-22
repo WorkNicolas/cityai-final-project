@@ -1,6 +1,6 @@
 /** frontend/issue-mfe/src/components/IssueStatusBadge.tsx
  * @file IssueStatusBadge.tsx
- * @description Reusable badge component that displays the lifecycle status of a civic issue.
+ * @description Reusable badge component that displays the lifecycle status of a municipal issue.
  * Maps status strings to theme-aware color tokens.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
@@ -23,7 +23,7 @@ import React from 'react';
 
 /**
  * IssueStatus
- * @description Valid status values for a civic issue.
+ * @description Valid status values for a municipal issue.
  */
 export type IssueStatus = 'open' | 'in-progress' | 'resolved' | 'closed';
 

@@ -1,6 +1,6 @@
 /** frontend/issue-mfe/src/components/IssueMap.tsx
  * @file IssueMap.tsx
- * @description Provides an interactive map for selecting or displaying civic issue locations.
+ * @description Provides an interactive map for selecting or displaying municipal issue locations.
  * Uses react-leaflet and OpenStreetMap.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

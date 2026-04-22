@@ -1,6 +1,6 @@
 /** frontend/analytics-mfe/src/components/Chatbot.tsx
  * @file Chatbot.tsx
- * @description Provides a rich interactive interface for the AI-powered CivicChat assistant.
+ * @description Provides a rich interactive interface for the AI-powered CityAI chat assistant.
  * Connects to the LangGraph + Gemini agent via the analytics-service.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
@@ -51,7 +51,7 @@ export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<ChatMessage[]>([
-    { id: '1', role: 'assistant', content: "Hello! I'm CivicBot, your AI municipal assistant. How can I help you today?" }
+    { id: '1', role: 'assistant', content: "Hello! I'm CityAI, your municipal assistant. How can I help you today?" }
   ]);
 
   const historyEndRef = useRef<HTMLDivElement>(null);
@@ -107,7 +107,7 @@ export function Chatbot() {
         <div className="chatbot-window">
           <header className="chatbot-header">
             <div className="status-dot"></div>
-            <h3>CivicBot Assistant</h3>
+            <h3>CityAI Assistant</h3>
             <button className="close-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">×</button>
           </header>
 

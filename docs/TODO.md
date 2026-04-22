@@ -52,7 +52,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 - [x] `backend/analytics-service/src/services/geminiService.ts` — Gemini API
 - [x] `backend/analytics-service/src/services/trendService.ts` — Trend detection
-- [x] `backend/analytics-service/src/agents/civicChatAgent.ts` — LangGraph agent
+- [x] `backend/analytics-service/src/agents/cityAiChatAgent.ts` — LangGraph agent
 - [x] `backend/analytics-service/src/graphql/typeDefs.ts`
 - [x] `backend/analytics-service/src/graphql/resolvers.ts`
 - [x] `backend/analytics-service/src/middleware/authContext.ts`

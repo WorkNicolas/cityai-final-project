@@ -1,6 +1,6 @@
 /** backend/issue-service/src/models/Issue.ts
  * @file Issue.ts
- * @description Mongoose schema and model for civic issue reports.
+ * @description Mongoose schema and model for municipal issue reports.
  * Stores all resident-submitted issues including geolocation, photo URL,
  * AI-assigned category, and lifecycle status.
  * @author Carl Nicolas Mendoza

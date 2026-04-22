@@ -1,6 +1,6 @@
 /** frontend/analytics-mfe/src/components/TrendChart.tsx
  * @file TrendChart.tsx
- * @description Visualizes AI-detected civic issue trends using the analytics-service.
+ * @description Visualizes AI-detected municipal issue trends using the analytics-service.
  * Displays a bar chart of issue volume by category.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

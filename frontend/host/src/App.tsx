@@ -17,7 +17,7 @@
  */
 
 import React, { Suspense, lazy } from 'react';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, gql, useQuery, useMutation } from '@apollo/client';
 import { client } from './apollo/client';
 import { ThemeProvider } from './context/ThemeContext';
 import './App.css';
@@ -36,12 +36,69 @@ const Chatbot  = lazy(() => import('analytics/Chatbot'));
 // @ts-ignore
 const IssueDashboard = lazy(() => import('analytics/IssueDashboard'));
 
+const ME_QUERY = gql`
+  query Me {
+    me {
+      id
+      email
+      name
+      role
+    }
+  }
+`;
+
+const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout
+  }
+`;
+
+function authRedirectHref(destination: string): string {
+  const search = new URLSearchParams({ next: destination });
+  return `/login?${search.toString()}`;
+}
+
+function AuthGateMessage(props: { title: string; destination: string }) {
+  return (
+    <section className="centered-section">
+      <h2>{props.title}</h2>
+      <p>You need to sign in to continue.</p>
+      <div className="home-actions">
+        <a className="btn btn-primary" href={authRedirectHref(props.destination)}>
+          Sign In
+        </a>
+      </div>
+    </section>
+  );
+}
+
 /**
  * App
  * @description The root shell component.
  */
-function App() {
+function AppShell() {
   const path = window.location.pathname;
+
+  const { data, loading } = useQuery(ME_QUERY, {
+    context: { service: 'auth' },
+    fetchPolicy: 'network-only',
+  });
+
+  const [logout] = useMutation(LOGOUT_MUTATION, {
+    context: { service: 'auth' },
+  });
+
+  const me = data?.me ?? null;
+  const isAuthed = Boolean(me);
+  const isStaff = me?.role === 'staff';
+
+  const handleSignOut = async () => {
+    try {
+      await logout();
+    } finally {
+      window.location.href = '/';
+    }
+  };
 
   const renderContent = () => {
     if (path === '/login') {
@@ -59,9 +116,21 @@ function App() {
       );
     }
     if (path === '/dashboard') {
+      if (loading) return <div className="loading">Checking session...</div>;
+      if (!isAuthed) return <AuthGateMessage title="Staff Dashboard" destination="/dashboard" />;
+      if (!isStaff) {
+        return (
+          <section className="centered-section">
+            <h2>Staff Dashboard</h2>
+            <p>This area is only available to staff accounts.</p>
+          </section>
+        );
+      }
       return <IssueDashboard />;
     }
     if (path === '/report') {
+      if (loading) return <div className="loading">Checking session...</div>;
+      if (!isAuthed) return <AuthGateMessage title="Report an Issue" destination="/report" />;
       return (
         <section className="centered-section">
           <h2>Report an Issue</h2>
@@ -76,8 +145,17 @@ function App() {
           <h2>Welcome to CityAI</h2>
           <p>Your AI-powered municipal assistant.</p>
           <div className="home-actions">
-            <a href="/report" className="btn btn-primary">Report an Issue</a>
-            <a href="/dashboard" className="btn btn-secondary">Staff Dashboard</a>
+            <a
+              href={isAuthed ? '/report' : authRedirectHref('/report')}
+              className="btn btn-primary"
+            >
+              Report an Issue
+            </a>
+            {isStaff ? (
+              <a href="/dashboard" className="btn btn-secondary">
+                Staff Dashboard
+              </a>
+            ) : null}
           </div>
         </section>
       </div>
@@ -85,32 +163,57 @@ function App() {
   };
 
   return (
+    <div className="app-shell">
+      <header className="app-header">
+        <h1>CityAI</h1>
+        <nav>
+          <a href="/">Home</a>
+          <a href={isAuthed ? '/report' : authRedirectHref('/report')}>Report Issue</a>
+          {isStaff ? <a href="/dashboard">Staff Dashboard</a> : null}
+          {isAuthed ? (
+            <button
+              type="button"
+              onClick={handleSignOut}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                font: 'inherit',
+                fontWeight: 500,
+                padding: '0.5rem 0.75rem',
+                borderRadius: '0.375rem',
+                cursor: 'pointer',
+              }}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <a href="/login">Sign In</a>
+          )}
+        </nav>
+      </header>
+
+      <main className="app-content">
+        <Suspense fallback={<div className="loading">Loading module...</div>}>
+          {renderContent()}
+          <aside className="chat-sidebar">
+            <Chatbot />
+          </aside>
+        </Suspense>
+      </main>
+
+      <footer className="app-footer">
+        <p>&copy; 2026 Canadian Municipality CityAI Project</p>
+      </footer>
+    </div>
+  );
+}
+
+function App() {
+  return (
     <ApolloProvider client={client}>
       <ThemeProvider>
-        <div className="app-shell">
-          <header className="app-header">
-            <h1>CityAI (CivicCase)</h1>
-            <nav>
-              <a href="/">Home</a>
-              <a href="/report">Report Issue</a>
-              <a href="/dashboard">Staff Dashboard</a>
-              <a href="/login">Sign In</a>
-            </nav>
-          </header>
-
-          <main className="app-content">
-            <Suspense fallback={<div className="loading">Loading module...</div>}>
-              {renderContent()}
-              <aside className="chat-sidebar">
-                <Chatbot />
-              </aside>
-            </Suspense>
-          </main>
-
-          <footer className="app-footer">
-            <p>&copy; 2026 Canadian Municipality CivicCase Project</p>
-          </footer>
-        </div>
+        <AppShell />
       </ThemeProvider>
     </ApolloProvider>
   );

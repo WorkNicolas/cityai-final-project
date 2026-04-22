@@ -1,6 +1,6 @@
 /** frontend/issue-mfe/src/components/IssueForm.tsx
  * @file IssueForm.tsx
- * @description Multi-step form for reporting new civic issues.
+ * @description Multi-step form for reporting new municipal issues.
  * Integrates map location selection, photo upload, and Apollo mutations.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
@@ -32,8 +32,19 @@ const CREATE_ISSUE_MUTATION = gql`
     createIssue(title: $title, description: $description, location: $location, coordinates: $coordinates, photoUrl: $photoUrl) {
       id
       title
+      description
+      location
       status
       category
+    }
+  }
+`;
+
+const CLASSIFY_AND_SUMMARIZE_MUTATION = gql`
+  mutation ClassifyAndSummarize($issueId: ID!, $title: String!, $description: String!, $location: String!) {
+    classifyAndSummarize(issueId: $issueId, title: $title, description: $description, location: $location) {
+      category
+      aiSummary
     }
   }
 `;
@@ -53,11 +64,27 @@ export function IssueForm() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [classifyAndSummarize] = useMutation(CLASSIFY_AND_SUMMARIZE_MUTATION, {
+    context: { service: 'analytics' },
+  });
+
   const [createIssue, { loading, error }] = useMutation(CREATE_ISSUE_MUTATION, {
-    onCompleted: (data) => {
-      console.log('Issue created:', data.createIssue);
+    context: { service: 'issues' },
+    onCompleted: async (data) => {
+      const issue = data.createIssue;
+      try {
+        await classifyAndSummarize({
+          variables: {
+            issueId:     issue.id,
+            title:       issue.title,
+            description: issue.description,
+            location:    issue.location,
+          },
+        });
+      } catch (aiErr) {
+        console.warn('AI classification skipped or failed:', aiErr);
+      }
       setIsSuccess(true);
-      // In a real app, you might trigger an analytics classification call here
     },
   });
 

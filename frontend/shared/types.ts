@@ -30,7 +30,7 @@
 
 /**
  * UserRole
- * @description The three supported user roles in CivicCase.
+ * @description The three supported user roles in CityAI.
  * - resident: Can submit and track issues.
  * - staff: Can manage and update issues.
  * - advocate: Can monitor trends and support residents (optional role).
@@ -43,7 +43,7 @@ export enum UserRole {
   
   /**
    * IssueStatus
-   * @description Lifecycle states of a civic issue report.
+   * @description Lifecycle states of a municipal issue report.
    * - open: Newly submitted, not yet reviewed.
    * - inProgress: Assigned to municipal staff and being actioned.
    * - resolved: Issue has been fixed and confirmed.
@@ -58,7 +58,7 @@ export enum UserRole {
   
   /**
    * IssueCategory
-   * @description AI-assigned categories for civic issue classification.
+   * @description AI-assigned categories for municipal issue classification.
    * Used by the Gemini classification service in analytics-service.
    */
   export enum IssueCategory {
@@ -76,7 +76,7 @@ export enum UserRole {
   
   /**
    * User
-   * @description Represents an authenticated CivicCase user.
+   * @description Represents an authenticated CityAI user.
    * Returned by auth-service resolvers and stored in Apollo cache.
    */
   export interface User {
@@ -113,7 +113,7 @@ export enum UserRole {
   
   /**
    * Issue
-   * @description Represents a civic issue report submitted by a resident.
+   * @description Represents a municipal issue report submitted by a resident.
    */
   export interface Issue {
     /**

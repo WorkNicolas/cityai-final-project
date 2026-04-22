@@ -55,7 +55,7 @@ export async function classifyIssue(
   const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
   const prompt = `
-You are a civic issue classification assistant for a Canadian municipality.
+You are a municipal issue classification assistant for a Canadian municipality.
 Classify the following issue report into exactly one of these categories:
 pothole, streetlight, flooding, safety-hazard, graffiti, other
 
@@ -78,7 +78,7 @@ Description: ${description}
 
 /**
  * summarizeIssue
- * @description Generates a concise plain-language summary of a civic issue report.
+ * @description Generates a concise plain-language summary of a municipal issue report.
  * The summary is stored on the Issue document as aiSummary.
  * @param {string} title       - The issue title.
  * @param {string} description - The full issue description.
@@ -94,7 +94,7 @@ export async function summarizeIssue(
 
   const prompt = `
 You are a municipal issue tracking assistant. Write a concise 1–2 sentence summary
-of the following civic issue for a staff dashboard. Be factual and neutral in tone.
+of the following municipal issue for a staff dashboard. Be factual and neutral in tone.
 
 Title: ${title}
 Location: ${location}

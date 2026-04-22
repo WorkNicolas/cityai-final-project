@@ -1,6 +1,6 @@
-# CityAI (CivicCase) — Project Context & Instructions
+# CityAI — Project Context & Instructions
 
-This document provides foundational context and development mandates for the CityAI project (also referred to as CivicCase), an AI-powered local issue tracker designed for Canadian municipalities.
+This document provides foundational context and development mandates for the CityAI project, an AI-powered local issue tracker designed for Canadian municipalities.
 
 ---
 
@@ -11,7 +11,7 @@ CityAI is a monorepo managed with **pnpm workspaces**, utilizing a **Microservic
 ### Backend (Microservices)
 Located in `backend/`, these services use Node.js, Express, Apollo Server (GraphQL), and MongoDB (Mongoose).
 - **auth-service**: Handles user registration, login, and JWT issuance via HTTP-only cookies.
-- **issue-service**: Manages reporting, tracking, and status updates for civic issues.
+- **issue-service**: Manages reporting, tracking, and status updates for municipal issues.
 - **analytics-service**: Powers the AI features, including the LangGraph agent and trend detection.
 
 ### Frontend (Micro Frontends)
@@ -55,9 +55,9 @@ Strict adherence to `docs/comment_standards.md` is required. Every file MUST inc
 
 **Example Header:**
 ```typescript
-/** backend/analytics-service/src/agents/civicChatAgent.ts
- * @file civicChatAgent.ts
- * @description LangGraph agentic chatbot for CivicCase.
+/** backend/analytics-service/src/agents/cityAiChatAgent.ts
+ * @file cityAiChatAgent.ts
+ * @description LangGraph agentic chatbot for CityAI.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Initial implementation.

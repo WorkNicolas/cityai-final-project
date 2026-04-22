@@ -1,6 +1,6 @@
 /** frontend/issue-mfe/src/components/IssueList.tsx
  * @file IssueList.tsx
- * @description Renders a list of civic issues for the current user.
+ * @description Renders a list of municipal issues for the current user.
  * Includes status badges and community upvoting interaction.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

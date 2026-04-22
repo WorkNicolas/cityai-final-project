@@ -30,7 +30,10 @@ import { GraphQLError } from 'graphql';
 import { User } from '../models/User';
 
 /** JWT secret loaded from environment. Shared across all services. */
-const JWT_SECRET     = process.env.JWT_SECRET     ?? '';
+const JWT_SECRET =
+  process.env.JWT_SECRET && process.env.JWT_SECRET.length > 0
+    ? process.env.JWT_SECRET
+    : 'dev-jwt-secret-change-me';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? '7d';
 const COOKIE_SECURE  = process.env.COOKIE_SECURE  === 'true';
 
@@ -62,7 +65,23 @@ export function setCookieOnResponse(res: any, token: string): void {
   });
 }
 
+function idString(parent: { _id?: unknown; id?: unknown }): string {
+  const v = parent._id ?? parent.id;
+  if (v && typeof (v as { toString?: () => string }).toString === 'function') {
+    return String((v as { toString: () => string }).toString());
+  }
+  return String(v ?? '');
+}
+
 export const resolvers = {
+  User: {
+    id:        (parent: { _id?: unknown; id?: unknown }) => idString(parent),
+    createdAt: (parent: { createdAt?: Date | string }) =>
+      typeof parent.createdAt === 'string'
+        ? parent.createdAt
+        : parent.createdAt?.toISOString?.() ?? '',
+  },
+
   Query: {
     /**
      * QUERY me

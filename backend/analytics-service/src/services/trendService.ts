@@ -1,6 +1,6 @@
 /** backend/analytics-service/src/services/trendService.ts
  * @file trendService.ts
- * @description Detects clusters of similar civic issues over a rolling time window
+ * @description Detects clusters of similar municipal issues over a rolling time window
  * and generates AI-powered trend summaries using Gemini.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
@@ -106,7 +106,7 @@ export async function detectTrends(): Promise<TrendInsight[]> {
   for (const cluster of clusters) {
     const prompt = `
 You are a municipal analytics assistant. Write one plain-language sentence describing
-a trend where ${cluster.count} civic issues of type "${cluster._id}" have been reported
+a trend where ${cluster.count} municipal issues of type "${cluster._id}" have been reported
 in the past ${TREND_WINDOW_DAYS} days in a Canadian city. Be factual and actionable.
     `.trim();
 

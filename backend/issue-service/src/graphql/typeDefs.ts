@@ -32,7 +32,7 @@
 export const typeDefs = `
 
   """
-  IssueStatus — lifecycle states of a civic issue report.
+  IssueStatus — lifecycle states of a municipal issue report.
   """
   enum IssueStatus {
     open
@@ -42,7 +42,7 @@ export const typeDefs = `
   }
 
   """
-  IssueCategory — AI-assigned categories for civic issue classification.
+  IssueCategory — AI-assigned categories for municipal issue classification.
   """
   enum IssueCategory {
     pothole
@@ -54,7 +54,7 @@ export const typeDefs = `
   }
 
   """
-  Issue — a civic issue report submitted by a resident.
+  Issue — a municipal issue report submitted by a resident.
   """
   type Issue {
     id:          ID!
@@ -107,7 +107,7 @@ export const typeDefs = `
 
   type Mutation {
     """
-    createIssue — submits a new civic issue report. Requires resident authentication.
+    createIssue — submits a new municipal issue report. Requires resident authentication.
     The AI category and summary are populated asynchronously by analytics-service.
     """
     createIssue(

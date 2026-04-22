@@ -1,6 +1,6 @@
 /** frontend/issue-mfe/src/components/PhotoUpload.tsx
  * @file PhotoUpload.tsx
- * @description Provides a photo upload widget for civic issue reports.
+ * @description Provides a photo upload widget for municipal issue reports.
  * Includes image preview and file size validation.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

@@ -1,6 +1,6 @@
 /** frontend/auth-mfe/src/components/RegisterForm.tsx
  * @file RegisterForm.tsx
- * @description Registration form for new CivicCase accounts.
+ * @description Registration form for new CityAI accounts.
  * Allows users to choose their role (Resident, Staff, or Advocate).
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
@@ -53,11 +53,13 @@ export function RegisterForm() {
   });
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const next = new URLSearchParams(window.location.search).get('next') || '/';
+
   const [register, { loading }] = useMutation(REGISTER_MUTATION, {
     context: { service: 'auth' },
     onCompleted: (data) => {
       console.log('Registration successful:', data.register.user);
-      window.location.href = '/';
+      window.location.href = next;
     },
     onError: (error) => {
       setErrorMsg(error.message || 'An error occurred during registration.');

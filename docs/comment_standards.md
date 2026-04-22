@@ -1,5 +1,5 @@
 # comment_standards.md
-# CivicCase — Comment Standards
+# CityAI — Comment Standards
 
 > **Security Note:** Do not use the `cors` npm package directly in any microservice.
 > Instead, use `helmet` for HTTP security headers and rely on the **Vite proxy** in the
@@ -7,7 +7,7 @@
 > If an endpoint must be externally accessible, whitelist origins manually via
 > `helmet` configuration — never use a wildcard `cors()` middleware.
 
-This document defines the standardized comment format used throughout the CivicCase project.
+This document defines the standardized comment format used throughout the CityAI project.
 All JavaScript/TypeScript files (frontend and backend) must follow these conventions.
 
 ---
@@ -160,7 +160,7 @@ Every class must have a documentation block immediately before its declaration.
 ```js
 /**
  * IssueService
- * @description Service class that handles CRUD operations for civic issues in MongoDB.
+ * @description Service class that handles CRUD operations for municipal issues in MongoDB.
  * Interfaces with Mongoose and provides data to GraphQL resolvers.
  */
 class IssueService {
@@ -200,7 +200,7 @@ Every method and function must be documented.
 ```js
 /**
  * createIssue
- * @description GraphQL mutation resolver that creates a new civic issue report,
+ * @description GraphQL mutation resolver that creates a new municipal issue report,
  * runs AI categorization via Gemini, and stores the result in MongoDB.
  * @param {Object} _ - Unused parent resolver value.
  * @param {Object} args - Mutation arguments.
@@ -221,7 +221,7 @@ async function createIssue(_, args, context) {
 ```js
 /**
  * IssueCard
- * @description Renders a summary card for a single civic issue including
+ * @description Renders a summary card for a single municipal issue including
  * its status badge, category, and submission date.
  * @param {IssueCardProps} props - Component props.
  * @param {string} props.title - Issue title.
@@ -289,7 +289,7 @@ Document enums with descriptions for the enum and each value.
 ```js
 /**
  * IssueStatus
- * @description Enum representing the lifecycle states of a civic issue report.
+ * @description Enum representing the lifecycle states of a municipal issue report.
  * - open: Newly submitted, not yet reviewed by staff.
  * - inProgress: Assigned to municipal staff and being actioned.
  * - resolved: Issue has been fixed and confirmed.
@@ -325,7 +325,7 @@ Document GraphQL type definitions and resolvers with their operation type, argum
 ```js
 /**
  * QUERY listIssues
- * @description Returns a paginated list of civic issues, optionally filtered by status or category.
+ * @description Returns a paginated list of municipal issues, optionally filtered by status or category.
  * @param {string} [args.status] - Optional status filter.
  * @param {string} [args.category] - Optional AI category filter.
  * @param {number} [args.limit] - Maximum number of results (default: 20).
@@ -444,7 +444,7 @@ const resolvers = {
   Mutation: {
     /**
      * createIssue
-     * @description Creates a new civic issue and triggers Gemini AI categorization.
+     * @description Creates a new municipal issue and triggers Gemini AI categorization.
      * @param {Object} _ - Unused parent resolver value.
      * @param {Object} args - Mutation arguments.
      * @param {string} args.title - Issue title.
@@ -468,7 +468,7 @@ export default resolvers;
 ```tsx
 /** frontend/issue-mfe/src/components/IssueCard.tsx
  * @file IssueCard.tsx
- * @description Reusable card component that displays a summary of a civic issue report.
+ * @description Reusable card component that displays a summary of a municipal issue report.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
  * @updated 2026-04-20 - Added AI category badge.
@@ -494,7 +494,7 @@ import React from 'react';
 interface IssueCardProps {
   /**
    * title
-   * @description The title of the civic issue.
+   * @description The title of the municipal issue.
    */
   title: string;
 
@@ -513,7 +513,7 @@ interface IssueCardProps {
 
 /**
  * IssueCard
- * @description Renders a summary card for a single civic issue including
+ * @description Renders a summary card for a single municipal issue including
  * its status badge, category, and title.
  * @param {IssueCardProps} props - Component props.
  * @returns {JSX.Element} The rendered issue card.
@@ -562,4 +562,4 @@ Include the full monorepo-relative path in the first line:
 
 ---
 
-*These standards apply to all code in the CivicCase project. All new files must follow this format.*
+*These standards apply to all code in the CityAI project. All new files must follow this format.*

@@ -22,10 +22,12 @@
  * - Exports
  */
 
+import mongoose from 'mongoose';
 import { GraphQLError } from 'graphql';
-import { runCivicChat } from '../agents/civicChatAgent';
+import { runCityAiChat } from '../agents/cityAiChatAgent';
 import { detectTrends } from '../services/trendService';
 import { classifyIssue, summarizeIssue } from '../services/geminiService';
+import { pushAiFieldsToIssueService } from '../services/issueWriteback';
 
 /**
  * requireAuth
@@ -60,11 +62,11 @@ export const resolvers = {
   Mutation: {
     /**
      * MUTATION chat
-     * @description Invokes the LangGraph + Gemini civic chatbot.
+     * @description Invokes the LangGraph + Gemini CityAI chatbot.
      */
     chat: async (_: unknown, { message }: { message: string }, context: any) => {
       requireAuth(context);
-      return runCivicChat(message);
+      return runCityAiChat(message);
     },
 
     /**
@@ -73,15 +75,39 @@ export const resolvers = {
      */
     classifyAndSummarize: async (
       _: unknown,
-      { title, description, location }: any,
+      { issueId, title, description, location }: { issueId?: string; title: string; description: string; location: string },
       context: any
     ) => {
       requireAuth(context);
-      
+
       const [category, aiSummary] = await Promise.all([
         classifyIssue(title, description),
         summarizeIssue(title, description, location),
       ]);
+
+      if (issueId && mongoose.Types.ObjectId.isValid(issueId)) {
+        try {
+          await pushAiFieldsToIssueService({ issueId, category, aiSummary });
+          if (mongoose.connection.readyState === 1) {
+            const snapshots = mongoose.connection.collection('issuesnapshots');
+            await snapshots.replaceOne(
+              { issueId: new mongoose.Types.ObjectId(issueId) },
+              {
+                issueId:   new mongoose.Types.ObjectId(issueId),
+                title,
+                description,
+                location,
+                category,
+                status:    'open',
+                createdAt: new Date(),
+              },
+              { upsert: true }
+            );
+          }
+        } catch (err) {
+          console.error('classifyAndSummarize write-back:', err);
+        }
+      }
 
       return { category, aiSummary };
     },

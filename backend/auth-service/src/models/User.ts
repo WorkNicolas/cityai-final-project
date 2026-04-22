@@ -1,6 +1,6 @@
 /** backend/auth-service/src/models/User.ts
  * @file User.ts
- * @description Mongoose schema and model for CivicCase user accounts.
+ * @description Mongoose schema and model for CityAI user accounts.
  * Handles password hashing via a pre-save hook and stores the user role.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20

@@ -1,6 +1,6 @@
 /** frontend/auth-mfe/src/components/LoginForm.tsx
  * @file LoginForm.tsx
- * @description Authentication form for CivicCase residents and staff.
+ * @description Authentication form for CityAI residents and staff.
  * Uses Apollo useMutation to call the auth-service login resolver.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
@@ -50,12 +50,14 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const next = new URLSearchParams(window.location.search).get('next') || '/';
+
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     context: { service: 'auth' },
     onCompleted: (data) => {
       console.log('Login successful:', data.login.user);
       // Redirect or update global state as needed.
-      window.location.href = '/';
+      window.location.href = next;
     },
     onError: (error) => {
       setErrorMsg(error.message || 'An error occurred during login.');
@@ -71,7 +73,7 @@ export function LoginForm() {
   return (
     <div className="auth-card">
       <h2>Welcome Back</h2>
-      <p className="auth-subtitle">Sign in to your CivicCase account</p>
+      <p className="auth-subtitle">Sign in to your CityAI account</p>
 
       <form onSubmit={handleSubmit} className="auth-form">
         <div className="form-group">

@@ -27,7 +27,7 @@
 export const typeDefs = `
 
   """
-  UserRole — the three supported access levels in CivicCase.
+  UserRole — the three supported access levels in CityAI.
   """
   enum UserRole {
     resident
@@ -36,7 +36,7 @@ export const typeDefs = `
   }
 
   """
-  User — a registered CivicCase account.
+  User — a registered CityAI account.
   The passwordHash field is never exposed via GraphQL.
   """
   type User {

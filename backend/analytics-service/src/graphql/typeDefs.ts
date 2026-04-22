@@ -25,7 +25,7 @@
 export const typeDefs = `
 
   """
-  TrendInsight — an AI-detected cluster of related civic issues.
+  TrendInsight — an AI-detected cluster of related municipal issues.
   """
   type TrendInsight {
     category:   String!
@@ -52,7 +52,7 @@ export const typeDefs = `
 
   type Mutation {
     """
-    chat — sends a message to the LangGraph + Gemini civic chatbot and returns
+    chat — sends a message to the LangGraph + Gemini CityAI chatbot and returns
     the agent's response. Available to all authenticated users.
     """
     chat(message: String!): String!
