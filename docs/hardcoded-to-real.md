@@ -4,32 +4,32 @@ This document tracks the features in CityAI that have been migrated from static 
 
 ---
 
-## 🗺️ Analytics: Incident Heatmap
+## Analytics: Incident Heatmap
 - **Previous State:** Abstract CSS circles positioned with hardcoded percentages (`top: 30%, left: 40%`).
 - **Real Implementation:** 
   - Integrated `react-leaflet` and `leaflet.heat`.
   - Fetches live `coordinates` for all reports via the `issues` GraphQL query.
   - Renders dynamic density clustering based on actual MongoDB data.
-- **Status:** ✅ **REAL**
+- **Status:** REAL
 
 ---
 
-## 📈 Dashboard: Urgent Backlog
+## Dashboard: Urgent Backlog
 - **Previous State:** Static text showing "8 Issues".
 - **Real Implementation:** 
   - Uses Apollo `useQuery` to hit the `issue-service`.
   - Specifically filters for issues with `status: open` and `category: safety_hazard`.
   - Displays the live count from the `total` field in the paginated response.
-- **Status:** ✅ **REAL**
+- **Status:** REAL
 
 ---
 
-## ⏱️ Dashboard: Resolution Efficiency
+## Dashboard: Resolution Efficiency
 - **Previous State:** Static "+14%" value.
-- **Status:** 🚧 *Migration in Progress* (Implementing backend aggregation)
+- **Status:** (WIP) Migration in Progress (Implementing backend aggregation)
 
 ---
 
-## 🎭 Dashboard: Public Sentiment
+## Dashboard: Public Sentiment
 - **Previous State:** Static "Positive" value.
-- **Status:** 🚧 *Migration in Progress* (Integrating Gemini sentiment analysis)
+- **Status:** (WIP) Migration in Progress (Integrating Gemini sentiment analysis)

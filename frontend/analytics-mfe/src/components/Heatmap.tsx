@@ -31,8 +31,8 @@ import 'leaflet.heat';
  * @description Fetches coordinates of all issues to build the heatmap.
  */
 const GET_HEATMAP_DATA = gql`
-  query GetHeatmapData {
-    issues {
+  query GetHeatmapData($limit: Int) {
+    issues(limit: $limit) {
       items {
         id
         coordinates

@@ -109,6 +109,13 @@ export const resolvers = {
         : parent.createdAt?.toISOString?.() ?? '',
   },
 
+  Comment: {
+    createdAt: (parent: { createdAt?: Date | string }) =>
+      typeof parent.createdAt === 'string'
+        ? parent.createdAt
+        : parent.createdAt?.toISOString?.() ?? '',
+  },
+
   Query: {
     /**
      * QUERY issue
@@ -138,7 +145,12 @@ export const resolvers = {
      * @returns {Promise<PaginatedIssues>} Paginated result object.
      */
     issues: async (_: unknown, args: any, context: any) => {
-      requireRole(context, 'staff');
+      requireAuth(context);
+      if (context.user.role !== 'staff' && context.user.role !== 'advocate') {
+        throw new GraphQLError("This action requires the 'staff' or 'advocate' role.", {
+          extensions: { code: 'FORBIDDEN' },
+        });
+      }
 
       const { status, category, limit = DEFAULT_LIMIT, offset = 0 } = args;
 
@@ -221,6 +233,7 @@ export const resolvers = {
         status:     'open',
         category:   'other',
         upvotes:    0,
+        downvotes:  0,
       });
 
       return issue;
@@ -306,19 +319,78 @@ export const resolvers = {
     /**
      * MUTATION upvoteIssue
      * @description Increments the upvote count for an issue. Requires authentication.
-     * @param {unknown} _ - Unused parent resolver value.
-     * @param {object} args - Mutation arguments.
-     * @param {string} args.id - The issue document ID.
-     * @param {any} context - Apollo context with the authenticated user.
-     * @returns {Promise<IIssue>} The updated issue document.
-     * @throws {GraphQLError} If the issue is not found.
+     * Enforces one-vote-per-user rule.
      */
     upvoteIssue: async (_: unknown, { id }: any, context: any) => {
       requireAuth(context);
+      const userId = context.user.sub;
+
+      const existing = await Issue.findById(id);
+      if (!existing) throw new GraphQLError('Issue not found.', { extensions: { code: 'NOT_FOUND' } });
+
+      // If user already upvoted, do nothing (or we could treat as toggle)
+      if (existing.upvotedBy.includes(userId)) return existing;
+
+      const update: any = {
+        $addToSet: { upvotedBy: userId },
+        $inc: { upvotes: 1 }
+      };
+
+      // If they had downvoted before, remove it
+      if (existing.downvotedBy.includes(userId)) {
+        update.$pull = { downvotedBy: userId };
+        update.$inc.downvotes = -1;
+      }
+
+      return Issue.findByIdAndUpdate(id, update, { new: true }).lean();
+    },
+
+    /**
+     * MUTATION downvoteIssue
+     * @description Increments the downvote count for an issue. Requires authentication.
+     * Enforces one-vote-per-user rule.
+     */
+    downvoteIssue: async (_: unknown, { id }: any, context: any) => {
+      requireAuth(context);
+      const userId = context.user.sub;
+
+      const existing = await Issue.findById(id);
+      if (!existing) throw new GraphQLError('Issue not found.', { extensions: { code: 'NOT_FOUND' } });
+
+      // If user already downvoted, do nothing
+      if (existing.downvotedBy.includes(userId)) return existing;
+
+      const update: any = {
+        $addToSet: { downvotedBy: userId },
+        $inc: { downvotes: 1 }
+      };
+
+      // If they had upvoted before, remove it
+      if (existing.upvotedBy.includes(userId)) {
+        update.$pull = { upvotedBy: userId };
+        update.$inc.upvotes = -1;
+      }
+
+      return Issue.findByIdAndUpdate(id, update, { new: true }).lean();
+    },
+
+    /**
+     * MUTATION addComment
+     * @description Adds a new comment to an issue thread.
+     */
+    addComment: async (_: unknown, { issueId, text, userName }: any, context: any) => {
+      requireAuth(context);
+
+      const comment = {
+        userId:    context.user.sub,
+        userName,
+        text,
+        createdAt: new Date(),
+      };
 
       const issue = await Issue.findByIdAndUpdate(
-        id,
-        { $inc: { upvotes: 1 } },
+        issueId,
+        { $push: { comments: comment } },
         { new: true }
       ).lean();
 
@@ -328,7 +400,10 @@ export const resolvers = {
         });
       }
 
-      return issue;
+      return {
+        ...comment,
+        createdAt: comment.createdAt.toISOString(),
+      };
     },
 
     /**

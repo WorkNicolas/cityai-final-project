@@ -57,13 +57,13 @@ async function startServer() {
 
   try {
     await mongoose.connect(MONGO_URI);
-    console.log('✅ Issue Service: Connected to MongoDB');
+    console.log('Issue Service: Connected to MongoDB');
   } catch (err) {
-    console.error('❌ Issue Service: MongoDB connection error:', err);
+    console.error('Issue Service: MongoDB connection error:', err);
   }
 
   await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
-  console.log(`🚀 Issue Service ready at http://localhost:${PORT}/graphql`);
+  console.log(`Issue Service ready at http://localhost:${PORT}/graphql`);
 }
 
 startServer();

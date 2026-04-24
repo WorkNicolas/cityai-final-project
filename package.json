@@ -1,21 +1,31 @@
 {
-    "name": "cityai-project",
-    "version": "0.1.0",
-    "private": true,
-    "packageManager": "pnpm@10.29.2",
-    "description": "city-ai -AI-Powered Local Issue Tracker",
-    "scripts": {
+  "name": "cityai-project",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.29.2",
+  "description": "city-ai -AI-Powered Local Issue Tracker",
+  "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
     "test": "turbo test",
-    "clean": "pnpm -r exec rm -rf dist .turbo node_modules"
+    "clean": "pnpm -r exec rm -rf dist .turbo node_modules",
+    "seed": "tsx scripts/seed.ts"
   },
   "devDependencies": {
-    "turbo": "^2.0.0"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/mongoose": "^5.11.97",
+    "tsx": "^4.21.0",
+    "turbo": "^2.0.0",
+    "typescript": "^6.0.3"
   },
-    "engines": {
-      "node": ">=20.0.0",
-      "pnpm": ">=9.0.0"
-    }
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "mongodb": "^7.2.0",
+    "mongoose": "^8.23.0"
   }
+}

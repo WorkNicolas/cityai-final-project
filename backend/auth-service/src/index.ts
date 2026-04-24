@@ -124,13 +124,13 @@ async function startServer() {
 
   try {
     await mongoose.connect(MONGO_URI);
-    console.log('✅ Auth Service: Connected to MongoDB');
+    console.log('Auth Service: Connected to MongoDB');
   } catch (err) {
-    console.error('❌ Auth Service: MongoDB connection error:', err);
+    console.error('Auth Service: MongoDB connection error:', err);
   }
 
   await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
-  console.log(`🚀 Auth Service ready at http://localhost:${PORT}/graphql`);
+  console.log(`Auth Service ready at http://localhost:${PORT}/graphql`);
 }
 
 startServer();

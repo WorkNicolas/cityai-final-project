@@ -94,15 +94,44 @@ export interface IIssue extends Document {
 
   /**
    * upvotes
-   * @description Community upvote count. Incremented via the upvoteIssue mutation.
+   * @description Community upvote count.
    */
   upvotes: number;
+
+  /**
+   * upvotedBy
+   * @description Array of user IDs who have upvoted this issue.
+   */
+  upvotedBy: string[];
+
+  /**
+   * downvotes
+   * @description Community downvote count.
+   */
+  downvotes: number;
+
+  /**
+   * downvotedBy
+   * @description Array of user IDs who have downvoted this issue.
+   */
+  downvotedBy: string[];
 
   /**
    * resolvedAt
    * @description Optional timestamp of when the issue status was set to 'resolved'.
    */
   resolvedAt?: Date;
+
+  /**
+   * comments
+   * @description Array of community comments on this issue.
+   */
+  comments: {
+    userId:    string;
+    userName:  string;
+    text:      string;
+    createdAt: Date;
+  }[];
 
   /**
    * createdAt
@@ -225,12 +254,52 @@ const IssueSchema = new Schema<IIssue>(
     },
 
     /**
+     * upvotedBy
+     * @description IDs of users who have upvoted this issue.
+     */
+    upvotedBy: {
+      type: [String],
+      default: [],
+    },
+
+    /**
+     * downvotes
+     * @description Running count of community downvotes.
+     */
+    downvotes: {
+      type:    Number,
+      default: 0,
+    },
+
+    /**
+     * downvotedBy
+     * @description IDs of users who have downvoted this issue.
+     */
+    downvotedBy: {
+      type: [String],
+      default: [],
+    },
+
+    /**
      * resolvedAt
      * @description Timestamp of when the issue was resolved.
      */
     resolvedAt: {
       type: Date,
     },
+
+    /**
+     * comments
+     * @description Nested array of comment sub-documents.
+     */
+    comments: [
+      {
+        userId:    { type: String, required: true },
+        userName:  { type: String, required: true },
+        text:      { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

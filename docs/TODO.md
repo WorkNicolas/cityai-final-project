@@ -6,7 +6,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 1 — Scaffold & Config
+## Phase 1 - Scaffold & Config
 
 - [x] `pnpm-workspace.yaml` — monorepo workspace
 - [x] Root `package.json` — workspace scripts
@@ -28,7 +28,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 2 — Backend: Auth Service (Port 4001)
+## Phase 2 - Backend: Auth Service (Port 4001)
 
 - [x] `backend/auth-service/src/models/User.ts` — Mongoose schema
 - [x] `backend/auth-service/src/graphql/typeDefs.ts` — GraphQL schema
@@ -38,7 +38,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 3 — Backend: Issue Service (Port 4002)
+## Phase 3 - Backend: Issue Service (Port 4002)
 
 - [x] `backend/issue-service/src/models/Issue.ts` — Mongoose schema
 - [x] `backend/issue-service/src/graphql/typeDefs.ts`
@@ -48,7 +48,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 4 — Backend: Analytics Service (Port 4003)
+## Phase 4 - Backend: Analytics Service (Port 4003)
 
 - [x] `backend/analytics-service/src/services/geminiService.ts` — Gemini API
 - [x] `backend/analytics-service/src/services/trendService.ts` — Trend detection
@@ -60,7 +60,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 5 — Frontend: Host Shell (Port 3000)
+## Phase 5 - Frontend: Host Shell (Port 3000)
 
 - [x] `frontend/host/src/apollo/client.ts` — Apollo Client config
 - [x] `frontend/host/src/context/ThemeContext.tsx` — Theme provider
@@ -70,7 +70,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 6 — Frontend: Auth MFE (Port 3001)
+## Phase 6 - Frontend: Auth MFE (Port 3001)
 
 - [x] `frontend/auth-mfe/src/components/LoginForm.tsx`
 - [x] `frontend/auth-mfe/src/components/RegisterForm.tsx`
@@ -79,7 +79,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 7 — Frontend: Issue MFE (Port 3002)
+## Phase 7 - Frontend: Issue MFE (Port 3002)
 
 - [x] `frontend/issue-mfe/src/components/IssueForm.tsx`
 - [x] `frontend/issue-mfe/src/components/IssueList.tsx`
@@ -92,7 +92,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 8 — Frontend: Analytics MFE (Port 3003)
+## Phase 8 - Frontend: Analytics MFE (Port 3003)
 
 - [x] `frontend/analytics-mfe/src/components/IssueDashboard.tsx`
 - [x] `frontend/analytics-mfe/src/components/Heatmap.tsx`
@@ -105,7 +105,7 @@ Update this file as work progresses. Format: `- [x]` done, `- [ ]` pending.
 
 ---
 
-## Phase 9 — Presentation Checklist
+## Phase 9 - Presentation Checklist
 
 - [x] User registration / login demo
 - [x] Issue submission with photo and geotag

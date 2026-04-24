@@ -4,24 +4,24 @@
  * Displays title, AI summary, full description, photo, and status.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
- * @updated 2026-04-20 - Initial implementation.
- * @version 0.1.0
- */
-
-/**
- * Table of Contents
- * - Imports
- * - GraphQL
- *   - GET_ISSUE_DETAIL
- * - Components
- *   - IssueDetail
- * - Exports
+ * @updated 2026-04-24 - Added comments and voting.
+ * @version 0.2.0
  */
 
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import IssueStatusBadge, { IssueStatus } from './IssueStatusBadge';
 import IssueMap from './IssueMap';
+import CommentThread from './CommentThread';
+
+const ME_QUERY = gql`
+  query Me {
+    me {
+      id
+      name
+    }
+  }
+`;
 
 /**
  * GET_ISSUE_DETAIL
@@ -40,8 +40,15 @@ const GET_ISSUE_DETAIL = gql`
       photoUrl
       aiSummary
       upvotes
+      downvotes
       createdAt
       reportedBy
+      comments {
+        userId
+        userName
+        text
+        createdAt
+      }
     }
   }
 `;
@@ -61,8 +68,12 @@ interface IssueDetailProps {
  * @returns The rendered detail component.
  */
 export function IssueDetail({ id }: IssueDetailProps) {
-  const { loading, error, data } = useQuery(GET_ISSUE_DETAIL, {
+  const { loading, error, data, refetch } = useQuery(GET_ISSUE_DETAIL, {
     variables: { id },
+  });
+
+  const { data: userData } = useQuery(ME_QUERY, {
+    context: { service: 'auth' }
   });
 
   if (loading) return <div className="loading">Loading details...</div>;
@@ -71,11 +82,18 @@ export function IssueDetail({ id }: IssueDetailProps) {
   const issue = data?.issue;
   if (!issue) return <div className="not-found">Issue not found.</div>;
 
+  const score = (issue.upvotes || 0) - (issue.downvotes || 0);
+
   return (
     <div className="issue-detail">
       <div className="detail-header">
         <IssueStatusBadge status={issue.status as IssueStatus} />
         <span className="category-label">{issue.category}</span>
+        <div className="score-display">
+          <span className={`score-value ${score > 0 ? 'pos' : score < 0 ? 'neg' : ''}`}>
+            {score > 0 ? `+${score}` : score}
+          </span>
+        </div>
       </div>
 
       <h2 className="detail-title">{issue.title}</h2>
@@ -114,8 +132,15 @@ export function IssueDetail({ id }: IssueDetailProps) {
         )}
       </section>
 
+      <CommentThread 
+        issueId={issue.id} 
+        comments={issue.comments || []} 
+        currentUserName={userData?.me?.name || 'Anonymous User'}
+        onCommentAdded={() => refetch()}
+      />
+
       <footer className="detail-footer">
-        <span>Reported on: {new Date(parseInt(issue.createdAt)).toLocaleDateString()}</span>
+        <span>Reported on: {new Date(parseInt(issue.createdAt) || issue.createdAt).toLocaleDateString()}</span>
         <span>ID: {issue.id}</span>
       </footer>
 
@@ -123,6 +148,10 @@ export function IssueDetail({ id }: IssueDetailProps) {
         .issue-detail { background: var(--color-surface); border-radius: 0.5rem; padding: 2rem; border: 1px solid var(--color-divider); }
         .detail-header { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
         .category-label { background: var(--color-surface-alt); font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        .score-display { margin-left: auto; background: var(--color-surface-alt); padding: 0.25rem 0.75rem; border-radius: 1rem; border: 1px solid var(--color-divider); }
+        .score-value { font-weight: 800; font-size: 0.875rem; color: var(--color-text-secondary); }
+        .score-value.pos { color: #ff4500; }
+        .score-value.neg { color: #7193ff; }
         .detail-title { margin: 0 0 1.5rem; color: var(--color-text-primary); }
         .ai-summary-box { background: rgba(var(--color-primary), 0.05); border-left: 4px solid var(--color-primary); padding: 1rem; margin-bottom: 2rem; border-radius: 0 0.25rem 0.25rem 0; }
         .ai-summary-box strong { font-size: 0.875rem; color: var(--color-primary); }

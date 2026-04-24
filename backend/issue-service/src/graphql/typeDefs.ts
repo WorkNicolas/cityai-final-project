@@ -4,29 +4,8 @@
  * Defines Issue types, status/category enums, and all CRUD-related queries and mutations.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-20
- * @updated 2026-04-20 - Initial implementation.
- * @version 0.1.0
- */
-
-/**
- * Table of Contents
- * - Imports
- * - Types
- *   - IssueStatus (enum)
- *   - IssueCategory (enum)
- *   - Issue
- *   - PaginatedIssues
- * - Queries
- *   - issue
- *   - issues
- *   - myIssues
- * - Mutations
- *   - createIssue
- *   - updateIssueStatus
- *   - assignIssue
- *   - upvoteIssue
- *   - setAiFields
- * - Exports
+ * @updated 2026-04-24 - Added Comment support.
+ * @version 0.2.0
  */
 
 export const typeDefs = `
@@ -75,6 +54,16 @@ export const typeDefs = `
   }
 
   """
+  Comment — a resident or staff response on an issue report.
+  """
+  type Comment {
+    userId:    String!
+    userName:  String!
+    text:      String!
+    createdAt: String!
+  }
+
+  """
   Issue — a municipal issue report submitted by a resident.
   """
   type Issue {
@@ -90,6 +79,10 @@ export const typeDefs = `
     assignedTo:  String
     aiSummary:   String
     upvotes:     Int!
+    upvotedBy:   [String!]!
+    downvotes:   Int!
+    downvotedBy: [String!]!
+    comments:    [Comment!]!
     createdAt:   String!
     updatedAt:   String!
   }
@@ -170,6 +163,20 @@ export const typeDefs = `
     upvoteIssue — increments the upvote count for a community issue.
     """
     upvoteIssue(id: ID!): Issue!
+
+    """
+    downvoteIssue — increments the downvote count for a community issue.
+    """
+    downvoteIssue(id: ID!): Issue!
+
+    """
+    addComment — adds a new comment to an issue thread.
+    """
+    addComment(
+      issueId:  ID!
+      text:     String!
+      userName: String!
+    ): Comment!
 
     """
     setAiFields — internal mutation called by analytics-service to write back

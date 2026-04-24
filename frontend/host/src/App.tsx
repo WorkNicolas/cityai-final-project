@@ -168,7 +168,7 @@ function AppShell() {
             )}
             {isAdvocate && (
               <a href="/dashboard" className="btn btn-secondary">
-                Community Dashboard
+                Advocate Dashboard
               </a>
             )}
           </div>
@@ -185,7 +185,7 @@ function AppShell() {
           <a href="/">Home</a>
           <a href={isAuthed ? '/report' : authRedirectHref('/report')}>Report Issue</a>
           {isStaff && <a href="/dashboard">Staff Dashboard</a>}
-          {isAdvocate && <a href="/dashboard">Community Dashboard</a>}
+          {isAdvocate && <a href="/dashboard">Advocate Dashboard</a>}
           {isAuthed ? (
             <button
               type="button"

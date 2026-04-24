@@ -100,7 +100,7 @@ export async function detectTrends(): Promise<TrendInsight[]> {
 
   if (clusters.length === 0) return [];
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
   const insights: TrendInsight[] = [];
 
   for (const cluster of clusters) {
@@ -148,8 +148,8 @@ export async function getGlobalInsights(): Promise<GlobalInsights> {
   // 1. Calculate Resolution Efficiency (Avg time to resolve in hours)
   const resolvedIssues = await Snapshot.find({ resolvedAt: { $exists: true } }).toArray();
 
-  let resolutionEfficiency = '92%'; // Baseline if no data
-  let resolutionDetail     = 'AI triage is optimizing response times.';
+  let resolutionEfficiency = 'N/A';
+  let resolutionDetail     = 'Not enough data available to calculate average resolution time yet.';
 
   if (resolvedIssues.length > 0) {
     let totalMs = 0;
@@ -170,7 +170,7 @@ export async function getGlobalInsights(): Promise<GlobalInsights> {
 
   // 2. Perform AI Sentiment Analysis on recent issues
   const allIssues = await Snapshot.find({}).sort({ createdAt: -1 }).limit(15).toArray();
-  let publicSentiment = 'Neutral';
+  let publicSentiment = 'N/A';
   let sentimentDetail = 'No community feedback available yet.';
 
   if (allIssues.length > 0) {
@@ -178,7 +178,7 @@ export async function getGlobalInsights(): Promise<GlobalInsights> {
       .map(i => `${i.title}: ${i.description}`)
       .join('\n');
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
     const prompt = `
       Analyze these municipal issue reports from residents to determine the overall community mood:
       ${recentDescriptions}
@@ -202,8 +202,8 @@ export async function getGlobalInsights(): Promise<GlobalInsights> {
       }
     } catch (err) {
       console.error('Sentiment Analysis Failed:', err);
-      publicSentiment = 'Varied';
-      sentimentDetail = 'Residents are reporting various infrastructure concerns.';
+      publicSentiment = 'Error';
+      sentimentDetail = 'Failed to retrieve sentiment from AI service.';
     }
   }
 

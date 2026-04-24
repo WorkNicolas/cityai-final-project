@@ -32,14 +32,28 @@ async function run() {
     const snapshots = analyticsDb.collection('issuesnapshots');
 
     console.log('🔍 Finding resident for attribution...');
-    const resident = await users.findOne({ role: 'resident' });
-    const residentId = resident ? resident._id.toString() : '6624a0000000000000000001';
+    let resident = await users.findOne({ role: 'resident' });
+    let residentId;
 
     if (!resident) {
-      console.warn('⚠️ No resident found in cityai-auth. Falling back to mock ID.');
+      console.warn('⚠️ No resident found in cityai-auth. Creating a mock resident.');
+      const newId = new ObjectId();
+      resident = {
+        _id: newId,
+        email: 'mock_resident@example.ca',
+        password: 'mock_hashed_password', // Mock since they won't log in
+        name: 'Mock Resident',
+        role: 'resident',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        __v: 0
+      };
+      await users.insertOne(resident);
+      residentId = newId.toString();
     } else {
-      console.log(`👤 Attributing issues to: ${resident.name} (${residentId})`);
+      residentId = resident._id.toString();
     }
+    console.log(`👤 Attributing issues to: ${resident.name} (${residentId})`);
 
     console.log('🧹 Cleaning existing data...');
     // We'll keep the users but clean issues to make the heatmap clear

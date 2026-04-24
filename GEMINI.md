@@ -4,7 +4,7 @@ This document provides foundational context and development mandates for the Cit
 
 ---
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 CityAI is a monorepo managed with **pnpm workspaces**, utilizing a **Microservices** backend and a **Micro Frontends (MFE)** frontend.
 
@@ -23,18 +23,18 @@ Located in `frontend/`, these applications use React (Vite) and Tailwind CSS.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Core**: TypeScript, Node.js (>=20.0.0), pnpm (>=9.0.0)
 - **Database**: MongoDB (Mongoose)
 - **API**: GraphQL (Apollo Server)
-- **AI**: LangGraph, Gemini 1.5 Flash (`@langchain/google-genai`)
+- **AI**: LangGraph, Gemini 3 Flash Preview (`@langchain/google-genai`)
 - **Frontend**: React, Vite, Tailwind CSS
 - **Security**: JWT (HTTP-only cookies), `helmet` (No direct `cors` usage), Vite Proxy for API routing.
 
 ---
 
-## 🚀 Key Commands
+## Key Commands
 
 Execute these from the project root:
 
@@ -45,7 +45,7 @@ Execute these from the project root:
 
 ---
 
-## 📋 Development Conventions
+## Development Conventions
 
 ### Documentation Standards
 Strict adherence to `docs/comment_standards.md` is required. Every file MUST include:
@@ -71,12 +71,12 @@ Strict adherence to `docs/comment_standards.md` is required. Every file MUST inc
 
 ### AI Integration
 - The `analytics-service` uses **LangGraph** to manage agentic state and flow.
-- Use **Gemini 1.5 Flash** for classification, summarization, and chat responses.
+- Use **Gemini 3 Flash Preview** for classification, summarization, and chat responses.
 - Database context must be used to ground LLM responses (RAG pattern).
 
 ---
 
-## 📂 Directory Structure
+## Directory Structure
 
 ```text
 .

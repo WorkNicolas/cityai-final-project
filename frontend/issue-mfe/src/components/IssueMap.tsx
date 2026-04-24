@@ -133,6 +133,21 @@ export function IssueMap({ initialCoords, readOnly, onLocationSelect }: IssueMap
     initialCoords ? new L.LatLng(initialCoords[1], initialCoords[0]) : null
   );
 
+  useEffect(() => {
+    if (!initialCoords && !readOnly) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            setPosition(new L.LatLng(pos.coords.latitude, pos.coords.longitude));
+          },
+          (err) => {
+            console.warn('Geolocation failed or denied, using default center:', err);
+          }
+        );
+      }
+    }
+  }, [initialCoords, readOnly]);
+
   return (
     <div className={`issue-map-container ${readOnly ? 'readonly' : ''}`}>
       <MapContainer 

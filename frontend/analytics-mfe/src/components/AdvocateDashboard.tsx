@@ -1,89 +1,74 @@
 /** frontend/analytics-mfe/src/components/AdvocateDashboard.tsx
  * @file AdvocateDashboard.tsx
- * @description A tailored dashboard for Community Advocates to monitor municipal trends
- * and community insights without administrative staff tools.
+ * @description Redesigned dashboard for Community Advocates with a split layout.
+ * Left: Trends (WIP), Right: Reddit-style Issue Table.
  * @author Carl Nicolas Mendoza
- * @since 2026-04-23
- * @updated 2026-04-23 - Initial implementation.
- * @version 0.1.0
- */
-
-/**
- * Table of Contents
- * - Imports
- * - Components
- *   - AdvocateDashboard
- * - Exports
+ * @since 2026-04-24
+ * @version 0.3.0
  */
 
 import React from 'react';
-import InsightsDashboard from './InsightsDashboard';
-import Heatmap from './Heatmap';
-import TrendChart from './TrendChart';
+import AdvocateIssueTable from './AdvocateIssueTable';
 
-/**
- * AdvocateDashboard
- * @description Renders the community advocate dashboard focusing on AI trends and insights.
- * @returns {JSX.Element} The rendered advocate dashboard shell.
- */
 export function AdvocateDashboard(): JSX.Element {
   return (
-    <div className="dashboard-shell">
+    <div className="advocate-dashboard">
       <header className="dashboard-header">
         <div className="header-text">
-          <h2>Community Insights</h2>
-          <p>AI-driven municipal trends and neighborhood analysis</p>
+          <h2>Advocate Portal</h2>
+          <p>Monitor community engagement and neighborhood patterns.</p>
         </div>
       </header>
 
-      <div className="dashboard-content">
-        {/* Top Row: AI Insights */}
-        <InsightsDashboard />
+      <div className="split-layout">
+        {/* Left Column: Trends WIP */}
+        <aside className="trends-wip">
+          <div className="wip-container">
+            <h3>Community Trends</h3>
+            <div className="wip-placeholder">
+              <span className="wip-badge">WORK IN PROGRESS</span>
+              <p>Neighborhood trend analysis and AI forecasting tools are being calibrated.</p>
+              <div className="skeleton-line short"></div>
+              <div className="skeleton-line"></div>
+              <div className="skeleton-line medium"></div>
+            </div>
+          </div>
+        </aside>
 
-        {/* Middle Row: Visualizations */}
-        <div className="viz-row">
-          <div className="viz-col main">
-            <Heatmap />
+        {/* Right Column: Issues Table */}
+        <main className="issues-view">
+          <div className="view-header">
+            <h3>Live Community Issues</h3>
           </div>
-          <div className="viz-col side">
-            <TrendChart />
-          </div>
-        </div>
-
-        {/* Note: BacklogTracker is excluded for the Advocate role */}
-        <div className="info-row">
-          <div className="info-card">
-            <h4>Advocate Mission</h4>
-            <p>
-              As a Community Advocate, your role is to monitor emerging patterns and support 
-              residents. Use these insights to identify areas requiring attention and track 
-              how the city responds to local needs.
-            </p>
-          </div>
-        </div>
+          <AdvocateIssueTable />
+        </main>
       </div>
 
       <style>{`
-        .dashboard-shell { display: flex; flex-direction: column; gap: 2rem; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .header-text h2 { margin: 0; color: var(--color-text-primary); font-size: 1.75rem; }
-        .header-text p { margin: 0.25rem 0 0; color: var(--color-text-secondary); font-size: 0.9375rem; }
-        .dashboard-content { display: flex; flex-direction: column; gap: 2rem; }
-        .viz-row { display: grid; grid-template-columns: 1fr 400px; gap: 2rem; }
-        @media (max-width: 1100px) {
-          .viz-row { grid-template-columns: 1fr; }
+        .advocate-dashboard { display: flex; flex-direction: column; gap: 2rem; }
+        .dashboard-header h2 { margin: 0; color: var(--color-text-primary); font-size: 2rem; }
+        .dashboard-header p { margin: 0.5rem 0 0; color: var(--color-text-secondary); }
+        
+        .split-layout { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+        
+        .trends-wip { background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: 0.75rem; padding: 1.5rem; position: sticky; top: 2rem; }
+        .trends-wip h3 { margin: 0 0 1.5rem; font-size: 1.1rem; color: var(--color-text-primary); }
+        
+        .wip-placeholder { display: flex; flex-direction: column; gap: 1rem; color: var(--color-text-disabled); }
+        .wip-badge { align-self: flex-start; background: var(--color-surface-alt); color: var(--color-text-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 800; border: 1px solid var(--color-divider); }
+        .wip-placeholder p { font-size: 0.875rem; line-height: 1.5; margin: 0; }
+        
+        .skeleton-line { height: 8px; background: var(--color-divider); border-radius: 4px; width: 100%; opacity: 0.5; }
+        .skeleton-line.short { width: 40%; }
+        .skeleton-line.medium { width: 70%; }
+        
+        .issues-view { display: flex; flex-direction: column; gap: 1.5rem; }
+        .view-header h3 { margin: 0; font-size: 1.25rem; color: var(--color-text-primary); }
+        
+        @media (max-width: 1024px) {
+          .split-layout { grid-template-columns: 1fr; }
+          .trends-wip { position: static; }
         }
-        .viz-col { display: flex; flex-direction: column; }
-        .info-row { width: 100%; }
-        .info-card { 
-          background: var(--color-surface-alt); 
-          border: 1px solid var(--color-divider); 
-          border-radius: 0.5rem; 
-          padding: 1.5rem; 
-          border-left: 4px solid var(--color-primary);
-        }
-        .info-card h4 { margin: 0 0 0.5rem; color: var(--color-text-primary); }
-        .info-card p { margin: 0; color: var(--color-text-secondary); font-size: 0.875rem; line-height: 1.6; }
       `}</style>
     </div>
   );

@@ -100,7 +100,11 @@ export function Chatbot() {
     <div className={`chatbot-shell ${isOpen ? 'open' : 'closed'}`}>
       {!isOpen ? (
         <button className="chatbot-launcher" onClick={() => setIsOpen(true)}>
-          <span className="icon">💬</span>
+          <span className="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </span>
           <span className="badge">AI</span>
         </button>
       ) : (
