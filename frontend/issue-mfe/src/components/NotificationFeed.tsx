@@ -16,7 +16,32 @@
  * - Exports
  */
 
-import React, { useState } from 'react';
+import React from 'react';
+import { useQuery, useMutation, gql } from '@apollo/client';
+
+/**
+ * GraphQL Definitions
+ */
+const GET_MY_NOTIFICATIONS = gql`
+  query GetMyNotifications {
+    myNotifications {
+      id
+      type
+      message
+      isRead
+      createdAt
+    }
+  }
+`;
+
+const MARK_NOTIFICATION_READ = gql`
+  mutation MarkNotificationAsRead($id: ID!) {
+    markNotificationAsRead(id: $id) {
+      id
+      isRead
+    }
+  }
+`;
 
 /**
  * Notification
@@ -25,82 +50,83 @@ interface Notification {
   id: string;
   type: 'status_change' | 'urgent_alert' | 'community_update';
   message: string;
-  timestamp: string;
+  createdAt: string;
   isRead: boolean;
 }
 
 /**
  * NotificationFeed
- * @description Displays a scrollable feed of recent notifications.
+ * @description Displays a scrollable feed of real-time notifications from the issue-service.
  * @returns The rendered notification component.
  */
 export function NotificationFeed() {
-  // Mock data for demonstration - in production, this would use GraphQL Subscriptions
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: '1',
-      type: 'status_change',
-      message: 'Your report "Pothole on Queen St" has been updated to IN PROGRESS.',
-      timestamp: new Date().toISOString(),
-      isRead: false,
-    },
-    {
-      id: '2',
-      type: 'urgent_alert',
-      message: 'URGENT: Flooding reported on Main St. Please use alternate routes.',
-      timestamp: new Date(Date.now() - 3600000).toISOString(),
-      isRead: false,
-    },
-    {
-      id: '3',
-      type: 'community_update',
-      message: '5 new issues reported in your neighborhood this morning.',
-      timestamp: new Date(Date.now() - 7200000).toISOString(),
-      isRead: true,
-    }
-  ]);
+  const { data, loading, error } = useQuery(GET_MY_NOTIFICATIONS, {
+    context: { service: 'issues' },
+    pollInterval: 10000, // Poll every 10 seconds for "real-time" feel without subscriptions
+  });
 
-  const markAsRead = (id: string) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+  const [markRead] = useMutation(MARK_NOTIFICATION_READ, {
+    context: { service: 'issues' },
+    refetchQueries: [{ query: GET_MY_NOTIFICATIONS, context: { service: 'issues' } }],
+  });
+
+  const notifications: Notification[] = data?.myNotifications ?? [];
+
+  const handleMarkAsRead = (id: string) => {
+    markRead({ variables: { id } });
   };
+
+  if (loading && !data) return <div className="feed-loading">Loading alerts...</div>;
+  if (error) return <div className="feed-error">Failed to load notifications.</div>;
 
   return (
     <div className="notification-feed">
       <div className="feed-header">
         <h4>Recent Updates</h4>
-        <button className="clear-link">Mark all as read</button>
+        <span className="count-badge">{notifications.filter(n => !n.isRead).length} New</span>
       </div>
 
       <div className="feed-list">
-        {notifications.map(n => (
-          <div 
-            key={n.id} 
-            className={`notification-item ${n.type} ${n.isRead ? 'read' : 'unread'}`}
-            onClick={() => markAsRead(n.id)}
-          >
-            <div className="item-icon">
-              {n.type === 'urgent_alert' ? '⚠️' : n.type === 'status_change' ? '📝' : '🏘️'}
+        {notifications.length === 0 ? (
+          <div className="empty-feed">No notifications yet.</div>
+        ) : (
+          notifications.map(n => (
+            <div 
+              key={n.id} 
+              className={`notification-item ${n.type} ${n.isRead ? 'read' : 'unread'}`}
+              onClick={() => !n.isRead && handleMarkAsRead(n.id)}
+            >
+              <div className="item-icon">
+                {n.type === 'urgent_alert' ? '⚠️' : n.type === 'status_change' ? '📝' : '🏘️'}
+              </div>
+              <div className="item-content">
+                <p className="item-message">{n.message}</p>
+                <span className="item-time">
+                  {new Date(parseInt(n.createdAt) || n.createdAt).toLocaleString([], { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}
+                </span>
+              </div>
+              {!n.isRead && <div className="unread-dot"></div>}
             </div>
-            <div className="item-content">
-              <p className="item-message">{n.message}</p>
-              <span className="item-time">
-                {new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
-            </div>
-            {!n.isRead && <div className="unread-dot"></div>}
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       <style>{`
         .notification-feed { background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: 0.5rem; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
         .feed-header { padding: 1rem; border-bottom: 1px solid var(--color-divider); display: flex; justify-content: space-between; align-items: center; }
         .feed-header h4 { margin: 0; font-size: 0.9375rem; color: var(--color-text-primary); }
-        .clear-link { font-size: 0.75rem; color: var(--color-primary); background: none; border: none; cursor: pointer; padding: 0; }
-        .feed-list { overflow-y: auto; flex: 1; }
+        .count-badge { font-size: 0.75rem; background: var(--color-primary); color: white; padding: 0.125rem 0.5rem; border-radius: 1rem; }
+        .feed-list { overflow-y: auto; flex: 1; min-height: 200px; }
+        .feed-loading, .feed-error, .empty-feed { padding: 2rem; text-align: center; color: var(--color-text-secondary); font-size: 0.875rem; }
         .notification-item { padding: 1rem; display: flex; gap: 1rem; border-bottom: 1px solid var(--color-divider); cursor: pointer; position: relative; transition: background 0.2s; }
         .notification-item:hover { background: var(--color-surface-alt); }
-        .notification-item.unread { background: rgba(var(--color-primary), 0.03); }
+        .notification-item.read { opacity: 0.7; }
+        .notification-item.unread { background: rgba(var(--color-primary), 0.05); }
         .notification-item.urgent_alert { border-left: 4px solid var(--color-danger); }
         .item-icon { font-size: 1.25rem; }
         .item-content { flex: 1; }
@@ -111,5 +137,6 @@ export function NotificationFeed() {
     </div>
   );
 }
+
 
 export default NotificationFeed;

@@ -69,14 +69,45 @@ function LocationMarker({
   }, [position, map]);
 
   useMapEvents({
-    click(e) {
+    async click(e) {
       if (readOnly) return;
       setPosition(e.latlng);
       
-      // Basic reverse geocoding placeholder (in a real app, use an API like Nominatim)
-      const fakeAddress = `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;
+      // Real reverse geocoding using Nominatim (OpenStreetMap)
+      let address = `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;
+      
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}&format=json`,
+          {
+            headers: {
+              'User-Agent': 'CityAI-Municipal-App',
+            },
+          }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          // Prefer a shorter address format if available, otherwise use display_name
+          const addr = data.address;
+          if (addr) {
+            const road = addr.road || addr.pedestrian || addr.path;
+            const houseNumber = addr.house_number;
+            const city = addr.city || addr.town || addr.village;
+            
+            if (road && city) {
+              address = houseNumber ? `${houseNumber} ${road}, ${city}` : `${road}, ${city}`;
+            } else {
+              address = data.display_name;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Reverse geocoding failed, falling back to coordinates:', err);
+      }
+
       if (onLocationSelect) {
-        onLocationSelect([e.latlng.lng, e.latlng.lat], fakeAddress);
+        onLocationSelect([e.latlng.lng, e.latlng.lat], address);
       }
     },
   });

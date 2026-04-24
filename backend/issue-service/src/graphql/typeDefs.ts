@@ -54,6 +54,27 @@ export const typeDefs = `
   }
 
   """
+  NotificationType — categories of user alerts.
+  """
+  enum NotificationType {
+    status_change
+    urgent_alert
+    community_update
+  }
+
+  """
+  Notification — an alert or update for a user.
+  """
+  type Notification {
+    id:        ID!
+    userId:    String!
+    type:      NotificationType!
+    message:   String!
+    isRead:    Boolean!
+    createdAt: String!
+  }
+
+  """
   Issue — a municipal issue report submitted by a resident.
   """
   type Issue {
@@ -103,9 +124,19 @@ export const typeDefs = `
     myIssues — returns all issues submitted by the currently authenticated resident.
     """
     myIssues: [Issue!]!
+
+    """
+    myNotifications — returns all notifications for the currently authenticated user.
+    """
+    myNotifications: [Notification!]!
   }
 
   type Mutation {
+    """
+    markNotificationAsRead — marks a single notification as read.
+    """
+    markNotificationAsRead(id: ID!): Notification!
+
     """
     createIssue — submits a new municipal issue report. Requires resident authentication.
     The AI category and summary are populated asynchronously by analytics-service.

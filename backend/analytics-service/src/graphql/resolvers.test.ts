@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
+import mongoose from 'mongoose';
 
 vi.mock('../agents/cityAiChatAgent', () => ({
   runCityAiChat: vi.fn(),
@@ -107,5 +108,26 @@ describe('analytics-service graphql resolvers', () => {
     expect(classifyIssue).toHaveBeenCalledWith('t', 'd');
     expect(summarizeIssue).toHaveBeenCalledWith('t', 'd', 'l');
     expect(globalThis.fetch).toHaveBeenCalled();
+  });
+
+  it('updateSnapshotStatus allows internal token', async () => {
+    // Mock mongoose connection and collection
+    const mockUpdateOne = vi.fn().mockResolvedValue({ modifiedCount: 1 });
+    const mockCollection = vi.fn().mockReturnValue({ updateOne: mockUpdateOne });
+    
+    // Use vi.spyOn to mock mongoose.connection.collection
+    vi.spyOn(mongoose, 'connection', 'get').mockReturnValue({
+      readyState: 1,
+      collection: mockCollection,
+    } as any);
+
+    const out = await resolvers.Mutation.updateSnapshotStatus(
+      {},
+      { issueId: '507f1f77bcf86cd799439011', status: 'resolved' },
+      { internal: true }
+    );
+
+    expect(out).toBe(true);
+    expect(mockCollection).toHaveBeenCalledWith('issuesnapshots');
   });
 });

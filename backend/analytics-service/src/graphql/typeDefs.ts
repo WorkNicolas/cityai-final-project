@@ -42,15 +42,37 @@ export const typeDefs = `
     aiSummary: String!
   }
 
+  """
+  GlobalInsights — top-level metrics for the municipal dashboard.
+  """
+  type GlobalInsights {
+    resolutionEfficiency: String!
+    resolutionDetail:     String!
+    publicSentiment:      String!
+    sentimentDetail:      String!
+  }
+
   type Query {
     """
     trends — returns AI-detected issue clusters from the past 7 days.
     Requires staff or advocate role.
     """
     trends: [TrendInsight!]!
+
+    """
+    insights — returns live, AI-analyzed global metrics for the municipality.
+    Calculates resolution speed and community sentiment.
+    """
+    insights: GlobalInsights!
   }
 
   type Mutation {
+    """
+    updateSnapshotStatus — updates the status of an issue in the local analytics snapshot.
+    Called by issue-service when a staff member changes an issue status.
+    """
+    updateSnapshotStatus(issueId: ID!, status: String!): Boolean!
+
     """
     chat — sends a message to the LangGraph + Gemini CityAI chatbot and returns
     the agent's response. Available to all authenticated users.

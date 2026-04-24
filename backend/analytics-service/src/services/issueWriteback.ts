@@ -9,7 +9,9 @@ export function categoryHyphenToGraphqlEnum(category: string): string {
 }
 
 const ISSUE_SERVICE_GRAPHQL_URL =
-  process.env.ISSUE_SERVICE_GRAPHQL_URL ?? 'http://localhost:4002/graphql';
+  process.env.ISSUE_SERVICE_GRAPHQL_URL && process.env.ISSUE_SERVICE_GRAPHQL_URL.length > 0
+    ? process.env.ISSUE_SERVICE_GRAPHQL_URL
+    : 'http://localhost:4002/graphql';
 
 function internalToken(): string {
   return process.env.INTERNAL_SERVICE_TOKEN && process.env.INTERNAL_SERVICE_TOKEN.length > 0

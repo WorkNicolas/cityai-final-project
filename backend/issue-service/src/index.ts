@@ -16,12 +16,12 @@
  * - Exports
  */
 
+import 'dotenv/config';
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import http from 'http';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
@@ -50,7 +50,6 @@ async function startServer() {
 
   app.use(
     '/graphql',
-    cors<cors.CorsRequest>({ origin: true, credentials: true }),
     expressMiddleware(server, {
       context: async ({ req, res }) => buildAuthContext({ req, res }),
     })

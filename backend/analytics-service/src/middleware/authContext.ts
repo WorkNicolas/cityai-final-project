@@ -22,11 +22,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-const JWT_SECRET =
-  process.env.JWT_SECRET && process.env.JWT_SECRET.length > 0
-    ? process.env.JWT_SECRET
-    : 'dev-jwt-secret-change-me';
-
 /**
  * JwtPayload
  * @description Shape of the decoded JWT issued by auth-service.
@@ -67,6 +62,12 @@ export interface AuthContext {
    * @description Decoded JWT payload if a valid token cookie was present; null otherwise.
    */
   user: JwtPayload | null;
+
+  /**
+   * internal
+   * @description True when a valid service-to-service token header is present.
+   */
+  internal: boolean;
 }
 
 /**
@@ -79,6 +80,16 @@ export interface AuthContext {
  * @returns {AuthContext} The populated context object for this request.
  */
 export function buildAuthContext({ req, res }: { req: Request; res: Response }): AuthContext {
+  const JWT_SECRET =
+    process.env.JWT_SECRET && process.env.JWT_SECRET.length > 0
+      ? process.env.JWT_SECRET
+      : 'dev-jwt-secret-change-me';
+
+  const INTERNAL_SERVICE_TOKEN =
+    process.env.INTERNAL_SERVICE_TOKEN && process.env.INTERNAL_SERVICE_TOKEN.length > 0
+      ? process.env.INTERNAL_SERVICE_TOKEN
+      : 'dev-internal-service-token';
+
   let user: JwtPayload | null = null;
 
   const token: string | undefined = req.cookies?.token;
@@ -91,5 +102,9 @@ export function buildAuthContext({ req, res }: { req: Request; res: Response }):
     }
   }
 
-  return { req, res, user };
+  const headerToken = req.headers['x-service-token'];
+  const svc = Array.isArray(headerToken) ? headerToken[0] : headerToken;
+  const internal = typeof svc === 'string' && svc === INTERNAL_SERVICE_TOKEN;
+
+  return { req, res, user, internal };
 }

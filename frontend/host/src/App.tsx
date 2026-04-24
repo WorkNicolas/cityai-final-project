@@ -20,6 +20,7 @@ import React, { Suspense, lazy } from 'react';
 import { ApolloProvider, gql, useQuery, useMutation } from '@apollo/client';
 import { client } from './apollo/client';
 import { ThemeProvider } from './context/ThemeContext';
+import { ThemeToggle } from './components/ThemeToggle';
 import './App.css';
 
 /**
@@ -35,6 +36,8 @@ const IssueForm = lazy(() => import('issue/IssueForm'));
 const Chatbot  = lazy(() => import('analytics/Chatbot'));
 // @ts-ignore
 const IssueDashboard = lazy(() => import('analytics/IssueDashboard'));
+// @ts-ignore
+const AdvocateDashboard = lazy(() => import('analytics/AdvocateDashboard'));
 
 const ME_QUERY = gql`
   query Me {
@@ -91,6 +94,7 @@ function AppShell() {
   const me = data?.me ?? null;
   const isAuthed = Boolean(me);
   const isStaff = me?.role === 'staff';
+  const isAdvocate = me?.role === 'advocate';
 
   const handleSignOut = async () => {
     try {
@@ -117,16 +121,22 @@ function AppShell() {
     }
     if (path === '/dashboard') {
       if (loading) return <div className="loading">Checking session...</div>;
-      if (!isAuthed) return <AuthGateMessage title="Staff Dashboard" destination="/dashboard" />;
-      if (!isStaff) {
-        return (
-          <section className="centered-section">
-            <h2>Staff Dashboard</h2>
-            <p>This area is only available to staff accounts.</p>
-          </section>
-        );
+      if (!isAuthed) return <AuthGateMessage title="Dashboard" destination="/dashboard" />;
+      
+      if (isStaff) {
+        return <IssueDashboard />;
       }
-      return <IssueDashboard />;
+      
+      if (isAdvocate) {
+        return <AdvocateDashboard />;
+      }
+
+      return (
+        <section className="centered-section">
+          <h2>Access Denied</h2>
+          <p>The dashboard is only available to staff and community advocates.</p>
+        </section>
+      );
     }
     if (path === '/report') {
       if (loading) return <div className="loading">Checking session...</div>;
@@ -151,11 +161,16 @@ function AppShell() {
             >
               Report an Issue
             </a>
-            {isStaff ? (
+            {isStaff && (
               <a href="/dashboard" className="btn btn-secondary">
                 Staff Dashboard
               </a>
-            ) : null}
+            )}
+            {isAdvocate && (
+              <a href="/dashboard" className="btn btn-secondary">
+                Community Dashboard
+              </a>
+            )}
           </div>
         </section>
       </div>
@@ -169,7 +184,8 @@ function AppShell() {
         <nav>
           <a href="/">Home</a>
           <a href={isAuthed ? '/report' : authRedirectHref('/report')}>Report Issue</a>
-          {isStaff ? <a href="/dashboard">Staff Dashboard</a> : null}
+          {isStaff && <a href="/dashboard">Staff Dashboard</a>}
+          {isAdvocate && <a href="/dashboard">Community Dashboard</a>}
           {isAuthed ? (
             <button
               type="button"
@@ -190,6 +206,8 @@ function AppShell() {
           ) : (
             <a href="/login">Sign In</a>
           )}
+          <div className="nav-divider"></div>
+          <ThemeToggle />
         </nav>
       </header>
 

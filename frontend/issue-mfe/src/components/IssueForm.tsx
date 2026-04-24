@@ -63,6 +63,7 @@ export function IssueForm() {
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
   const [photo, setPhoto] = useState<File | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isProcessingAi, setIsProcessingAi] = useState(false);
 
   const [classifyAndSummarize] = useMutation(CLASSIFY_AND_SUMMARIZE_MUTATION, {
     context: { service: 'analytics' },
@@ -72,6 +73,7 @@ export function IssueForm() {
     context: { service: 'issues' },
     onCompleted: async (data) => {
       const issue = data.createIssue;
+      setIsProcessingAi(true);
       try {
         await classifyAndSummarize({
           variables: {
@@ -83,10 +85,27 @@ export function IssueForm() {
         });
       } catch (aiErr) {
         console.warn('AI classification skipped or failed:', aiErr);
+      } finally {
+        setIsProcessingAi(false);
       }
       setIsSuccess(true);
     },
   });
+
+  const isSubmitting = loading || isProcessingAi;
+
+  /**
+   * toBase64
+   * @description Helper to convert a File object to a Base64 string for storage/display.
+   */
+  const toBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -101,10 +120,17 @@ export function IssueForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     
-    // In a real app, you would upload the photo to S3/Cloudinary first
-    // and get a URL back to send to the GraphQL mutation.
-    const photoUrl = photo ? 'https://example.com/uploads/' + photo.name : undefined;
+    let photoUrl: string | undefined = undefined;
+
+    if (photo) {
+      try {
+        photoUrl = await toBase64(photo);
+      } catch (err) {
+        console.error('Photo conversion failed:', err);
+      }
+    }
 
     createIssue({
       variables: {
@@ -143,6 +169,7 @@ export function IssueForm() {
             onChange={handleChange}
             required
             placeholder="e.g., Pothole on Queen Street"
+            disabled={isSubmitting}
           />
         </div>
 
@@ -155,6 +182,7 @@ export function IssueForm() {
             required
             rows={4}
             placeholder="Describe the issue in detail..."
+            disabled={isSubmitting}
           />
         </div>
 
@@ -169,6 +197,7 @@ export function IssueForm() {
             required
             placeholder="Address or neighbourhood"
             className="address-input"
+            disabled={isSubmitting}
           />
         </div>
 
@@ -179,8 +208,8 @@ export function IssueForm() {
 
         {error && <div className="error-msg">{error.message}</div>}
 
-        <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Submitting Report...' : 'Submit Report'}
+        <button type="submit" className="submit-btn" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting Report...' : 'Submit Report'}
         </button>
       </form>
 

@@ -16,6 +16,34 @@
  */
 
 import React from 'react';
+import { useQuery, gql } from '@apollo/client';
+
+/**
+ * GET_URGENT_BACKLOG_COUNT
+ * @description Fetches the total count of open safety hazards.
+ */
+const GET_URGENT_BACKLOG_COUNT = gql`
+  query GetUrgentBacklogCount {
+    issues(status: open, category: safety_hazard, limit: 1) {
+      total
+    }
+  }
+`;
+
+/**
+ * GET_GLOBAL_ANALYTICS
+ * @description Fetches AI-driven insights from the analytics-service.
+ */
+const GET_GLOBAL_ANALYTICS = gql`
+  query GetGlobalAnalytics {
+    insights {
+      resolutionEfficiency
+      resolutionDetail
+      publicSentiment
+      sentimentDetail
+    }
+  }
+`;
 
 /**
  * InsightsDashboard
@@ -23,10 +51,36 @@ import React from 'react';
  * @returns The rendered insights panel.
  */
 export function InsightsDashboard() {
+  const { data: issueData, loading: issueLoading } = useQuery(GET_URGENT_BACKLOG_COUNT, {
+    context: { service: 'issues' },
+  });
+
+  const { data: analyticsData, loading: analyticsLoading } = useQuery(GET_GLOBAL_ANALYTICS, {
+    context: { service: 'analytics' },
+  });
+
+  const urgentCount = issueData?.issues?.total ?? 0;
+  const insightsRes = analyticsData?.insights;
+
   const insights = [
-    { title: 'Resolution Efficiency', value: '+14%', detail: 'AI triage reduced response time by 4 hours on average.', trend: 'up' },
-    { title: 'Public Sentiment', value: 'Positive', detail: 'Residents appreciate real-time updates on flooding reports.', trend: 'up' },
-    { title: 'Urgent Backlog', value: '8 Issues', detail: 'Critical safety hazards require immediate staff assignment.', trend: 'down' },
+    { 
+      title: 'Resolution Efficiency', 
+      value: analyticsLoading ? '...' : (insightsRes?.resolutionEfficiency || 'N/A'), 
+      detail: insightsRes?.resolutionDetail || 'Real-time efficiency tracking enabled.', 
+      trend: 'up' 
+    },
+    { 
+      title: 'Public Sentiment', 
+      value: analyticsLoading ? '...' : (insightsRes?.publicSentiment || 'Neutral'), 
+      detail: insightsRes?.sentimentDetail || 'Community mood is being analyzed by Gemini...', 
+      trend: 'up' 
+    },
+    { 
+      title: 'Urgent Backlog', 
+      value: issueLoading ? '...' : `${urgentCount} Issues`, 
+      detail: 'Critical safety hazards requiring staff attention.', 
+      trend: urgentCount > 10 ? 'up' : 'down' 
+    },
   ];
 
   return (

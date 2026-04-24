@@ -25,7 +25,7 @@
 import mongoose from 'mongoose';
 import { GraphQLError } from 'graphql';
 import { runCityAiChat } from '../agents/cityAiChatAgent';
-import { detectTrends } from '../services/trendService';
+import { detectTrends, getGlobalInsights } from '../services/trendService';
 import { classifyIssue, summarizeIssue } from '../services/geminiService';
 import { pushAiFieldsToIssueService } from '../services/issueWriteback';
 
@@ -37,6 +37,20 @@ function requireAuth(context: any): void {
   if (!context.user) {
     throw new GraphQLError('You must be logged in.', {
       extensions: { code: 'UNAUTHENTICATED' },
+    });
+  }
+}
+
+/**
+ * requireStaffOrInternal
+ * @description Staff role, or a valid service-to-service internal token.
+ */
+function requireStaffOrInternal(context: any): void {
+  if (context.internal) return;
+  requireAuth(context);
+  if (context.user.role !== 'staff') {
+    throw new GraphQLError('Unauthorized access.', {
+      extensions: { code: 'FORBIDDEN' },
     });
   }
 }
@@ -57,9 +71,59 @@ export const resolvers = {
       }
       return detectTrends();
     },
+
+    /**
+     * QUERY insights
+     * @description Returns live global dashboard metrics.
+     */
+    insights: async (_: unknown, __: unknown, context: any) => {
+      requireAuth(context);
+      return getGlobalInsights();
+    },
   },
 
   Mutation: {
+    /**
+     * MUTATION updateSnapshotStatus
+     * @description Updates the status of an issue in the local analytics snapshot.
+     */
+    updateSnapshotStatus: async (
+      _: unknown,
+      { issueId, status }: { issueId: string; status: string },
+      context: any
+    ) => {
+      requireStaffOrInternal(context);
+
+      if (!mongoose.Types.ObjectId.isValid(issueId)) {
+        throw new GraphQLError('Invalid issue ID.', {
+          extensions: { code: 'BAD_USER_INPUT' },
+        });
+      }
+
+      try {
+        if (mongoose.connection.readyState === 1) {
+          const snapshots = mongoose.connection.collection('issuesnapshots');
+          const normalizedStatus = status.replace(/_/g, '-');
+          
+          const updateData: any = { status: normalizedStatus };
+          if (normalizedStatus === 'resolved') {
+            updateData.resolvedAt = new Date();
+          }
+
+          const result = await snapshots.updateOne(
+            { issueId: new mongoose.Types.ObjectId(issueId) },
+            { $set: updateData }
+          );
+
+          return result.modifiedCount > 0 || result.upsertedCount > 0;
+        }
+        return false;
+      } catch (err) {
+        console.error('updateSnapshotStatus error:', err);
+        return false;
+      }
+    },
+
     /**
      * MUTATION chat
      * @description Invokes the LangGraph + Gemini CityAI chatbot.

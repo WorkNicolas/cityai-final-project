@@ -99,6 +99,12 @@ export interface IIssue extends Document {
   upvotes: number;
 
   /**
+   * resolvedAt
+   * @description Optional timestamp of when the issue status was set to 'resolved'.
+   */
+  resolvedAt?: Date;
+
+  /**
    * createdAt
    * @description Timestamp of initial submission. Managed by Mongoose timestamps.
    */
@@ -216,6 +222,14 @@ const IssueSchema = new Schema<IIssue>(
     upvotes: {
       type:    Number,
       default: 0,
+    },
+
+    /**
+     * resolvedAt
+     * @description Timestamp of when the issue was resolved.
+     */
+    resolvedAt: {
+      type: Date,
     },
   },
   {

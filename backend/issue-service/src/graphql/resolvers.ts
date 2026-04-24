@@ -30,6 +30,8 @@
 
 import { GraphQLError } from 'graphql';
 import { Issue } from '../models/Issue';
+import { Notification } from '../models/Notification';
+import { pushStatusUpdateToAnalytics } from '../services/analyticsSync';
 
 /**
  * requireAuth
@@ -99,6 +101,14 @@ export const resolvers = {
       (parent.category ?? '').replace(/-/g, '_'),
   },
 
+  Notification: {
+    id:        (parent: { _id?: unknown; id?: unknown }) => idString(parent),
+    createdAt: (parent: { createdAt?: Date | string }) =>
+      typeof parent.createdAt === 'string'
+        ? parent.createdAt
+        : parent.createdAt?.toISOString?.() ?? '',
+  },
+
   Query: {
     /**
      * QUERY issue
@@ -160,9 +170,38 @@ export const resolvers = {
       requireAuth(context);
       return Issue.find({ reportedBy: context.user.sub }).sort({ createdAt: -1 }).lean();
     },
+
+    /**
+     * QUERY myNotifications
+     * @description Returns all notifications for the authenticated user.
+     */
+    myNotifications: async (_: unknown, __: unknown, context: any) => {
+      requireAuth(context);
+      return Notification.find({ userId: context.user.sub }).sort({ createdAt: -1 }).limit(50).lean();
+    },
   },
 
   Mutation: {
+    /**
+     * MUTATION markNotificationAsRead
+     * @description Marks a notification as read for the user.
+     */
+    markNotificationAsRead: async (_: unknown, { id }: { id: string }, context: any) => {
+      requireAuth(context);
+      const notification = await Notification.findOneAndUpdate(
+        { _id: id, userId: context.user.sub },
+        { isRead: true },
+        { new: true }
+      ).lean();
+
+      if (!notification) {
+        throw new GraphQLError('Notification not found.', {
+          extensions: { code: 'NOT_FOUND' },
+        });
+      }
+      return notification;
+    },
+
     /**
      * MUTATION createIssue
      * @description Submits a new municipal issue. Requires resident authentication.
@@ -202,9 +241,15 @@ export const resolvers = {
       requireRole(context, 'staff');
 
       const normalizedStatus = status.replace(/_/g, '-');
+      const updateFields: any = { status: normalizedStatus };
+      
+      if (normalizedStatus === 'resolved') {
+        updateFields.resolvedAt = new Date();
+      }
+
       const issue = await Issue.findByIdAndUpdate(
         id,
-        { status: normalizedStatus },
+        { $set: updateFields },
         { new: true }
       ).lean();
 
@@ -213,6 +258,18 @@ export const resolvers = {
           extensions: { code: 'NOT_FOUND' },
         });
       }
+
+      // Async sync with analytics-service
+      pushStatusUpdateToAnalytics(id, normalizedStatus).catch(err => 
+        console.error('pushStatusUpdateToAnalytics failed:', err)
+      );
+
+      // Create a notification for the resident
+      Notification.create({
+        userId:  issue.reportedBy,
+        type:    'status_change',
+        message: `Your report "${issue.title}" has been updated to ${normalizedStatus.replace(/-/g, ' ').toUpperCase()}.`,
+      }).catch(err => console.error('Failed to create notification:', err));
 
       return issue;
     },

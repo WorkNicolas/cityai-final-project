@@ -21,7 +21,6 @@ import InsightsDashboard from './InsightsDashboard';
 import Heatmap from './Heatmap';
 import TrendChart from './TrendChart';
 import BacklogTracker from './BacklogTracker';
-import ThemeToggle from './ThemeToggle';
 
 /**
  * IssueDashboard
@@ -36,7 +35,6 @@ export function IssueDashboard() {
           <h2>Municipal Operations</h2>
           <p>Real-time municipal issue analytics and management</p>
         </div>
-        <ThemeToggle />
       </header>
 
       <div className="dashboard-content">

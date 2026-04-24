@@ -17,10 +17,14 @@ export default defineConfig({
     react(),
     federation({
       name: 'host',
+      filename: 'remoteEntry.js',
       remotes: {
         auth:      'http://localhost:3001/assets/remoteEntry.js',
         issue:     'http://localhost:3002/assets/remoteEntry.js',
         analytics: 'http://localhost:3003/assets/remoteEntry.js',
+      },
+      exposes: {
+        './ThemeContext': './src/context/ThemeContext.tsx',
       },
       shared: ['react', 'react-dom', '@apollo/client'],
     }),

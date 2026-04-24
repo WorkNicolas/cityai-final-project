@@ -57,11 +57,23 @@ body {
   color: var(--color-primary);
 }
 
+.app-header nav {
+  display: flex;
+  align-items: center;
+}
+
 .app-header nav a {
   margin-left: 1.5rem;
   text-decoration: none;
   color: var(--color-text-secondary);
   font-weight: 500;
+}
+
+.nav-divider {
+  width: 1px;
+  height: 1.5rem;
+  background-color: var(--color-divider);
+  margin: 0 1.5rem;
 }
 
 .app-header nav a:hover {

@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
-import { GraphQLError } from 'graphql';
 
 vi.mock('../models/Issue', () => ({
   Issue: {

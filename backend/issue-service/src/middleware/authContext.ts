@@ -23,16 +23,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-const JWT_SECRET =
-  process.env.JWT_SECRET && process.env.JWT_SECRET.length > 0
-    ? process.env.JWT_SECRET
-    : 'dev-jwt-secret-change-me';
-
-const INTERNAL_SERVICE_TOKEN =
-  process.env.INTERNAL_SERVICE_TOKEN && process.env.INTERNAL_SERVICE_TOKEN.length > 0
-    ? process.env.INTERNAL_SERVICE_TOKEN
-    : 'dev-internal-service-token';
-
 /**
  * JwtPayload
  * @description Shape of the decoded JWT issued by auth-service.
@@ -91,6 +81,16 @@ export interface AuthContext {
  * @returns {AuthContext} The populated context object for this request.
  */
 export function buildAuthContext({ req, res }: { req: Request; res: Response }): AuthContext {
+  const JWT_SECRET =
+    process.env.JWT_SECRET && process.env.JWT_SECRET.length > 0
+      ? process.env.JWT_SECRET
+      : 'dev-jwt-secret-change-me';
+
+  const INTERNAL_SERVICE_TOKEN =
+    process.env.INTERNAL_SERVICE_TOKEN && process.env.INTERNAL_SERVICE_TOKEN.length > 0
+      ? process.env.INTERNAL_SERVICE_TOKEN
+      : 'dev-internal-service-token';
+
   let user: JwtPayload | null = null;
 
   const token: string | undefined = req.cookies?.token;

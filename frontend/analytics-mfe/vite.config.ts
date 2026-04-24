@@ -23,6 +23,7 @@ export default defineConfig({
       },
       exposes: {
         './IssueDashboard':    './src/components/IssueDashboard.tsx',
+        './AdvocateDashboard': './src/components/AdvocateDashboard.tsx',
         './Chatbot':           './src/components/Chatbot.tsx',
         './ThemeToggle':       './src/components/ThemeToggle.tsx',
         './Heatmap':           './src/components/Heatmap.tsx',
