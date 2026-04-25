@@ -318,18 +318,23 @@ export const resolvers = {
 
     /**
      * MUTATION upvoteIssue
-     * @description Increments the upvote count for an issue. Requires authentication.
+     * @description Increments the upvote count for an issue. Requires advocate role.
      * Enforces one-vote-per-user rule.
      */
     upvoteIssue: async (_: unknown, { id }: any, context: any) => {
-      requireAuth(context);
+      requireRole(context, 'advocate');
       const userId = context.user.sub;
 
       const existing = await Issue.findById(id);
       if (!existing) throw new GraphQLError('Issue not found.', { extensions: { code: 'NOT_FOUND' } });
 
-      // If user already upvoted, do nothing (or we could treat as toggle)
-      if (existing.upvotedBy.includes(userId)) return existing;
+      // If user already upvoted, toggle it off
+      if (existing.upvotedBy.includes(userId)) {
+        return Issue.findByIdAndUpdate(id, {
+          $pull: { upvotedBy: userId },
+          $inc: { upvotes: -1 }
+        }, { new: true }).lean();
+      }
 
       const update: any = {
         $addToSet: { upvotedBy: userId },
@@ -339,7 +344,7 @@ export const resolvers = {
       // If they had downvoted before, remove it
       if (existing.downvotedBy.includes(userId)) {
         update.$pull = { downvotedBy: userId };
-        update.$inc.downvotes = -1;
+        update.$inc = { ...update.$inc, downvotes: -1 };
       }
 
       return Issue.findByIdAndUpdate(id, update, { new: true }).lean();
@@ -347,18 +352,23 @@ export const resolvers = {
 
     /**
      * MUTATION downvoteIssue
-     * @description Increments the downvote count for an issue. Requires authentication.
+     * @description Increments the downvote count for an issue. Requires advocate role.
      * Enforces one-vote-per-user rule.
      */
     downvoteIssue: async (_: unknown, { id }: any, context: any) => {
-      requireAuth(context);
+      requireRole(context, 'advocate');
       const userId = context.user.sub;
 
       const existing = await Issue.findById(id);
       if (!existing) throw new GraphQLError('Issue not found.', { extensions: { code: 'NOT_FOUND' } });
 
-      // If user already downvoted, do nothing
-      if (existing.downvotedBy.includes(userId)) return existing;
+      // If user already downvoted, toggle it off
+      if (existing.downvotedBy.includes(userId)) {
+        return Issue.findByIdAndUpdate(id, {
+          $pull: { downvotedBy: userId },
+          $inc: { downvotes: -1 }
+        }, { new: true }).lean();
+      }
 
       const update: any = {
         $addToSet: { downvotedBy: userId },
@@ -368,7 +378,7 @@ export const resolvers = {
       // If they had upvoted before, remove it
       if (existing.upvotedBy.includes(userId)) {
         update.$pull = { upvotedBy: userId };
-        update.$inc.upvotes = -1;
+        update.$inc = { ...update.$inc, upvotes: -1 };
       }
 
       return Issue.findByIdAndUpdate(id, update, { new: true }).lean();
@@ -376,10 +386,10 @@ export const resolvers = {
 
     /**
      * MUTATION addComment
-     * @description Adds a new comment to an issue thread.
+     * @description Adds a new comment to an issue thread. Requires advocate role.
      */
     addComment: async (_: unknown, { issueId, text, userName }: any, context: any) => {
-      requireAuth(context);
+      requireRole(context, 'advocate');
 
       const comment = {
         userId:    context.user.sub,

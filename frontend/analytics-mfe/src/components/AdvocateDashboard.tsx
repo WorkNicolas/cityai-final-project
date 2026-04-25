@@ -10,7 +10,7 @@
 import React from 'react';
 import AdvocateIssueTable from './AdvocateIssueTable';
 
-export function AdvocateDashboard(): JSX.Element {
+export function AdvocateDashboard() {
   return (
     <div className="advocate-dashboard">
       <header className="dashboard-header">

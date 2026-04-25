@@ -42,11 +42,29 @@ async function seedUsers() {
   return users;
 }
 
+async function run() {
+  try {
+    const users = await seedUsers();
+    const resident = users.find(u => u.role === 'resident');
+    const advocate = users.find(u => u.role === 'advocate');
+    const staff = users.find(u => u.role === 'staff');
+
+    if (resident && advocate && staff) {
+      await seedIssues(String(resident._id), String(advocate._id), String(staff._id));
+    }
+    console.log('Seeding Complete!');
+    process.exit(0);
+  } catch (err) {
+    console.error('Seeding Failed:', err);
+    process.exit(1);
+  }
+}
+
 /**
  * seedIssues
  * @description Resets and populates the issue and analytics databases with demo reports.
  */
-async function seedIssues(residentId: string) {
+async function seedIssues(residentId: string, advocateId: string, staffId: string) {
   console.log('Seeding Issues, Notifications & Snapshots...');
   const issueConn = await mongoose.createConnection(MONGO_ISSUES).asPromise();
   const Issue = issueConn.model('Issue', new mongoose.Schema({}, { strict: false, timestamps: true }));
@@ -70,26 +88,36 @@ async function seedIssues(residentId: string) {
     { title: 'Pothole Alert', category: 'pothole', status: 'open', location: '99 York St' },
   ];
 
-  for (const data of issueData) {
-    const upvotes = Math.floor(Math.random() * 20);
-    const downvotes = Math.floor(Math.random() * 5);
+  for (let i = 0; i < issueData.length; i++) {
+    const data = issueData[i];
+    
+    // Vary comments for testing: 
+    // - Index 0, 3: Multiple comments
+    // - Index 1, 4: Single comment
+    // - Index 2, 5: No comments
+    // - Index 6: Multiple comments
+    let comments: any[] = [];
+    if ([0, 3, 6].includes(i)) {
+      comments = [
+        { userId: advocateId, userName: 'Kyle Advocate', text: 'First guidance note: verifying local impact.', createdAt: new Date(Date.now() - 86400000) },
+        { userId: advocateId, userName: 'Kyle Advocate', text: 'Update: Escalated to public works department.', createdAt: new Date() }
+      ];
+    } else if ([1, 4].includes(i)) {
+      comments = [
+        { userId: advocateId, userName: 'Kyle Advocate', text: 'As a community advocate, I have flagged this for urgent staff review.', createdAt: new Date() }
+      ];
+    }
 
     const issue = await Issue.create({
       ...data,
       description: `This is a demo report for ${data.title}. Needs urgent attention.`,
       reportedBy: residentId,
-      upvotes,
+      assignedTo: [0, 1].includes(i) ? staffId : null,
+      upvotes: 0,
       upvotedBy: [],
-      downvotes,
+      downvotes: 0,
       downvotedBy: [],
-      comments: [
-        {
-          userId: residentId,
-          userName: 'Keziah Resident',
-          text: 'This is getting dangerous, please fix it!',
-          createdAt: new Date()
-        }
-      ],
+      comments,
       aiSummary: `AI Summary: ${data.title} reported at ${data.location}.`
     });
 
@@ -108,21 +136,6 @@ async function seedIssues(residentId: string) {
   console.log(`Created ${issueData.length} issues and snapshots.`);
   await issueConn.close();
   await analyticsConn.close();
-}
-
-async function run() {
-  try {
-    const users = await seedUsers();
-    const resident = users.find(u => u.role === 'resident');
-    if (resident) {
-      await seedIssues(String(resident._id));
-    }
-    console.log('Seeding Complete!');
-    process.exit(0);
-  } catch (err) {
-    console.error('Seeding Failed:', err);
-    process.exit(1);
-  }
 }
 
 run();

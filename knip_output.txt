@@ -1,0 +1,180 @@
+Unused files (133)
+backend/analytics-service/dist/agents/cityAiChatAgent.d.ts                           
+backend/analytics-service/dist/agents/cityAiChatAgent.js                             
+backend/analytics-service/dist/graphql/resolvers.d.ts                                
+backend/analytics-service/dist/graphql/resolvers.js                                  
+backend/analytics-service/dist/graphql/typeDefs.d.ts                                 
+backend/analytics-service/dist/graphql/typeDefs.js                                   
+backend/analytics-service/dist/index.d.ts                                            
+backend/analytics-service/dist/middleware/authContext.d.ts                           
+backend/analytics-service/dist/middleware/authContext.js                             
+backend/analytics-service/dist/services/geminiService.d.ts                           
+backend/analytics-service/dist/services/geminiService.js                             
+backend/analytics-service/dist/services/issueWriteback.d.ts                          
+backend/analytics-service/dist/services/issueWriteback.js                            
+backend/analytics-service/dist/services/trendService.d.ts                            
+backend/analytics-service/dist/services/trendService.js                              
+backend/auth-service/dist/graphql/resolvers.d.ts                                     
+backend/auth-service/dist/graphql/resolvers.js                                       
+backend/auth-service/dist/graphql/typeDefs.d.ts                                      
+backend/auth-service/dist/graphql/typeDefs.js                                        
+backend/auth-service/dist/index.d.ts                                                 
+backend/auth-service/dist/middleware/authContext.d.ts                                
+backend/auth-service/dist/middleware/authContext.js                                  
+backend/auth-service/dist/middleware/passport.d.ts                                   
+backend/auth-service/dist/middleware/passport.js                                     
+backend/auth-service/dist/models/User.d.ts                                           
+backend/auth-service/dist/models/User.js                                             
+backend/issue-service/dist/graphql/resolvers.d.ts                                    
+backend/issue-service/dist/graphql/resolvers.js                                      
+backend/issue-service/dist/graphql/typeDefs.d.ts                                     
+backend/issue-service/dist/graphql/typeDefs.js                                       
+backend/issue-service/dist/index.d.ts                                                
+backend/issue-service/dist/middleware/authContext.d.ts                               
+backend/issue-service/dist/middleware/authContext.js                                 
+backend/issue-service/dist/models/Issue.d.ts                                         
+backend/issue-service/dist/models/Issue.js                                           
+frontend/analytics-mfe/dist/assets/__federation_expose_AdvocateDashboard-CEeD768-.js 
+frontend/analytics-mfe/dist/assets/__federation_expose_AdvocateIssueTable-C5EB3ybc.js
+frontend/analytics-mfe/dist/assets/__federation_expose_BacklogTracker-ICvQoppq.js    
+frontend/analytics-mfe/dist/assets/__federation_expose_Chatbot-BLzVFF9o.js           
+frontend/analytics-mfe/dist/assets/__federation_expose_Heatmap-BUu9vwAX.js           
+frontend/analytics-mfe/dist/assets/__federation_expose_InsightsDashboard-a64DbSlE.js 
+frontend/analytics-mfe/dist/assets/__federation_expose_IssueDashboard-CFygF822.js    
+frontend/analytics-mfe/dist/assets/__federation_expose_ThemeToggle-B4kfc1nk.js       
+frontend/analytics-mfe/dist/assets/__federation_expose_TrendChart-kQqctAED.js        
+frontend/analytics-mfe/dist/assets/__federation_fn_import-BKF7m6_F.js                
+frontend/analytics-mfe/dist/assets/__federation_shared_@apollo/client-BLXd4Zv0.js    
+frontend/analytics-mfe/dist/assets/__federation_shared_react-BxDxZi3D.js             
+frontend/analytics-mfe/dist/assets/__federation_shared_react-dom-B6MEuSIl.js         
+frontend/analytics-mfe/dist/assets/_virtual___federation_fn_import-BCy-zLwd.js       
+frontend/analytics-mfe/dist/assets/AdvocateIssueTable-3H0n2nrR.js                    
+frontend/analytics-mfe/dist/assets/BacklogTracker-lNfvaiyf.js                        
+frontend/analytics-mfe/dist/assets/Chatbot-DZttBDgT.js                               
+frontend/analytics-mfe/dist/assets/chunk-aE5tSE4H.js                                 
+frontend/analytics-mfe/dist/assets/Heatmap-DckqIRlr.js                               
+frontend/analytics-mfe/dist/assets/index-CvT0BVqu.js                                 
+frontend/analytics-mfe/dist/assets/IssueDashboard-gk-5jE17.js                        
+frontend/analytics-mfe/dist/assets/jsx-runtime-DejsN8CJ.js                           
+frontend/analytics-mfe/dist/assets/preload-helper-Cpz2jaYO.js                        
+frontend/analytics-mfe/dist/assets/react-dom-Bp9kaN22.js                             
+frontend/analytics-mfe/dist/assets/react-NT39kypA.js                                 
+frontend/analytics-mfe/dist/assets/remoteEntry.js                                    
+frontend/analytics-mfe/dist/assets/style-BCCV78QL.css                                
+frontend/analytics-mfe/dist/assets/TrendChart-nUTitqVJ.js                            
+frontend/analytics-mfe/src/components/AdvocateDashboard.tsx                          
+frontend/analytics-mfe/src/components/AdvocateIssueTable.tsx                         
+frontend/analytics-mfe/src/components/InsightsDashboard.tsx                          
+frontend/analytics-mfe/src/components/ThemeToggle.tsx                                
+frontend/auth-mfe/dist/assets/__federation_expose_LoginForm-BtKsEuh6.js              
+frontend/auth-mfe/dist/assets/__federation_expose_RegisterForm-Du1QX5om.js           
+frontend/auth-mfe/dist/assets/__federation_fn_import-QutKwrKh.js                     
+frontend/auth-mfe/dist/assets/__federation_shared_@apollo/client-Dn0Ty9TZ.js         
+frontend/auth-mfe/dist/assets/__federation_shared_react-D6lDMQsa.js                  
+frontend/auth-mfe/dist/assets/__federation_shared_react-dom-BGojCIpH.js              
+frontend/auth-mfe/dist/assets/_virtual___federation_fn_import-BmnK0S17.js            
+frontend/auth-mfe/dist/assets/chunk-DP_BRqTB.js                                      
+frontend/auth-mfe/dist/assets/index-BMJQZpmW.js                                      
+frontend/auth-mfe/dist/assets/jsx-runtime-aB-r301L.js                                
+frontend/auth-mfe/dist/assets/OAuthButtons-CyH3WFYk.js                               
+frontend/auth-mfe/dist/assets/preload-helper-Cpz2jaYO.js                             
+frontend/auth-mfe/dist/assets/react-BCpeYGu-.js                                      
+frontend/auth-mfe/dist/assets/react-dom-DU_712Zs.js                                  
+frontend/auth-mfe/dist/assets/remoteEntry.js                                         
+frontend/auth-mfe/dist/assets/style-GxcHNnX0.css                                     
+frontend/auth-mfe/src/components/LoginForm.tsx                                       
+frontend/auth-mfe/src/components/OAuthButtons.tsx                                    
+frontend/auth-mfe/src/components/RegisterForm.tsx                                    
+frontend/host/dist/assets/__federation_expose_ThemeContext-Csd6OdRB.js               
+frontend/host/dist/assets/__federation_fn_import-E0Ib3Uak.js                         
+frontend/host/dist/assets/__federation_shared_@apollo/client-CISxy98M.js             
+frontend/host/dist/assets/__federation_shared_react-D6lDMQsa.js                      
+frontend/host/dist/assets/__federation_shared_react-dom-BGojCIpH.js                  
+frontend/host/dist/assets/_virtual___federation_fn_import-DsnBJUDS.js                
+frontend/host/dist/assets/chunk-DP_BRqTB.js                                          
+frontend/host/dist/assets/index-Bb8nTnCL.js                                          
+frontend/host/dist/assets/preload-helper-Cpz2jaYO.js                                 
+frontend/host/dist/assets/react-BCpeYGu-.js                                          
+frontend/host/dist/assets/react-dom-DU_712Zs.js                                      
+frontend/host/dist/assets/remoteEntry.js                                             
+frontend/host/dist/assets/style-9Dx6ON0v.css                                         
+frontend/host/dist/assets/ThemeContext-DVxyMwX2.js                                   
+frontend/issue-mfe/dist/assets/__federation_expose_IssueDetail-DaN4__5L.js           
+frontend/issue-mfe/dist/assets/__federation_expose_IssueForm-CLoS2Az_.js             
+frontend/issue-mfe/dist/assets/__federation_expose_IssueList-DcQEXKtl.js             
+frontend/issue-mfe/dist/assets/__federation_expose_IssueMap-DqeiiNvJ.js              
+frontend/issue-mfe/dist/assets/__federation_expose_IssueStatusBadge-C7wmoo_x.js      
+frontend/issue-mfe/dist/assets/__federation_expose_NotificationFeed-B-4BtzN6.js      
+frontend/issue-mfe/dist/assets/__federation_expose_PhotoUpload-DZCDvAl_.js           
+frontend/issue-mfe/dist/assets/__federation_fn_import-Ddt1DPeg.js                    
+frontend/issue-mfe/dist/assets/__federation_shared_@apollo/client-Dk620fxf.js        
+frontend/issue-mfe/dist/assets/__federation_shared_react-D6lDMQsa.js                 
+frontend/issue-mfe/dist/assets/__federation_shared_react-dom-BGojCIpH.js             
+frontend/issue-mfe/dist/assets/_virtual___federation_fn_import-BXFXMrta.js           
+frontend/issue-mfe/dist/assets/chunk-DP_BRqTB.js                                     
+frontend/issue-mfe/dist/assets/index-CmCBsLh1.js                                     
+frontend/issue-mfe/dist/assets/IssueMap-DNK-XgkV.js                                  
+frontend/issue-mfe/dist/assets/IssueStatusBadge-EO6k9Ep1.js                          
+frontend/issue-mfe/dist/assets/jsx-runtime-aB-r301L.js                               
+frontend/issue-mfe/dist/assets/PhotoUpload-uPDg-yKy.js                               
+frontend/issue-mfe/dist/assets/preload-helper-Cpz2jaYO.js                            
+frontend/issue-mfe/dist/assets/react-BCpeYGu-.js                                     
+frontend/issue-mfe/dist/assets/react-dom-DU_712Zs.js                                 
+frontend/issue-mfe/dist/assets/remoteEntry.js                                        
+frontend/issue-mfe/dist/assets/style-BCCV78QL.css                                    
+frontend/issue-mfe/src/components/CommentThread.tsx                                  
+frontend/issue-mfe/src/components/IssueDetail.tsx                                    
+frontend/issue-mfe/src/components/IssueForm.tsx                                      
+frontend/issue-mfe/src/components/IssueList.tsx                                      
+frontend/issue-mfe/src/components/IssueMap.tsx                                       
+frontend/issue-mfe/src/components/IssueStatusBadge.tsx                               
+frontend/issue-mfe/src/components/NotificationFeed.tsx                               
+frontend/issue-mfe/src/components/PhotoUpload.tsx                                    
+frontend/shared/types.ts                                                             
+scripts/bulk_seed.js                                                                 
+Unused dependencies (10)
+cors            backend/analytics-service/package.json:21:6
+cors            backend/auth-service/package.json:18:6     
+cors            backend/issue-service/package.json:17:6    
+@apollo/client  frontend/auth-mfe/package.json:14:6        
+graphql         frontend/auth-mfe/package.json:15:6        
+@apollo/client  frontend/issue-mfe/package.json:14:6       
+graphql         frontend/issue-mfe/package.json:15:6       
+leaflet         frontend/issue-mfe/package.json:16:6       
+react-leaflet   frontend/issue-mfe/package.json:19:6       
+mongodb         package.json:28:6                          
+Unused devDependencies (6)
+@types/cors                backend/analytics-service/package.json:32:6
+@types/cors                backend/auth-service/package.json:33:6     
+@types/cors                backend/issue-service/package.json:28:6    
+@testing-library/jest-dom  frontend/analytics-mfe/package.json:28:6   
+@types/leaflet             frontend/issue-mfe/package.json:27:6       
+@types/mongoose            package.json:17:6                          
+Unlisted dependencies (3)
+auth/LoginForm     frontend/host/src/App.tsx:30:37
+issue/IssueForm    frontend/host/src/App.tsx:34:37
+analytics/Chatbot  frontend/host/src/App.tsx:36:36
+Unused exports (8)
+BacklogTracker   function  frontend/analytics-mfe/src/components/BacklogTracker.tsx:62:17
+default          function  frontend/analytics-mfe/src/components/Chatbot.tsx:246:16      
+Heatmap          function  frontend/analytics-mfe/src/components/Heatmap.tsx:78:17       
+default          function  frontend/analytics-mfe/src/components/IssueDashboard.tsx:73:16
+TrendChart       function  frontend/analytics-mfe/src/components/TrendChart.tsx:43:17    
+authClient                 frontend/host/src/apollo/client.ts:76:14                      
+analyticsClient            frontend/host/src/apollo/client.ts:85:14                      
+default          function  frontend/host/src/components/ThemeToggle.tsx:152:16           
+Unused exported types (6)
+AuthContext     interface  backend/analytics-service/src/middleware/authContext.ts:47:18
+TrendInsight    interface  backend/analytics-service/src/services/trendService.ts:33:18 
+GlobalInsights  interface  backend/analytics-service/src/services/trendService.ts:134:18
+AuthContext     interface  backend/auth-service/src/middleware/authContext.ts:49:18     
+AuthContext     interface  backend/issue-service/src/middleware/authContext.ts:48:18    
+INotification   interface  backend/issue-service/src/models/Notification.ts:27:18       
+Duplicate exports (6)
+BacklogTracker|default  frontend/analytics-mfe/src/components/BacklogTracker.tsx
+Chatbot|default         frontend/analytics-mfe/src/components/Chatbot.tsx       
+Heatmap|default         frontend/analytics-mfe/src/components/Heatmap.tsx       
+IssueDashboard|default  frontend/analytics-mfe/src/components/IssueDashboard.tsx
+TrendChart|default      frontend/analytics-mfe/src/components/TrendChart.tsx    
+ThemeToggle|default     frontend/host/src/components/ThemeToggle.tsx            
+Configuration hints (8)

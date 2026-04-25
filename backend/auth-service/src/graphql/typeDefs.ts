@@ -61,6 +61,11 @@ export const typeDefs = `
     Returns null if the request is unauthenticated.
     """
     me: User
+
+    """
+    users — returns a list of users, optionally filtered by roles.
+    """
+    users(roles: [UserRole!]): [User!]!
   }
 
   type Mutation {

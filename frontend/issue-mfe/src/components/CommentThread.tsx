@@ -86,7 +86,7 @@ export function CommentThread({ issueId, comments, currentUserName, onCommentAdd
         .comments-list { margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; }
         .comment-item { background: var(--color-surface-alt); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--color-divider); }
         .comment-meta { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; color: var(--color-text-secondary); }
-        .comment-text { margin: 0; color: var(--color-text-primary); line-height: 1.5; font-size: 0.9375rem; }
+        .comment-text { margin: 0; color: var(--color-text-primary); line-height: 1.5; font-size: 0.9375rem; text-align: left; }
         .no-comments { font-style: italic; color: var(--color-text-disabled); }
         
         .comment-form textarea { width: 100%; min-height: 80px; padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--color-divider); background: var(--color-surface); color: var(--color-text-primary); margin-bottom: 1rem; resize: vertical; }

@@ -54,9 +54,9 @@ const MonitorIcon = () => (
 /**
  * ThemeToggle
  * @description Renders a themed segmented control to toggle theme modes.
- * @returns {JSX.Element} The rendered theme selector.
+ * @returns The rendered theme selector.
  */
-export function ThemeToggle(): JSX.Element {
+export function ThemeToggle() {
   const { mode, setMode } = useTheme();
 
   const options = [

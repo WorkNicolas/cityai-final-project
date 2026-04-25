@@ -1,10 +1,10 @@
 /** frontend/analytics-mfe/src/components/AdvocateIssueTable.tsx
  * @file AdvocateIssueTable.tsx
- * @description Refactored Community Advocate Dashboard issue table.
- * Features a streamlined layout with integrated voting and comment modal.
+ * @description Reddit-style issue table for the Community Advocate Dashboard.
+ * Integrates engagement actions directly into the issue info cell.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-24
- * @version 0.2.0
+ * @version 0.3.0
  */
 
 import React, { useState } from 'react';
@@ -79,10 +79,6 @@ const ADD_COMMENT = gql`
   }
 `;
 
-/**
- * CommentModal
- * @description Modal displaying comment history and a new comment input.
- */
 function CommentModal({ issue, onClose, onAddComment, currentUserName }: any) {
   const [text, setText] = useState('');
 
@@ -98,7 +94,12 @@ function CommentModal({ issue, onClose, onAddComment, currentUserName }: any) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
           <h3>Comments: {issue.title}</h3>
-          <button className="close-btn" onClick={onClose}>×</button>
+          <button className="close-btn" onClick={onClose} aria-label="Close">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </header>
 
         <div className="modal-body">
@@ -145,7 +146,7 @@ function CommentModal({ issue, onClose, onAddComment, currentUserName }: any) {
         .comment-meta { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; }
         .comment-author { font-weight: 700; color: var(--color-text-primary); }
         .comment-date { color: var(--color-text-disabled); }
-        .comment-text { margin: 0; font-size: 0.9rem; line-height: 1.4; color: var(--color-text-primary); white-space: pre-wrap; }
+        .comment-text { margin: 0; font-size: 0.9rem; line-height: 1.4; color: var(--color-text-primary); white-space: pre-wrap; text-align: left; }
         .no-comments { text-align: center; color: var(--color-text-disabled); font-style: italic; }
       `}</style>
     </div>
@@ -204,11 +205,10 @@ export function AdvocateIssueTable() {
       <table className="advocate-table">
         <thead>
           <tr>
-            <th>Issue</th>
-            <th>Category</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>ISSUE</th>
+            <th>CATEGORY</th>
+            <th>LOCATION</th>
+            <th>STATUS</th>
           </tr>
         </thead>
         <tbody>
@@ -221,49 +221,46 @@ export function AdvocateIssueTable() {
             return (
               <tr key={issue.id}>
                 <td>
-                  <div className="issue-info">
-                    <span className="issue-title">{issue.title}</span>
-                    <span className="issue-date">{new Date(parseInt(issue.createdAt) || issue.createdAt).toLocaleDateString()}</span>
-                  </div>
-                </td>
-                <td><span className="category-tag">{issue.category.replace(/[_-]/g, ' ')}</span></td>
-                <td><span className="location-text">{issue.location}</span></td>
-                <td>
-                  <span className={`status-pill ${issue.status}`}>
-                    {issue.status.replace(/[_-]/g, ' ')}
-                  </span>
-                </td>
-                <td>
-                  <div className="actions-cell">
-                    <div className="vote-block">
-                      <button 
-                        className={`vote-icon-btn up ${hasUpvoted ? 'active' : ''}`} 
-                        onClick={() => upvote({ variables: { id: issue.id } })}
-                        title="Upvote"
-                      >
-                        <svg viewBox="0 0 24 24" fill={hasUpvoted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
-                          <path d="M12 4L3 15h6v5h6v-5h6z" />
+                  <div className="issue-info-expanded">
+                    <span className="issue-title-large">{issue.title}</span>
+                    <span className="issue-date-sub">{new Date(parseInt(issue.createdAt) || issue.createdAt).toLocaleDateString()}</span>
+                    
+                    <div className="engagement-row">
+                      <div className="vote-pill">
+                        <button 
+                          className={`vote-pill-btn ${hasUpvoted ? 'active-up' : ''}`} 
+                          onClick={() => upvote({ variables: { id: issue.id } })}
+                        >
+                          <svg viewBox="0 0 24 24" fill={hasUpvoted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="3">
+                            <path d="M12 4L3 15h6v5h6v-5h6z" />
+                          </svg>
+                        </button>
+                        <span className="vote-score">{score}</span>
+                        <button 
+                          className={`vote-pill-btn ${hasDownvoted ? 'active-down' : ''}`} 
+                          onClick={() => downvote({ variables: { id: issue.id } })}
+                        >
+                          <svg viewBox="0 0 24 24" fill={hasDownvoted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="3">
+                            <path d="M12 20L21 9h-6V4H9v5H3z" />
+                          </svg>
+                        </button>
+                      </div>
+                      
+                      <button className="comment-btn-link" onClick={() => setSelectedIssue(issue)}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.38 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.38 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                         </svg>
-                      </button>
-                      <span className={`score-text ${score > 0 ? 'positive' : score < 0 ? 'negative' : ''}`}>{score}</span>
-                      <button 
-                        className={`vote-icon-btn down ${hasDownvoted ? 'active' : ''}`} 
-                        onClick={() => downvote({ variables: { id: issue.id } })}
-                        title="Downvote"
-                      >
-                        <svg viewBox="0 0 24 24" fill={hasDownvoted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
-                          <path d="M12 20L21 9h-6V4H9v5H3z" />
-                        </svg>
+                        <span>{commentCount}</span>
                       </button>
                     </div>
-                    
-                    <button className="comment-trigger" onClick={() => setSelectedIssue(issue)}>
-                      <svg className="comment-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.38 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.38 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                      </svg>
-                      <span>{commentCount}</span>
-                    </button>
                   </div>
+                </td>
+                <td><span className="category-text-plain">{issue.category.replace(/[_-]/g, ' ')}</span></td>
+                <td><span className="location-text-plain">{issue.location}</span></td>
+                <td>
+                  <span className={`status-badge-flat ${issue.status}`}>
+                    {issue.status.replace(/[_-]/g, ' ')}
+                  </span>
                 </td>
               </tr>
             );
@@ -281,38 +278,40 @@ export function AdvocateIssueTable() {
       )}
 
       <style>{`
-        .advocate-table-container { background: var(--color-surface); border-radius: 0.5rem; border: 1px solid var(--color-divider); overflow: hidden; }
-        .advocate-table { width: 100%; border-collapse: collapse; text-align: left; }
-        .advocate-table th { padding: 1rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; color: var(--color-text-secondary); background: var(--color-surface-alt); border-bottom: 1px solid var(--color-divider); }
-        .advocate-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-divider); color: var(--color-text-primary); }
+        .advocate-table-container { background: var(--color-surface); border-radius: 0.5rem; border: 1px solid var(--color-divider); overflow: hidden; margin-top: 1rem; }
+        .advocate-table { width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; }
+        .advocate-table th { padding: 1.25rem 2rem; font-size: 0.85rem; font-weight: 700; color: #5a6b82; background: #f8fafc; border-bottom: 1px solid var(--color-divider); letter-spacing: 0.025em; }
+        .advocate-table td { padding: 1.5rem 2rem; border-bottom: 1px solid #edf2f7; vertical-align: top; }
         
-        .issue-info { display: flex; flex-direction: column; }
-        .issue-title { font-weight: 600; font-size: 0.9375rem; }
-        .issue-date { font-size: 0.75rem; color: var(--color-text-disabled); }
+        .issue-info-expanded { display: flex; flex-direction: column; gap: 0.4rem; }
+        .issue-title-large { font-weight: 700; font-size: 1.05rem; color: #1a202c; }
+        .issue-date-sub { font-size: 0.85rem; color: #a0aec0; margin-bottom: 0.5rem; }
         
-        .category-tag { font-size: 0.75rem; text-transform: capitalize; color: var(--color-text-secondary); }
-        .location-text { font-size: 0.875rem; }
+        .engagement-row { display: flex; align-items: center; gap: 1.5rem; margin-top: 0.25rem; }
         
-        .status-pill { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .status-pill.open { background: rgba(0, 120, 255, 0.1); color: #0078ff; }
-        .status-pill.in_progress { background: rgba(255, 165, 0, 0.1); color: #ffa500; }
-        .status-pill.resolved { background: rgba(40, 167, 69, 0.1); color: #28a745; }
+        .vote-pill { display: flex; align-items: center; gap: 0.75rem; background: #f1f5f9; padding: 0.375rem 1rem; border-radius: 2rem; border: 1px solid #e2e8f0; }
+        .vote-pill-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; color: #94a3b8; transition: color 0.15s; }
+        .vote-pill-btn svg { width: 1.15rem; height: 1.15rem; }
+        .vote-pill-btn.active-up { color: #ff4500; }
+        .vote-pill-btn.active-down { color: #7193ff; }
+        .vote-pill-btn:hover { color: #475569; }
         
-        .actions-cell { display: flex; align-items: center; gap: 1.5rem; }
-        .vote-block { display: flex; align-items: center; gap: 0.5rem; background: var(--color-surface-alt); padding: 0.25rem 0.75rem; border-radius: 2rem; border: 1px solid var(--color-divider); }
+        .vote-score { font-weight: 700; font-size: 0.95rem; color: #ff4500; min-width: 1rem; text-align: center; }
         
-        .vote-icon-btn { background: none; border: none; cursor: pointer; padding: 0.25rem; color: var(--color-text-disabled); display: flex; align-items: center; transition: all 0.2s; }
-        .vote-icon-btn svg { width: 1.25rem; height: 1.25rem; }
-        .vote-icon-btn.up:hover, .vote-icon-btn.up.active { color: #ff4500; }
-        .vote-icon-btn.down:hover, .vote-icon-btn.down.active { color: #7193ff; }
+        .comment-btn-link { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: #4a5568; font-weight: 600; font-size: 0.95rem; padding: 0.25rem; }
+        .comment-btn-link svg { width: 1.25rem; height: 1.25rem; }
+        .comment-btn-link:hover { color: var(--color-primary); }
         
-        .score-text { font-weight: 800; font-size: 0.875rem; min-width: 1.25rem; text-align: center; }
-        .score-text.positive { color: #ff4500; }
-        .score-text.negative { color: #7193ff; }
+        .category-text-plain { color: #4a5568; font-size: 0.95rem; text-transform: capitalize; }
+        .location-text-plain { color: #4a5568; font-size: 0.95rem; }
         
-        .comment-trigger { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: var(--color-text-secondary); font-weight: 600; padding: 0.5rem; border-radius: 0.375rem; transition: background 0.2s; }
-        .comment-trigger:hover { background: var(--color-surface-alt); color: var(--color-primary); }
-        .comment-svg { width: 1.25rem; height: 1.25rem; }
+        .status-badge-flat { padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; background: #ebf8ff; color: #2b6cb0; display: inline-block; }
+        .status-badge-flat.resolved { background: #f0fff4; color: #2f855a; }
+        .status-badge-flat.in_progress { background: #fffaf0; color: #9c4221; }
+
+        @media (max-width: 768px) {
+          .advocate-table th:nth-child(3), .advocate-table td:nth-child(3) { display: none; }
+        }
       `}</style>
     </div>
   );

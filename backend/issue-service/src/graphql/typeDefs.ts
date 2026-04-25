@@ -156,7 +156,7 @@ export const typeDefs = `
     """
     assignIssue(
       id:         ID!
-      assignedTo: String!
+      assignedTo: String
     ): Issue!
 
     """

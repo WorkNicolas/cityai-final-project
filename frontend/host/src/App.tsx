@@ -150,30 +150,28 @@ function AppShell() {
     }
     // Default Home
     return (
-      <div className="view-container">
-        <section className="welcome-section">
-          <h2>Welcome to CityAI</h2>
-          <p>Your AI-powered municipal assistant.</p>
-          <div className="home-actions">
-            <a
-              href={isAuthed ? '/report' : authRedirectHref('/report')}
-              className="btn btn-primary"
-            >
-              Report an Issue
+      <section className="welcome-section" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginTop: '4rem' }}>
+        <h2>Welcome to CityAI</h2>
+        <p>Your AI-powered municipal assistant.</p>
+        <div className="home-actions" style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
+          <a
+            href={isAuthed ? '/report' : authRedirectHref('/report')}
+            className="btn btn-primary"
+          >
+            Report an Issue
+          </a>
+          {isStaff && (
+            <a href="/dashboard" className="btn btn-secondary">
+              Staff Dashboard
             </a>
-            {isStaff && (
-              <a href="/dashboard" className="btn btn-secondary">
-                Staff Dashboard
-              </a>
-            )}
-            {isAdvocate && (
-              <a href="/dashboard" className="btn btn-secondary">
-                Advocate Dashboard
-              </a>
-            )}
-          </div>
-        </section>
-      </div>
+          )}
+          {isAdvocate && (
+            <a href="/dashboard" className="btn btn-secondary">
+              Advocate Dashboard
+            </a>
+          )}
+        </div>
+      </section>
     );
   };
 

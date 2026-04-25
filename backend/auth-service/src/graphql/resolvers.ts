@@ -96,6 +96,23 @@ export const resolvers = {
       if (!context.user) return null;
       return User.findById(context.user.sub).lean();
     },
+
+    /**
+     * QUERY users
+     * @description Returns all users, optionally filtered by role.
+     */
+    users: async (_: unknown, args: any, context: any) => {
+      if (!context.user || (context.user.role !== 'staff' && context.user.role !== 'advocate')) {
+        throw new GraphQLError("This action requires 'staff' or 'advocate' role.", {
+          extensions: { code: 'FORBIDDEN' },
+        });
+      }
+      const filter: any = {};
+      if (args.roles && args.roles.length > 0) {
+        filter.role = { $in: args.roles };
+      }
+      return User.find(filter).lean();
+    },
   },
 
   Mutation: {
