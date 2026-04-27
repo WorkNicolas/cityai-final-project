@@ -1,3 +1,12 @@
+/** docs/TODO.md
+ * @file TODO.md
+ * @description Task tracker and project status for CityAI.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Final project status update.
+ * @version 0.1.1
+ */
+
 # docs/TODO.md
 # CityAI — Task Tracker
 

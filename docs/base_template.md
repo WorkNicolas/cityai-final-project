@@ -1,4 +1,13 @@
 # base_template.md
+/** docs/base_template.md
+ * @file base_template.md
+ * @description Architectural and stylistic blueprint for the CityAI project.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Verified directory structure and standards.
+ * @version 0.1.1
+ */
+
 # CityAI — Project Base Template
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.

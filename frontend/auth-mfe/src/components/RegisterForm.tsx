@@ -48,6 +48,7 @@ export function RegisterForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     name: '',
     role: 'resident',
   });
@@ -76,7 +77,12 @@ export function RegisterForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
-    register({ variables: formData });
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMsg("Passwords do not match.");
+      return;
+    }
+    const { confirmPassword, ...registerData } = formData;
+    register({ variables: registerData });
   };
 
   return (
@@ -117,6 +123,19 @@ export function RegisterForm() {
             id="password"
             type="password"
             value={formData.password}
+            onChange={handleChange}
+            required
+            placeholder="••••••••"
+            disabled={loading}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
             onChange={handleChange}
             required
             placeholder="••••••••"

@@ -20,6 +20,7 @@ import React from 'react';
 import Heatmap from './Heatmap';
 import TrendChart from './TrendChart';
 import BacklogTracker from './BacklogTracker';
+import InsightsDashboard from './InsightsDashboard';
 
 /**
  * IssueDashboard
@@ -37,6 +38,9 @@ export function IssueDashboard() {
       </header>
 
       <div className="dashboard-content">
+        {/* Top Row: Insights */}
+        <InsightsDashboard />
+
         {/* Middle Row: Visualizations */}
         <div className="viz-row">
           <div className="viz-col main">

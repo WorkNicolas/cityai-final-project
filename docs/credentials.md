@@ -3,8 +3,8 @@
  * @description Reference for demo user accounts and initial seeded data.
  * @author Carl Nicolas Mendoza
  * @since 2026-04-24
- * @updated 2026-04-24 - Initial documentation.
- * @version 0.1.0
+ * @updated 2026-04-25 - Verified demo credentials.
+ * @version 0.1.1
  */
 
 # Demo Credentials & Seeded Data

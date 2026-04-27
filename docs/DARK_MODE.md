@@ -1,4 +1,13 @@
 # DARK_MODE.md
+/** docs/DARK_MODE.md
+ * @file DARK_MODE.md
+ * @description Documentation for the token-based dark mode implementation.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Verified token mapping for both themes.
+ * @version 0.1.1
+ */
+
 # CityAI — Dark Mode Implementation
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.

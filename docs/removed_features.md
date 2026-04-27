@@ -1,18 +1,15 @@
-# Removed Features
+# Removed Features (Archived)
 
-This document tracks features that have been removed from the CityAI platform to streamline operations and focus on core civic engagement.
+*Note: The following features were previously slated for removal but have been **restored** to ensure full compliance with the AI integration requirements of the project.*
 
 ## 1. Resolution Efficiency (Staff Dashboard)
-- **Description:** A metric card that calculated the average time to resolve issues across the municipality.
-- **Reason for Removal:** Determined to be less critical for immediate staff triage than direct issue management.
-- **Removed On:** 2026-04-24
+- **Status:** RESTORED
+- **Reason:** Critical for demonstrating AI-powered performance metrics.
 
 ## 2. Public Sentiment Analysis (Staff Dashboard)
-- **Description:** AI-powered sentiment analysis of recent resident reports using Gemini.
-- **Reason for Removal:** To simplify the dashboard and focus on actionable issue data.
-- **Removed On:** 2026-04-24
+- **Status:** RESTORED
+- **Reason:** Essential for showing Gemini's natural language processing capabilities on resident feedback.
 
 ## 3. Urgent Backlog Count (Staff Dashboard)
-- **Description:** A count of open safety-hazard issues displayed as a primary metric.
-- **Reason for Removal:** Redundant with the main issue backlog table which already provides full visibility into all open reports.
-- **Removed On:** 2026-04-24
+- **Status:** RESTORED
+- **Reason:** Provides immediate high-level visibility into safety hazards.

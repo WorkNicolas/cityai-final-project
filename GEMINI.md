@@ -1,3 +1,12 @@
+/** GEMINI.md
+ * @file GEMINI.md
+ * @description Foundational context and development mandates for CityAI.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Verified architectural mandates.
+ * @version 0.1.1
+ */
+
 # CityAI — Project Context & Instructions
 
 This document provides foundational context and development mandates for the CityAI project, an AI-powered local issue tracker designed for Canadian municipalities.
@@ -64,6 +73,8 @@ Strict adherence to `docs/comment_standards.md` is required. Every file MUST inc
  * @version 0.1.0
  */
 ```
+### Database & Seeding
+- **Seed Scripts**: You must update all seed files (`scripts/seed.ts`, `scripts/seed_lots.ts`, etc.) if the database features have been changed.
 
 ### Security Mandates
 - **CORS**: Do not use the `cors` npm package. Use `helmet` and rely on the Vite proxy in the `host` MFE for routing.

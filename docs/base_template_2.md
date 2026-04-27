@@ -1,4 +1,13 @@
 # base_template_2.md
+/** docs/base_template_2.md
+ * @file base_template_2.md
+ * @description Microfrontend & Microservices wiring and integration guide.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Verified MFE/MS interaction patterns.
+ * @version 0.1.1
+ */
+
 # CityAI — Microfrontend & Microservices Wiring Guide
 
 > **Security Note:** Do not use the `cors` npm package in any microservice.

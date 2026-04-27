@@ -10,7 +10,8 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "clean": "pnpm -r exec rm -rf dist .turbo node_modules",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "seed_lots": "tsx scripts/seed_lots.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

@@ -1,3 +1,12 @@
+/** docs/comment_standards.md
+ * @file comment_standards.md
+ * @description Standardized comment format and JSDoc conventions for CityAI.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Verified documentation consistency.
+ * @version 0.1.1
+ */
+
 # comment_standards.md
 # CityAI — Comment Standards
 

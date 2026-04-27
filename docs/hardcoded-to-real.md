@@ -1,3 +1,12 @@
+/** docs/hardcoded-to-real.md
+ * @file hardcoded-to-real.md
+ * @description Transition tracker for features migrating from hardcoded placeholders to live data.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-24
+ * @updated 2026-04-25 - Verified Resolution Efficiency and Public Sentiment as REAL.
+ * @version 0.1.1
+ */
+
 # Hardcoded to Real — Transition Tracker
 
 This document tracks the features in CityAI that have been migrated from static UI placeholders to live, data-driven components powered by microservices and AI.
@@ -26,10 +35,16 @@ This document tracks the features in CityAI that have been migrated from static 
 
 ## Dashboard: Resolution Efficiency
 - **Previous State:** Static "+14%" value.
-- **Status:** (WIP) Migration in Progress (Implementing backend aggregation)
+- **Real Implementation:** 
+  - Calculated in `analytics-service` based on `createdAt` and `resolvedAt` timestamps in `issuesnapshots`.
+  - Uses a heuristic formula to derive a percentage score.
+- **Status:** REAL
 
 ---
 
 ## Dashboard: Public Sentiment
 - **Previous State:** Static "Positive" value.
-- **Status:** (WIP) Migration in Progress (Integrating Gemini sentiment analysis)
+- **Real Implementation:** 
+  - Gemini 3 Flash Preview analyzes the last 15 issue descriptions.
+  - Returns a sentiment label and a detailed explanation.
+- **Status:** REAL

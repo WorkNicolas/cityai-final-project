@@ -32,9 +32,9 @@ async function seedUsers() {
   const hash = await bcrypt.hash('Cnnmcn54$', 12);
   
   const users = await User.create([
-    { email: 'keziah.noreen.mendoza@gmail.com',   name: 'Keziah Resident',  passwordHash: hash, role: 'resident' },
-    { email: 'marissa.mendoza@gmail.com',         name: 'Marissa Staff',    passwordHash: hash, role: 'staff' },
-    { email: 'kyle.nathaniel.mendoza@gmail.com',  name: 'Kyle Advocate',    passwordHash: hash, role: 'advocate' },
+    { email: 'keziah.noreen.mendoza@gmail.com',   name: 'Keziah Noreen Mendoza',  passwordHash: hash, role: 'resident' },
+    { email: 'marissa.mendoza@gmail.com',         name: 'Marissa Mendoza',        passwordHash: hash, role: 'staff' },
+    { email: 'kyle.nathaniel.mendoza@gmail.com',  name: 'Kyle Nathaniel Mendoza', passwordHash: hash, role: 'advocate' },
   ]);
 
   console.log(`Created ${users.length} users.`);
@@ -99,18 +99,29 @@ async function seedIssues(residentId: string, advocateId: string, staffId: strin
     let comments: any[] = [];
     if ([0, 3, 6].includes(i)) {
       comments = [
-        { userId: advocateId, userName: 'Kyle Advocate', text: 'First guidance note: verifying local impact.', createdAt: new Date(Date.now() - 86400000) },
-        { userId: advocateId, userName: 'Kyle Advocate', text: 'Update: Escalated to public works department.', createdAt: new Date() }
+        { userId: advocateId, userName: 'Kyle Nathaniel Mendoza', text: 'First guidance note: verifying local impact.', createdAt: new Date(Date.now() - 86400000) },
+        { userId: advocateId, userName: 'Kyle Nathaniel Mendoza', text: 'Update: Escalated to public works department.', createdAt: new Date() }
       ];
     } else if ([1, 4].includes(i)) {
       comments = [
-        { userId: advocateId, userName: 'Kyle Advocate', text: 'As a community advocate, I have flagged this for urgent staff review.', createdAt: new Date() }
+        { userId: advocateId, userName: 'Kyle Nathaniel Mendoza', text: 'As a community advocate, I have flagged this for urgent staff review.', createdAt: new Date() }
       ];
     }
 
+    const descriptions = [
+      "There is a massive pothole that almost ruined my tires. It's getting wider every day.",
+      "The streetlight has been out for a week, making the intersection very dark and unsafe at night.",
+      "Heavy rain caused the drain to block completely, water is pooling on the sidewalk.",
+      "Someone spray-painted inappropriate tags on the side of the community center wall.",
+      "The stop sign at the corner was knocked down over the weekend. Extremely dangerous for traffic.",
+      "The entire street floods during moderate rain. Needs drainage clearing immediately.",
+      "Hit another deep pothole here. This whole street needs to be repaved as soon as possible."
+    ];
+    const realDescription = descriptions[i] || `This is a demo report for ${data.title}.`;
+
     const issue = await Issue.create({
       ...data,
-      description: `This is a demo report for ${data.title}. Needs urgent attention.`,
+      description: realDescription,
       reportedBy: residentId,
       assignedTo: [0, 1].includes(i) ? staffId : null,
       upvotes: 0,

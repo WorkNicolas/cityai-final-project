@@ -1,3 +1,12 @@
+/** docs/hardcoded_fix.md
+ * @file hardcoded_fix.md
+ * @description Audit of hardcoded data points and their dynamic resolutions.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-24
+ * @updated 2026-04-25 - Verified dynamic resolution logic.
+ * @version 0.1.1
+ */
+
 # Hardcoded Data Fixes
 
 This document tracks the hardcoded data issues identified during the project audit and details the fixes implemented to resolve them.

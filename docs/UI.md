@@ -66,6 +66,8 @@ This MFE connects to `analytics-service` via the `/api/analytics` proxy path.
 | Component                    | Path                                                              |
 |------------------------------|-------------------------------------------------------------------|
 | Staff issue dashboard        | `frontend/analytics-mfe/src/components/IssueDashboard.tsx`       |
+| Advocate dashboard           | `frontend/analytics-mfe/src/components/AdvocateDashboard.tsx`    |
+| Advocate issue table         | `frontend/analytics-mfe/src/components/AdvocateIssueTable.tsx`   |
 | Heatmap (issue clusters)     | `frontend/analytics-mfe/src/components/Heatmap.tsx`              |
 | AI chatbot interface         | `frontend/analytics-mfe/src/components/Chatbot.tsx`              |
 | Insights panel               | `frontend/analytics-mfe/src/components/InsightsDashboard.tsx`    |

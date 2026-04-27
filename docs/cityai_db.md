@@ -1,3 +1,12 @@
+/** docs/cityai_db.md
+ * @file cityai_db.md
+ * @description Comprehensive database architecture for the CityAI project.
+ * @author Carl Nicolas Mendoza
+ * @since 2026-04-20
+ * @updated 2026-04-25 - Verified schema consistency across microservices.
+ * @version 0.1.1
+ */
+
 # CityAI — Database Architecture
 
 CityAI employs a microservices architecture, which extends to its database strategy. To maintain loose coupling and optimize for different workloads, CityAI utilizes three separate MongoDB databases. 
